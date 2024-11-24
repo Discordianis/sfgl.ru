@@ -1,0 +1,98 @@
+.relation_archive_root > form {
+    display: flex;
+    margin: 20px 10px 0 10px;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.button_update_rel {
+    position: relative;
+    bottom: 0;
+    right: 0;
+}
+
+.relation_archive {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.relation_archive_root {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    display: flex;
+    justify-content: center;
+}
+
+.add_item_icon > img {
+    height: 150px;
+}
+
+.add_item_icon {
+    height: -webkit-fill-available;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background-dark-brown);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: outline-color 0.3s ease;
+}
+
+.add_item_icon:hover {
+    outline: var(--border-wheat);
+}
+
+.add_relation_archive {
+    display: grid;
+    grid-template-columns: repeat(2, 410px);
+    justify-items: center;
+    justify-content: center;
+}
+
+.archive_item {
+    display: flex;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    background: var(--background-dark-brown);
+    position: relative;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.add_item_icon.archive_item {
+    display: flex;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    background: var(--background-dark-brown);
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 370px;
+}
+
+.archive_item > .button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.relation_archive > label > input {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    max-width: 360px;
+}
+

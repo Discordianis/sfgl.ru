@@ -1,0 +1,131 @@
+.profile_settings_left > div > form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile_settings_root {
+    margin: 0 20px 5px 20px;
+    background: var(--background-trans-color);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.profile_settings_root > div > h2 {
+    text-align: center;
+}
+
+.profile_settings_root > div > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.loading_crab > img {
+    height: 500px;
+    width: 500px;
+    margin: 0 auto;
+}
+
+.profile_settings_left {
+    padding: 30px;
+}
+
+.ps_custom_nickname > label, .ps_password > div > label {
+    margin: 10px 0;
+}
+
+.ps_current_nickname > span {
+    color: var(--text-gray);
+    font-size: 12px;
+    display: flex;
+}
+
+.ps_current_nickname > label {
+    margin: 0;
+}
+
+.ps_password > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile_settings_right > div {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile_settings_right_file label {
+    margin-top: unset;
+}
+
+.profile_settings_right {
+    padding: 30px;
+}
+
+.profile_settings_right_avatar > img {
+    height: 200px;
+    width: 200px;
+    border: var(--border-wheat);
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.cropper-container{
+    margin: 10px 0;
+}
+
+.ps_save_button_optional {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ps_current_nickname > label > input {
+    width: auto;
+}
+
+.profile_settings_optional > form > .filter_buttons:after {
+    right: 10px;
+}
+
+.profile_settings_root .utabs {
+    flex: 1;
+    margin: 20px 10px;
+}
+
+.profile_settings_right_avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile_settings_right_alter {
+    display: flex;
+    justify-items: center;
+}
+
+.profile_settings_right_avatar > span {
+    color: #888888;
+    font-size: 14px;
+}
+
+.ͼ89 {
+    height: 100%;
+}
+
+.ͼ8n .cm-scroller {
+    border-radius: 8px;
+}
+
+.ͼ8n {
+    border-radius: 8px;
+}
+
+.cm-theme {
+    width: 100%;
+    margin: 20px;
+}

@@ -1,0 +1,41 @@
+.add_library_root {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto 5px auto;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--background-trans-color);
+}
+
+.add_library {
+    width: 100%;
+}
+
+.add_library_utabs {
+    width: 100%;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.add_library_utabs > div {
+    flex: 1;
+}
+
+.add_library_root .add_save_button button {
+    background-color: #193d1ba8;
+}
+
+.add_library_chapter_main .add_save_button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add_save_button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.textarea_span {
+    display: flex;
+    flex-direction: column;
+}

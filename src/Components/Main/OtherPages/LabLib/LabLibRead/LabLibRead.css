@@ -1,0 +1,277 @@
+.lablib_read_root > div {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lablib_read_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1400px;
+}
+
+.lablib_read_header_root {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 20px 10px 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid grey;
+}
+
+.lablib_read_title {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+    min-width: 150px;
+    width: 100%;
+    overflow: hidden;
+    padding: 0 15px;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+}
+
+.lablib_read_title > span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.lablib_read_title > span:nth-child(1) {
+    color: var(--text-gray);
+    font-size: 12px;
+}
+
+.lablib_read_title > span:nth-child(2) {
+    font-size: 15px;
+    font-weight: 500;
+    color: #bdbdbd;
+}
+
+.chapters_controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    margin: 0 5px;
+}
+
+.chapters_controls_title > span {
+    display: block;
+}
+
+.chapters_controls_title > span:nth-child(1) {
+    color: var(--text-gray);
+    font-size: 12px;
+}
+
+.chapters_controls_title > span:nth-child(2) {
+    font-size: 15px;
+    font-weight: 500;
+    color: #bdbdbd;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+}
+
+.chapters_controls > a {
+    display: flex;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.chapters_controls > div:not(.popup_root, .hidden, .visible) {
+    padding: 0 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    max-width: 400px;
+}
+
+.chapters_controls > a:hover, .chapters_controls > div:hover:not(.popup_root, .hidden, .visible), .lablib_read_title:hover {
+    background: rgba(128, 128, 128, 0.45);
+}
+
+.lablib_read_text > h1 {
+    font-size: 1.4em;
+    margin-bottom: 16px;
+    padding: 0 20px;
+    text-indent: 0;
+}
+
+.lablib_read_text {
+    text-align: start;
+    max-width: 63%;
+    margin-bottom: 20px;
+}
+
+.lablib_read_end {
+    border-top: 1px solid grey;
+    margin-bottom: 50px;
+    padding-top: 20px;
+    width: 100%;
+    gap: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lablib_read_text_map {
+    white-space: pre-wrap;
+    display: inline-grid;
+}
+
+.lablib_read_span {
+    line-height: 1.6;
+    text-indent: 0.875em;
+    white-space: pre-wrap;
+    display: block;
+    padding: 5px 0;
+}
+
+.lablib_modal_chapters_list > a > div {
+    display: flex;
+    gap: 5px;
+    padding: 5px;
+    margin: 3px 0;
+    background: #4a4a4a4d;
+    border-radius: 8px;
+}
+
+.popup_root {
+    top: 0;
+    position: fixed;
+    left: 0;
+    z-index: 9999;
+    height: 100%;
+    min-width: 100vw;
+    max-height: 100vh;
+    background: var(--background-dark-brown);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    display: block;
+}
+
+.popup_prop {
+    padding: 20px;
+    background: #0c0c0c;
+    border-radius: 0 15px 15px 0;
+    height: 100%;
+    max-width: 400px;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.popup_opened {
+    transform: translateX(0); /* Появление при открытии */
+}
+
+.lablib_modal_controls {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.popup_close_button {
+    padding: 5px;
+    margin: 5px;
+    background: var(--background-trans-color);
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+}
+
+.popup_close_button:hover {
+    background: #4a4a4a4d;
+}
+
+.lablib_modal_chapters_list > a > div > div:nth-child(1) > span {
+    white-space: nowrap;
+}
+
+.lablib_modal_chapters_list > a > div > div:nth-child(2) > span {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.story_image > img {
+    max-width: 100%;
+    outline: var(--border-wheat);
+    filter: brightness(0.7);
+}
+
+.story_image {
+    margin-top: 20px;
+}
+
+.lablib_read_end a {
+    background-color: #272727;
+}
+
+@media screen and (max-width: 430px){
+    .lablib_read_header {
+        flex-direction: column;
+    }
+    .lablib_read_title {
+        text-align: center;
+        border-bottom: 1px solid #656565;
+        margin-bottom: 10px;
+    }
+    .lablib_modal_controls {
+        flex-direction: column;
+        text-align: center;
+    }
+    .lablib_modal_controls > div {
+        width: 100%;
+    }
+    .popup_close_button {
+        padding: 25px;
+        margin: 5px;
+        background: #181818b8;
+        width: 100%;
+        color: transparent;
+        position: relative;
+    }
+    .popup_close_button:after {
+        content: 'Скрыть меню';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        color: #c3c3c3;
+        align-items: center;
+        justify-content: center;
+    }
+}

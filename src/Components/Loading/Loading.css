@@ -1,0 +1,25 @@
+.loading {
+    height: -webkit-fill-available;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading > img {
+    height: 300px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.small_loading > .loading > img {
+    height: 50px;
+    width: 50px;
+    margin: 0 auto;
+}
+
+.small_loading {
+    padding: 0 40px;
+}

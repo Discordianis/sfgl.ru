@@ -1,0 +1,36 @@
+.context_menu_root {
+    margin: 10px;
+    height: 21px;
+    min-width: 21px;
+    display: flex;
+    background: #49433a;
+    border-radius: 8px;
+    font-weight: bold;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.context_menu_button{
+    position: relative;
+    cursor: pointer;
+    bottom: 1px;
+    height: 21px;
+    display: flex;
+    align-items: center;
+}
+
+.context_menu > div{
+    padding: 5px;
+    background: #453f3d;
+    position: relative;
+    z-index: 99;
+    border-radius: 8px;
+    transition: width 2s, height 0.3s, transform 2s;
+}
+
+.context_menu > div {
+    position: relative;
+    font-size: 12px;
+    cursor: pointer;
+}

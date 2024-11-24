@@ -1,0 +1,49 @@
+.login_page_root {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.login_nickname, .login_password {
+    display: flex;
+    justify-content: center;
+}
+
+.login_nickname > label > input, .login_password > label > input {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+.login_page_root > div {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    display: flex;
+    justify-content: center;
+}
+
+.login_page_root > div > div{
+    height: 353px;
+    min-height: 220px;
+    display: grid;
+    justify-content: center;
+    width: 796px;
+    padding: 15px;
+    margin: 5px;
+    border-radius: 8px;
+    background: var(--background-trans-color);
+}
+
+.login_page_root > div > .login_page_nobg {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    height: unset;
+    min-height: unset;
+}
+
+.login_button {
+    display: flex;
+    flex-direction: column;
+}

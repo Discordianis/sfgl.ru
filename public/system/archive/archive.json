@@ -1,0 +1,64 @@
+{
+  "data": {
+    "cover": {
+      "slgb_name": "Лаборатория Гаджетов Будущего",
+      "title": "АРХИВ ПРОШЛЫХ И ТЕКУЩИХ ОТНОШЕНИЙ СОТРУДНИКОВ ЛАБОРАТОРИИ ГАДЖЕТОВ БУДУЩЕГО",
+      "subtitle": "(статистика отношений каждого члена СЛГБ)",
+      "creator": "Создатель: Сотрудник #002 — Засос",
+      "informant": [
+        "Информатор: Сотрудник #001 – Ханжа",
+        "Информатор: Сотрудник #006 – Кот"
+      ],
+      "warning": "Архив и информация в нём не являются чьим-либо из Сотрудников СЛГБ секретом. Написанная информация также может быть неполной.",
+      "changeDate": "Последняя редакция: 19.08.2024, 03:18:00",
+      "checked": {
+        "title": "Архив проверен и актуализирован главой Лаборатории Гаджетов Будущего",
+        "user": "Глава СЛГБ: Сотрудник #002 – Засос"
+      },
+      "license": "Time;Gate Keepers, 2024"
+    },
+    "archive": {
+      "addable": {
+        "1": {
+          "nickname": "MrZaxter",
+          "id": 1,
+          "relationArchive": {
+            "1": {
+              "name": "",
+              "startDate": "",
+              "endDate": "",
+              "summaryDate": "",
+              "optional": ""
+            }
+          },
+          "reports": {
+            "1": {
+              "title": "",
+              "report": ""
+            }
+          }
+        }
+      },
+      "updatable": {
+        "1": {
+          "nickname": "MrZaxter",
+          "id": 1,
+          "relationStatus": "",
+          "commonStatistic": {
+            "experience": "",
+            "additional": "",
+            "fails": "",
+            "now": ""
+          },
+          "ppStatus": {
+            "firstName": "",
+            "secondName": "",
+            "startDate": "",
+            "startDescription": ""
+            },
+          "endDate": ""
+        }
+      }
+    }
+  }
+}

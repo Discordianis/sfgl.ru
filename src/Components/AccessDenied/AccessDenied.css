@@ -1,0 +1,17 @@
+.access_denied_root {
+    padding: 50px;
+    border-radius: 15px;
+    background: #000000c9;
+    margin: 15px 30px;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 20px;
+    justify-content: center;
+    height: 86vh;
+    align-items: center;
+}
+
+.access_denied_root > div:nth-child(2) > a > .button {
+    background: rgba(40, 13, 71, 0.38);
+}

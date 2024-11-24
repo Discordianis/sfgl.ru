@@ -1,0 +1,73 @@
+h4 > a.back:after {
+    content: '←';
+    left: 1px;
+    position: absolute;
+    top: -35px;
+}
+
+h4 > a.back:before {
+    content: 'назад';
+    font-size: 9px;
+    top: -10px;
+    position: absolute;
+}
+
+h4 > a.back {
+    display: inline-block;
+    font-size: 24px;
+    position: relative;
+    width: 30px;
+}
+
+.story_characters_title {
+    font-size: 25px;
+}
+
+.story_characters_main_title,
+.story_characters_seconds_title {
+    padding: 5px 10px;
+    background: var(--background-dark-brown);
+    border-radius: 15px;
+    margin: 5px 0 10px 0;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    outline: transparent solid 1px;
+    transition: outline-color 0.3s ease;
+}
+
+.story_characters_main_title:after,
+.story_characters_main_title:before,
+.story_characters_seconds_title:after,
+.story_characters_seconds_title:before {
+    content: '';
+    border-bottom: #d6d6d6 1px solid;
+    width: 100%;
+    display: flex;
+    margin: 0 10px;
+}
+
+.story_characters_list {
+    display: flex;
+    gap: 5px;
+}
+
+@media screen and (max-width: 455px){
+    .story_characters_list {
+        flex-direction: column;
+    }
+    .story_info_char {
+        display: flex;
+        gap: 10px;
+    }
+    .story_info_char > div:nth-child(2) {
+        flex: 1;
+    }
+}
+
+@media screen and (max-width: 255px) {
+    .story_characters_seconds_title {
+        white-space: pre-wrap;
+        text-align: center;
+    }
+}

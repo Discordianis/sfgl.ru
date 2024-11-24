@@ -1,0 +1,139 @@
+.archive_addInfo_root {
+    padding: 5px;
+    border-radius: 15px;
+    background: var(--background-trans-color);
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto 5px;
+}
+
+.archive_addInfo_root > div > h2 {
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.archive_add_inputs > form > div {
+    margin: 5px 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: var(--background-dark-brown);
+    border-radius: 8px;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    max-width: 600px;
+}
+
+.add_custom_user_input {
+    width: -webkit-fill-available;
+}
+
+.archive_add_inputs input, .archive_add_inputs select {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    max-width: 300px;
+}
+
+.add_custom_user_span > input {
+    max-width: 500px;
+    font-size: 13px;
+}
+
+.add_custom_user_input > label > input {
+    max-width: 500px;
+}
+
+.archive_add_inputs > form {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add_custom_user_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.utabs_archive > div {
+    display: flex;
+    background: var(--background-trans-color);
+    width: fit-content;
+    border-radius: 8px;
+}
+
+.utabs_archive > div > div {
+    width: auto;
+}
+
+.utabs_archive {
+    display: flex;
+    justify-content: center;
+}
+
+.archive_add_inputs.archive_add_common {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.exist_users_select {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    display: flex;
+    flex-direction: column;
+}
+
+.add_custom_user_root > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.add_custom_user_root > div:nth-child(1){
+    padding: 15px;
+    border: var(--border-wheat);
+    border-radius: 8px;
+}
+
+.add_custom_user_avatar {
+    display: flex;
+}
+
+.add_custom_user_avatar > img {
+    height: 125px;
+    margin: 10px;
+    border-radius: 8px;
+    outline: var(--border-wheat);
+}
+
+.add_custom_user_span {
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
+    color: var(--text-gray);
+    font-size: 13px;
+}
+
+.archive_add_common > form > div > label > input,
+.archive_add_common > form > div > label,
+.archive_add_common > form > div > div > select {
+    display: flex;
+    width: 100%;
+    max-width: none;
+}
+
+.pp_status_input > .exist_users_select > .filter_buttons_fill > select {
+    width: 100%;
+    max-width: none;
+}

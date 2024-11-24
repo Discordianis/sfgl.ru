@@ -1,0 +1,123 @@
+.register_form > div > label > input {
+    height: 25px;
+    width: 300px;
+    padding: 7px;
+    border-radius: 8px;
+    border: none;
+    background: var(--input-background);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.register_page_root > div {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+.register_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register_page_root > div > div > form > div > div > label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 10px;
+}
+
+.register_nickname, .register_password, .repeat_register_password {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.pre_regist_div{
+    height: 353px;
+    display: flex;
+    width: 796px;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+    flex-direction: column;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+}
+
+.password_error {
+    color: gray;
+}
+
+.password_success {
+    color: white;
+}
+
+.password_items {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    padding: 10px;
+    background: var(--background-trans-color);
+    border-radius: 0 0 8px 8px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.password_items > div {
+    display: flex;
+    align-items: center;
+}
+
+.password_items > div > img {
+    height: 20px;
+    margin-right: 5px;
+}
+
+.password_error_div > img {
+    filter: grayscale(100%);
+}
+
+.password_success_div > img {
+    filter: grayscale(0%);
+}
+
+.pre_regist_div_nobg {
+    height: 353px;
+    display: flex;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    padding: 15px;
+    margin: 0 5px;
+    border-radius: 8px 8px 0 0;
+    flex-direction: column;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+    background: var(--background-trans-color);
+}
+
+.register_button > button {
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 835px){
+    .pre_regist_div_nobg > form {
+        padding: 10px 20px;
+        background: var(--background-dark-brown);
+        border-radius: 8px;
+    }
+}

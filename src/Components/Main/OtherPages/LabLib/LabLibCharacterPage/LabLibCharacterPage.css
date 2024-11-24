@@ -1,0 +1,199 @@
+.char_right_status_lively {
+    padding: 0 10px;
+    background: #1b851b;
+    border-radius: 15px;
+}
+
+.char_right_status_dead {
+    padding: 0 10px;
+    background: #e13f3f;
+    border-radius: 15px;
+}
+
+.char_right_status_unknown {
+    padding: 0 10px;
+    background: #656565;
+    border-radius: 15px;
+}
+
+.char_worlds_info_main > a > div:nth-child(1) {
+    padding: 5px 10px;
+    background: var(--background-dark-brown);
+    border-radius: 15px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: transparent solid 1px;
+    transition: outline-color 0.3s ease;
+}
+
+.char_worlds_info_main > a > div:nth-child(1):hover {
+    outline: #6b5b48 1px solid;
+}
+
+.char_worlds_info_main > a > div:nth-child(1):after,
+.char_worlds_info_main > a > div:nth-child(1):before {
+    content: '';
+    border-bottom: #d6d6d6 1px solid;
+    width: 100%;
+    display: flex;
+    margin: 0 10px;
+}
+
+.char_worlds_info_main > div:nth-child(2) {
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.char_info_right {
+    max-width: calc(100% - 204px);
+    display: flex;
+    gap: 5px;
+    margin-top: 15px;
+    flex: 1;
+}
+
+.char_info_right > div {
+    flex: 1;
+}
+
+.char_info_right {
+    display: flex;
+    gap: 15px;
+}
+
+.char_right_author img {
+    width: 50px;
+    height: 50px;
+    outline: var(--border-wheat);
+}
+
+.char_right_author {
+    border-radius: 8px;
+    display: flex;
+    gap: 5px;
+    height: fit-content;
+    flex-direction: column;
+}
+
+.char_right_author > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.char_right_author > div:nth-child(2) > div:nth-child(1) {
+    display: flex;
+    height: fit-content;
+}
+
+.char_right_author > div:nth-child(2) > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+}
+
+.char_right_author > div:nth-child(2) > div:nth-child(2) > a > span {
+    color: var(--text-gray);
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.char_right_author > div:nth-child(2) > div:nth-child(2) > a {
+    display: flex;
+}
+
+.char_right_author > div:nth-child(2) > div:nth-child(2) > a > span:hover {
+    color: #bfa881;
+}
+
+.story_right_commons > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.char_page_va_char img, .char_page_va_seiyuu img {
+    height: 100px;
+    width: 70px;
+    outline: var(--border-wheat);
+    object-fit: cover;
+}
+
+.char_page_va_root {
+    display: flex;
+    gap: 5px;
+}
+
+.char_page_va_root > div {
+    padding: 10px;
+    background: var(--background-dark-brown);
+    border-radius: 8px;
+    margin: 5px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.story_right_description .text-block > .text-content > span {
+    padding: 5px 0;
+}
+
+.char_info_cover {
+    cursor: pointer;
+}
+
+.character_right_status {
+    display: flex;
+    gap: 5px;
+}
+
+@media screen and (max-width: 485px){
+    .char_right_author > div:nth-child(2) {
+        flex-direction: column;
+        align-items: center;
+    }
+    .char_right_author img {
+        width: 80px;
+        height: 80px;
+    }
+    .char_right_author > div:nth-child(2) > div:nth-child(2) {
+        align-items: center;
+    }
+    .char_right_author > div:nth-child(2) > div:nth-child(2) > a > span {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 389px) {
+    .char_worlds_info_main > div:nth-child(2) {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 349px){
+    .char_right_author > div:nth-child(2) {
+        display: flex;
+        flex-direction: column;
+    }
+    .char_right_author > div:nth-child(2) > div:nth-child(1) {
+        gap: 10px;
+    }
+    .char_right_author a {
+        font-weight: 400;
+        color: var(--text-gray);
+    }
+}
+
+@media screen and (max-width: 592px){
+    .char_info_right {
+        max-width: 100%;
+    }
+    .char_info_right > div {
+        flex: 1;
+    }
+}

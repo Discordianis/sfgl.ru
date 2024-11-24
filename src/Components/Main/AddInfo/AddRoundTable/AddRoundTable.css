@@ -1,0 +1,128 @@
+.reports_rules > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: var(--background-dark-brown);
+    border-radius: 8px;
+}
+
+.reports_rules > div > div > span, .reports_rules > div > div > h3 {
+    text-align: center;
+    padding: 5px;
+}
+
+.add_reports_root {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reports_rules {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reports_filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create_first_report {
+    display: flex;
+    flex-direction: column;
+}
+
+.reports_add_list > .button {
+    padding: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.reports_add_list > .button > span {
+    position: relative;
+    bottom: 1px;
+}
+
+.add_report:hover {
+    outline: var(--border-wheat);
+}
+
+.reports_list {
+    background: var(--background-trans-color);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.reports_list:hover {
+    outline: var(--border-wheat);
+}
+
+.reports_add_list {
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.reports_form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.add_reports_root > div, .reports_form > form, .reports_textarea {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+.report_date_input.error > label > input {
+    outline: 2px solid red;
+}
+
+.report_hidden_input {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.report_hidden_input > select {
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    max-width: 300px;
+}
+
+.reports_textarea > textarea {
+    margin: 10px 0;
+}
+
+.reports_list.active {
+    outline: var(--border-wheat);
+}
+
+.image_rt_preview > img {
+    max-width: 800px;
+    max-height: 300px;
+    outline: var(--border-wheat);
+}
+
+.rt_form_notext {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 100px;
+    align-items: center;
+}
+
+.image_rt_preview {
+    display: flex;
+}

@@ -1,0 +1,76 @@
+.text-block {
+    position: relative;
+    overflow: hidden;
+    transition: all 5s ease;
+}
+
+.text-block.expanded {
+    max-height: 9999px;
+}
+
+.text-content {
+    padding: 15px;
+}
+
+.overlay > div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    border-radius: 0 0 8px 8px;
+    background: linear-gradient(to top, rgba(0, 0, 0) 25%, rgba(0, 0, 0, 0) 100%);
+    padding-top: 85px;
+}
+
+.overlay > div > div {
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+}
+
+.overlay > div > div:after,
+.overlay > div > div:before {
+    content: '';
+    border-bottom: 1px #D6D6D6FF solid;
+    display: flex;
+    margin: 0 10px;
+    width: 100%;
+}
+
+.overlay{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 160px;
+    background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 80%));
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    border-radius: 0 0 8px 8px;
+}
+
+.overlay button {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: #d6d6d6;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 100px;
+    min-width: 100px;
+}
+
+.text-content img, .text-content video {
+    max-width: 500px;
+    width: 100%;
+}
