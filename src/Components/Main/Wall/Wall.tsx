@@ -1,9 +1,10 @@
+import { Virtuoso } from 'react-virtuoso';
 import './Wall.css'
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux";
 import Loading from "../../Loading/Loading.tsx";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import TextOverflow from "../../TextOverflow/TextOverflow.tsx";
 import parse from "html-react-parser";
 import moment from "moment";
@@ -44,8 +45,7 @@ interface User {
     }
 }
 
-const Wall:React.FC = () => {
-
+const Wall: React.FC = () => {
     moment().locale('ru')
 
     const [noNewReports, setNoNewReports] = useState<boolean | null>(null)
@@ -63,7 +63,7 @@ const Wall:React.FC = () => {
         const fetchData = async () => {
             const res = await fetch(server, {
                 method: 'POST',
-                body: JSON.stringify({token: token, action: 'getAllReports'})
+                body: JSON.stringify({ token: token, action: 'getAllReports' })
             })
             const dataReport = await res.json()
             if (!dataReport.status) {
@@ -76,7 +76,7 @@ const Wall:React.FC = () => {
 
             const response = await fetch(server, {
                 method: 'POST',
-                body: JSON.stringify({token: token, action: 'getAllUsers'})
+                body: JSON.stringify({ token: token, action: 'getAllUsers' })
             })
             const data = await response.json()
             if (!data.status) {
@@ -193,68 +193,52 @@ const Wall:React.FC = () => {
                                 </select>
                             </div>
                         }
-                        {reportsData?.info && Object.values(sortedReportsList)
-                            .filter((report: IReportsInfo) => moment(lastTime).isBefore(moment(report?.created_date)))
-                            .map((report: IReportsInfo) => (
-                                <div key={report.id} className={'report_news'}>
-                                    <NavLink
-                                        to={`/users/${Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname).nickname}`}>
-                                        <div className={'report_news_header'}>
-                                            <img src={`${Object.values(allUsers?.info)
-                                                .find((user: IAllUsersInfo) => user?.nickname === report.user_nickname).avatar}`}
-                                                 alt={'user_avatar'}
-                                            />
-                                            <div>
-                                                <span><strong>{Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.custom_nickname}</strong></span>
-                                                <span>{formatDate(filter === 'reportDate' ? report?.report_date : filter === 'createdDate' ? report?.created_date : report?.date_modified)}</span>
+                        <Virtuoso
+                            style={{ height: '85vh', width: '100%' }}
+                            totalCount={sortedReportsList.length}
+                            itemContent={(index) => {
+                                const report = sortedReportsList[index];
+                                return (
+                                    <div key={report.id} className={'report_news'}>
+                                        <NavLink
+                                            to={`/users/${Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.nickname}`}>
+                                            <div className={'report_news_header'}>
+                                                <img
+                                                    src={`${Object.values(allUsers?.info)
+                                                        .find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.avatar}`}
+                                                    alt={'user_avatar'}
+                                                />
+                                                <div>
+                                                    <span><strong>{Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.custom_nickname}</strong></span>
+                                                    <span>{formatDate(filter === 'reportDate' ? report?.report_date : filter === 'createdDate' ? report?.created_date : report?.date_modified)}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </NavLink>
-                                    <span><TextOverflow maxHeight={1000} text={parse((report.text
-                                        .split('\n')
-                                        .map((line, index) =>
-                                            `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                        )).join(''))
-                                    }/>
-                                                    </span>
-                                </div>
-                            ))}
+                                        </NavLink>
+                                        <span>
+                                            <TextOverflow
+                                                maxHeight={1000}
+                                                text={parse((report.text
+                                                    .split('\n')
+                                                    .map((line: string, index: number) =>
+                                                        `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
+                                                    )).join('')
+                                                )}
+                                            />
+                                        </span>
+                                    </div>
+                                );
+                            }}
+                        />
                         {!noNewReports && (
                             <div className={'end_new_reports'}>
                                 <span>На сегодня всё!</span>
                             </div>
                         )}
-                        {reportsData?.info && Object.values(sortedReportsList)
-                            .filter((report: IReportsInfo) => moment(lastTime).isSameOrAfter(moment(report?.created_date)))
-                            .map((report: IReportsInfo) => (
-                                <div key={report.id} className={'report_news'}>
-                                    <NavLink
-                                        to={`/users/${Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname).nickname}`}>
-                                        <div className={'report_news_header'}>
-                                            <img src={`${Object.values(allUsers?.info)
-                                                .find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.avatar}`}
-                                                 alt={'user_avatar'}
-                                            />
-                                            <div>
-                                                <span><strong>{Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.custom_nickname}</strong></span>
-                                                <span>{formatDate(filter === 'reportDate' ? report?.report_date : filter === 'createdDate' ? report?.created_date : report?.date_modified)}</span>
-                                            </div>
-                                        </div>
-                                    </NavLink>
-                                    <span><TextOverflow maxHeight={1000} text={parse((report.text
-                                        .split('\n')
-                                        .map((line, index) =>
-                                            `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                        )).join(''))
-                                    }/>
-                                    </span>
-                                </div>
-                            ))}
                     </div>
                 )}
-
             </div>
         </div>
-    )
-}
-export default Wall
+    );
+};
+
+export default Wall;

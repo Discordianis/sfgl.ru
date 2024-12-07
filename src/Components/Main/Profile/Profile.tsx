@@ -29,7 +29,7 @@ const Profile: React.FC = () => {
 
     const myself = useSelector((state: RootState) => state.myData)
 
-    const aboutInput = useInput('', {maxLengthError: 301})
+    const aboutInput = useInput('', {maxLengthError: 601})
 
     useEffect(() => {
         const fetching = async () => {
@@ -231,7 +231,7 @@ const Profile: React.FC = () => {
                                         <form onSubmit={updateAbout}>
                                             <textarea
                                                 rows={3}
-                                                maxLength={300}
+                                                maxLength={600}
                                                 value={aboutInput.value}
                                                 onChange={(e) => aboutInput.onChange(e)}
                                             />
