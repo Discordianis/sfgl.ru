@@ -4,6 +4,7 @@ import Loading from "../Components/Loading/Loading.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../redux";
 import moment from "moment-timezone";
+import {NavLink} from "react-router-dom";
 
 interface IUserInfo {
     custom_nickname: string;
@@ -83,7 +84,7 @@ const GetAllUsers: React.FC = () => {
     return (
         <div className={'user_profiles'}>
             {sortedUsers.map((nick: IUserInfo, index: number) => (
-                <a href={`/users/${nick.nickname}`} key={index}>
+                <NavLink to={`/users/${nick.nickname}`} key={index}>
                     <>
                         {!checkOnline(nick?.last_online_date) ? (
                             <div className={'avatar_offline'}>
@@ -102,7 +103,7 @@ const GetAllUsers: React.FC = () => {
                         )}
                     </>
                     <span>{nick.custom_nickname}</span>
-                </a>
+                </NavLink>
             ))}
         </div>
     );
