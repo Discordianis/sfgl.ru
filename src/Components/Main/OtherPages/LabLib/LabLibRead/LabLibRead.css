@@ -232,6 +232,10 @@
     filter: brightness(0.7);
 }
 
+.lablib_read_text_map img {
+    max-width: 100%;
+}
+
 .story_image {
     margin-top: 20px;
 }
