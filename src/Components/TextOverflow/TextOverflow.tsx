@@ -10,7 +10,7 @@ interface ITextBlockProps {
 const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isShortText, setIsShortText] = useState(false);
-    const [visibleSpoilers, setVisibleSpoilers] = useState<Set<number>>(new Set());
+    const [visibleSpoilers, setVisibleSpoilers] = useState<Set<string>>(new Set());
     const textRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -20,13 +20,13 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
         }
     }, [maxHeight]);
 
-    const toggleSpoiler = (index: number) => {
+    const toggleSpoiler = (key: string) => {
         setVisibleSpoilers((prev) => {
             const newSet = new Set(prev);
-            if (newSet.has(index)) {
-                newSet.delete(index);
+            if (newSet.has(key)) {
+                newSet.delete(key);
             } else {
-                newSet.add(index);
+                newSet.add(key);
             }
             return newSet;
         });
@@ -40,22 +40,25 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
                 if (!part.trim()) return null;
 
                 if (index % 2 === 1) {
+                    // Уникальный ключ для спойлера
+                    const spoilerKey = `spoiler-${index}-${part.slice(0, 10)}`;
+
                     // Это текст внутри спойлера
                     return (
-                        <div key={index} className={`b_spoiler_textoverflow`}>
+                        <div key={spoilerKey} className={`b_spoiler_textoverflow`}>
                             <div
-                                className={`spoiler_button ${visibleSpoilers.has(index) ? 'opened' : ''}`}
-                                onClick={() => toggleSpoiler(index)}
+                                className={`spoiler_button ${visibleSpoilers.has(spoilerKey) ? 'opened' : ''}`}
+                                onClick={() => toggleSpoiler(spoilerKey)}
                                 style={{
-                                    borderRadius: visibleSpoilers.has(index) ? '8px 8px 0 0' : ''
+                                    borderRadius: visibleSpoilers.has(spoilerKey) ? '8px 8px 0 0' : ''
                                 }}
                             >
                                 <span>Спойлер</span>
                             </div>
                             <div
-                                className={`spoiler_content hidden ${visibleSpoilers.has(index) ? 'visible' : ''}`}
+                                className={`spoiler_content hidden ${visibleSpoilers.has(spoilerKey) ? 'visible' : ''}`}
                                 style={{
-                                    maxHeight: visibleSpoilers.has(index) ? '600px' : '0',
+                                    maxHeight: visibleSpoilers.has(spoilerKey) ? '600px' : '0',
                                     overflow: 'hidden',
                                 }}
                             >
