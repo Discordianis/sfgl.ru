@@ -134,6 +134,11 @@
     display: inline-grid;
 }
 
+.lablib_read_text_map img {
+    max-width: 800px;
+    width: 100%;
+}
+
 .lablib_read_span {
     line-height: 1.6;
     text-indent: 0.875em;
