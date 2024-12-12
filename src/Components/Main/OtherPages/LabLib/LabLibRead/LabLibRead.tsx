@@ -5,7 +5,7 @@ import { RootState } from "../../../../../redux";
 import { NavLink, useParams } from "react-router-dom";
 import { useNotification } from "../../../../../hooks/useSuccess.tsx";
 import Loading from "../../../../Loading/Loading.tsx";
-import parse from "html-react-parser";
+import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
 
 interface IStoriesInfo {
     id: string,
@@ -245,13 +245,7 @@ const LabLibRead: React.FC = () => {
                         <>
                             <h1>Глава {chapter?.number} – {chapter?.name}</h1>
                             <div className={'lablib_read_text_map'}>
-                                <span> {parse((chapter.text
-                                    .split('\n')
-                                    .map((line, index) =>
-                                        `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                    )).join(''))
-                                }
-                                </span>
+                                <TextOverflow maxHeight={99999} text={chapter?.text} />
                                 {chapter?.image &&
                                     <div className={'story_image'}>
                                         <img src={`${chapter?.image}`} alt={'story_img'}/>

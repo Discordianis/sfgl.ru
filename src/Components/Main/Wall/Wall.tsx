@@ -6,7 +6,6 @@ import { RootState } from "../../../redux";
 import Loading from "../../Loading/Loading.tsx";
 import { NavLink } from "react-router-dom";
 import TextOverflow from "../../TextOverflow/TextOverflow.tsx";
-import parse from "html-react-parser";
 import moment from "moment";
 import 'moment/dist/locale/ru.js';
 
@@ -215,15 +214,7 @@ const Wall: React.FC = () => {
                                             </div>
                                         </NavLink>
                                         <span>
-                                            <TextOverflow
-                                                maxHeight={1000}
-                                                text={parse((report.text
-                                                    .split('\n')
-                                                    .map((line: string, index: number) =>
-                                                        `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                                    )).join('')
-                                                )}
-                                            />
+                                            <TextOverflow maxHeight={1000} text={report?.text}/>
                                         </span>
                                     </div>
                                 );

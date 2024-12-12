@@ -10,7 +10,6 @@ import moment from "moment";
 import 'moment/dist/locale/ru';
 import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
 import imageNF from '../../../../../../public/icons/imageNotFound.jpeg'
-import parse from "html-react-parser";
 import Modal from "../../../../Modal/Modal.tsx";
 import UTabs from "../../../../UTabs/UTabs.tsx";
 
@@ -360,14 +359,7 @@ const LabLibStoryPage: React.FC = () => {
                                                 </div>
                                                 <div>
                                                     {story?.description ?
-                                                        <span><TextOverflow maxHeight={600} text=
-                                                            {parse((story.description
-                                                            .split('\n')
-                                                            .map((line, index) =>
-                                                                `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                                            )).join(''))
-                                                        }/>
-                                                    </span>
+                                                        <TextOverflow maxHeight={600} text={story?.description} />
                                                         :
                                                         <span>Описание отсутствует...</span>
                                                     }

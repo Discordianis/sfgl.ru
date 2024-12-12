@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {RootState} from "../../../../redux";
 import parse from "html-react-parser";
+import TextOverflow from "../../../TextOverflow/TextOverflow.tsx";
 
 interface IAchieve {
     cover: string,
@@ -397,12 +398,7 @@ const ProfileRelationShip: React.FC = () => {
                                                                 <div>
                                                                     <span>Отчёт от {reformDate(report.report_date as string)}</span>
                                                                     <div className={'report_span_root'}>
-                                                                        {parse((report.text
-                                                                            .split('\n')
-                                                                            .map((line, index) =>
-                                                                                `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                                                            )).join(''))
-                                                                        }
+                                                                        <TextOverflow maxHeight={9999} text={report?.text} />
                                                                     </div>
                                                                 </div>
                                                                 {report?.image &&

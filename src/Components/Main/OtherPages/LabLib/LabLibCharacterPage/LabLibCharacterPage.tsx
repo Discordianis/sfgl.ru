@@ -9,7 +9,6 @@ import "moment/dist/locale/ru";
 import Loading from "../../../../Loading/Loading.tsx";
 import imageNF from "../../../../../../public/icons/imageNotFound.jpeg";
 import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
-import parse from "html-react-parser";
 import Button from "../../../../Button/Button.tsx";
 import Modal from "../../../../Modal/Modal.tsx";
 
@@ -274,13 +273,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             </div>
                                             <div>
                                                 {characters?.description ?
-                                                    <span><TextOverflow maxHeight={600} text={parse((characters.description
-                                                        .split('\n')
-                                                        .map((line, index) =>
-                                                            `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                                        )).join(''))
-                                                    }/>
-                                                    </span>
+                                                    <span><TextOverflow maxHeight={600} text={characters?.description}/></span>
                                                     :
                                                     <span>Описание отсутствует...</span>
                                                 }
