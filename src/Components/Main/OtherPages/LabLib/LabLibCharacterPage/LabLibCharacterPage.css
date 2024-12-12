@@ -52,8 +52,6 @@
 .char_info_right {
     max-width: calc(100% - 204px);
     display: flex;
-    gap: 5px;
-    margin-top: 15px;
     flex: 1;
 }
 
@@ -193,6 +191,8 @@
 @media screen and (max-width: 592px){
     .char_info_right {
         max-width: 100%;
+        gap: 5px;
+        margin-top: 15px;
     }
     .char_info_right > div {
         flex: 1;

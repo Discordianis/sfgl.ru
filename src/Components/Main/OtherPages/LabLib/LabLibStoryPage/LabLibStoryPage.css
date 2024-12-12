@@ -301,7 +301,6 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        gap: unset;
     }
     .story_info_right {
         max-width: 100%;

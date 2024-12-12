@@ -1,13 +1,13 @@
-import { Virtuoso } from 'react-virtuoso';
 import './Wall.css'
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux";
 import Loading from "../../Loading/Loading.tsx";
 import { NavLink } from "react-router-dom";
-import TextOverflow from "../../TextOverflow/TextOverflow.tsx";
 import moment from "moment";
 import 'moment/dist/locale/ru.js';
+import parse from "html-react-parser";
+import TextOverflowOld from "../../TextOverflowOld/TextOverflowOld.tsx";
 
 interface IReportsInfo {
     created_date?: string
@@ -113,7 +113,7 @@ const Wall: React.FC = () => {
                     reportDateB - reportDateA : filter === 'createdDate' ?
                         createdDateB - createdDateA :
                         modifyDateB - modifyDateA
-            });
+            }).filter((report: IReportsInfo) => !moment(report?.report_date).isAfter(moment().format('YYYY-MM-DD HH:mm:ss')));
             setSortedReportsList(sortedReports);
 
             if (sortedReports) {
@@ -192,34 +192,31 @@ const Wall: React.FC = () => {
                                 </select>
                             </div>
                         }
-                        <Virtuoso
-                            style={{ height: '85vh', width: '100%' }}
-                            totalCount={sortedReportsList.length}
-                            itemContent={(index) => {
-                                const report = sortedReportsList[index];
-                                return (
-                                    <div key={report.id} className={'report_news'}>
-                                        <NavLink
-                                            to={`/users/${Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.nickname}`}>
-                                            <div className={'report_news_header'}>
-                                                <img
-                                                    src={`${Object.values(allUsers?.info)
-                                                        .find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.avatar}`}
-                                                    alt={'user_avatar'}
-                                                />
-                                                <div>
-                                                    <span><strong>{Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.custom_nickname}</strong></span>
-                                                    <span>{formatDate(filter === 'reportDate' ? report?.report_date : filter === 'createdDate' ? report?.created_date : report?.date_modified)}</span>
-                                                </div>
-                                            </div>
-                                        </NavLink>
-                                        <span>
-                                            <TextOverflow maxHeight={1000} text={report?.text}/>
-                                        </span>
+                        {Object.values(sortedReportsList).map((report: IReportsInfo) =>
+                            <div key={report.id} className={'report_news'}>
+                                <NavLink
+                                    to={`/users/${Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.nickname}`}>
+                                    <div className={'report_news_header'}>
+                                        <img
+                                            src={`${Object.values(allUsers?.info)
+                                                .find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.avatar}`}
+                                            alt={'user_avatar'}
+                                        />
+                                        <div>
+                                            <span><strong>{Object.values(allUsers?.info).find((user: IAllUsersInfo) => user?.nickname === report.user_nickname)?.custom_nickname}</strong></span>
+                                            <span>{formatDate(filter === 'reportDate' ? report?.report_date : filter === 'createdDate' ? report?.created_date : report?.date_modified)}</span>
+                                        </div>
                                     </div>
-                                );
-                            }}
-                        />
+                                </NavLink>
+                                <span><TextOverflowOld maxHeight={1000} text={parse((report.text
+                                    .split('\n')
+                                    .map((line, index) =>
+                                        `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
+                                    )).join(''))
+                                }/>
+                                </span>
+                            </div>
+                        )}
                         {!noNewReports && (
                             <div className={'end_new_reports'}>
                                 <span>На сегодня всё!</span>
