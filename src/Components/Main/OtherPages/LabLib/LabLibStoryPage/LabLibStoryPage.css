@@ -188,6 +188,7 @@
     width: 50px;
     height: 50px;
     outline: var(--border-wheat);
+    object-fit: cover;
 }
 
 .story_right_author {
