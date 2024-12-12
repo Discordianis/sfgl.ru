@@ -134,7 +134,7 @@
     display: inline-grid;
 }
 
-.lablib_read_text_map img {
+.lablib_read_text .lablib_read_text_map img {
     max-width: 800px;
     width: 100%;
 }
