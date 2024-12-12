@@ -804,10 +804,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                             allStoryCharacters ?
                                                                 !allStoryCharacters.find(selected => selected.id === filter?.id) :
                                                                 true)
-                                                        .filter((filter: IAllCharactersInfo) =>
-                                                            allCharacters ?
-                                                                Object.values(allCharacters).some((find: IAllCharactersInfo) => find.id !== filter.id) :
-                                                                true)
+
                                                         .map((user: IAllCharactersInfo, index) =>
                                                             <div className={'story_accept_user_prop'} key={index}>
                                                                 <div>

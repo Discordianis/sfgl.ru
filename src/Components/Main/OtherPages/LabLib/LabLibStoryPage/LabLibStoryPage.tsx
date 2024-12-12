@@ -360,7 +360,8 @@ const LabLibStoryPage: React.FC = () => {
                                                 </div>
                                                 <div>
                                                     {story?.description ?
-                                                        <span><TextOverflow maxHeight={600} text={parse((story.description
+                                                        <span><TextOverflow maxHeight={600} text=
+                                                            {parse((story.description
                                                             .split('\n')
                                                             .map((line, index) =>
                                                                 `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`

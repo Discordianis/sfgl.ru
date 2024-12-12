@@ -87,7 +87,6 @@
 .story_right_description .text-content {
     padding: unset;
     white-space: pre-wrap;
-    display: inline-grid;
 }
 
 .story_info_right {

@@ -364,7 +364,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
         const dataAll = await resAll.json()
         if (!dataAll?.status) {
             setPosting(false)
-            showNotification('Упс, что-то пошло не так...', 'error')
+            showNotification('Упс, при получении данных что-то пошло не так...', 'error')
             console.log(dataAll?.info)
         }
         else {
@@ -399,7 +399,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
         const dataAll = await resAll.json()
         if (!dataAll?.status) {
             setPosting(false)
-            showNotification('Упс, что-то пошло не так...', 'error')
+            showNotification('Упс, при получении данных что-то пошло не так...', 'error')
             console.log(dataAll?.info)
         }
         else {
