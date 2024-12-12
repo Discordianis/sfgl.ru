@@ -69,6 +69,7 @@
 .char_right_author img {
     width: 50px;
     height: 50px;
+    object-fit: cover;
     outline: var(--border-wheat);
 }
 
