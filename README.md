@@ -59,8 +59,8 @@
 
 ## Технологический стек
 
-- **Frontend:** JavaScript, ReactJS, Redux Toolkit, TypeScript, HTML, CSS
-- **Backend:** PHP (взаимодействие с базой данных – реализовано другим разработчиком)
+- **Frontend:** JavaScript, ReactJS, Redux Toolkit, TypeScript, HTML, CSS.
+- **Backend:** PHP, MySQL (взаимодействие с базой данных – реализовано другим разработчиком).
 
 ---
 

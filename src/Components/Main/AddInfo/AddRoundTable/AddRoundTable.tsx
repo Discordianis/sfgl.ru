@@ -496,8 +496,17 @@ const AddRoundTable:React.FC = () => {
                                             }
                                         </div>
                                         <div className={'reports_textarea'}>
-                                <textarea rows={30} value={reportInput.value}
-                                          onChange={(e) => reportInput.onChange(e)}/>
+                                            <textarea rows={30} value={reportInput.value}
+                                                      onChange={(e) => reportInput.onChange(e)}
+                                            />
+                                            <div className={'hints_html'}>
+                                                <div className={'hints_html_first'}>
+                                                    <span>Подсказки:</span>
+                                                </div>
+                                                <div className={'hints_html_second'}>
+                                                    <span>Кастомизация не поддерживается.</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
                                     <div className={'reports_save_delete_buttons'}>
@@ -575,7 +584,16 @@ const AddRoundTable:React.FC = () => {
                                         </div>
                                         <div className={'reports_textarea'}>
                                             <textarea rows={30} value={newReportInput.value}
-                                            onChange={(e) => newReportInput.onChange(e)}/>
+                                                      onChange={(e) => newReportInput.onChange(e)}
+                                            />
+                                            <div className={'hints_html'}>
+                                                <div className={'hints_html_first'}>
+                                                    <span>Подсказки:</span>
+                                                </div>
+                                                <div className={'hints_html_second'}>
+                                                    <span>Кастомизация не поддерживается.</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
                                     <div className={'reports_save_delete_buttons'}>

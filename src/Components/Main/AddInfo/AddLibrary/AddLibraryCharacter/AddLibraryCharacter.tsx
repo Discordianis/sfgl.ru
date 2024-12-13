@@ -533,6 +533,20 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     <textarea rows={10} value={descriptionEdit.value}
                                               onChange={(e) => descriptionEdit.onChange(e)}/>
                                 </label>
+                                <div className={'hints_html'}>
+                                    <div className={'hints_html_first'}>
+                                        <span>Подсказки:</span>
+                                    </div>
+                                    <div className={'hints_html_second'}>
+                                        <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                        <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                        <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                        <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                        <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                        <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                        <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                    </div>
+                                </div>
                             </div>
                             <div className={'add_character_bottom_va_covers'}>
                                 {(currentCharacter?.cover || fileCharacterCoverUrl) &&
@@ -664,6 +678,20 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     <textarea rows={10} value={descriptionNew.value}
                                               onChange={(e) => descriptionNew.onChange(e)}/>
                                 </label>
+                                <div className={'hints_html'}>
+                                    <div className={'hints_html_first'}>
+                                        <span>Подсказки:</span>
+                                    </div>
+                                    <div className={'hints_html_second'}>
+                                        <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                        <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                        <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                        <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                        <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                        <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                        <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                    </div>
+                                </div>
                             </div>
                             <div className={'add_character_bottom_va_covers'}>
                                 {(fileCharacterCoverUrl) &&
@@ -686,7 +714,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 }
                                 {(fileVoiceCharacterCoverUrl) &&
                                     <div>
-                                        <span>Обложка персонажа озвучки</span>
+                                    <span>Обложка персонажа озвучки</span>
                                         <img
                                             src={`${fileVoiceCharacterCoverUrl}`}
                                             alt={'voice_character_cover'}
@@ -801,6 +829,20 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     <textarea rows={10} value={descriptionNew.value}
                                               onChange={(e) => descriptionNew.onChange(e)}/>
                                 </label>
+                                <div className={'hints_html'}>
+                                    <div className={'hints_html_first'}>
+                                        <span>Подсказки:</span>
+                                    </div>
+                                    <div className={'hints_html_second'}>
+                                        <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                        <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                        <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                        <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                        <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                        <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                        <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                    </div>
+                                </div>
                             </div>
                             <div className={'add_character_bottom_va_covers'}>
                                 {(fileCharacterCoverUrl) &&
@@ -823,7 +865,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 }
                                 {(fileVoiceCharacterCoverUrl) &&
                                     <div>
-                                        <span>Обложка персонажа озвучки</span>
+                                    <span>Обложка персонажа озвучки</span>
                                         <img
                                             src={`${fileVoiceCharacterCoverUrl}`}
                                             alt={'voice_character_cover'}

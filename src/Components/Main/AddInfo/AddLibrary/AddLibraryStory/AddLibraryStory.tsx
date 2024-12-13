@@ -708,7 +708,22 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                         <div className={'textarea_span'}>
                                             <span>Описание истории:</span>
                                             <textarea value={storyDescriptionEdit.value}
-                                                      onChange={(e) => storyDescriptionEdit.onChange(e)} rows={10}/>
+                                                      onChange={(e) => storyDescriptionEdit.onChange(e)} rows={10}
+                                            />
+                                            <div className={'hints_html'}>
+                                                <div className={'hints_html_first'}>
+                                                    <span>Подсказки:</span>
+                                                </div>
+                                                <div className={'hints_html_second'}>
+                                                    <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                                    <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                                    <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                                    <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                                    <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                                    <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                                    <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     {!openCharacterList &&
@@ -999,7 +1014,22 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     <div className={'textarea_span'}>
                                         <span>Описание истории:</span>
                                         <textarea value={storyDescriptionNew.value}
-                                                  onChange={(e) => storyDescriptionNew.onChange(e)} rows={10}/>
+                                                  onChange={(e) => storyDescriptionNew.onChange(e)} rows={10}
+                                        />
+                                        <div className={'hints_html'}>
+                                            <div className={'hints_html_first'}>
+                                                <span>Подсказки:</span>
+                                            </div>
+                                            <div className={'hints_html_second'}>
+                                                <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                                <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                                <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                                <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                                <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                                <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                                <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     {!openCharacterList &&
                                         <div>
@@ -1224,7 +1254,22 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     <div className={'textarea_span'}>
                                         <span>Описание истории:</span>
                                         <textarea value={storyDescriptionNew.value}
-                                                  onChange={(e) => storyDescriptionNew.onChange(e)} rows={10}/>
+                                                  onChange={(e) => storyDescriptionNew.onChange(e)} rows={10}
+                                        />
+                                        <div className={'hints_html'}>
+                                            <div className={'hints_html_first'}>
+                                                <span>Подсказки:</span>
+                                            </div>
+                                            <div className={'hints_html_second'}>
+                                                <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                                <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                                <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                                <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                                <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                                <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                                <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     {!openCharacterList &&
                                         <div>

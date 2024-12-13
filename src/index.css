@@ -94,6 +94,23 @@ img, video {
   white-space: nowrap;
 }
 
+.hints_html {
+  display: flex;
+  flex-direction: column;
+}
+
+.hints_html_first {
+  color: #656565;
+  font-style: italic;
+  text-decoration: #656565 underline;
+}
+
+.hints_html_second {
+  display: flex;
+  flex-direction: column;
+  color: #919191;
+}
+
 .decorated_title:after,
 .decorated_title:before {
   content: '';

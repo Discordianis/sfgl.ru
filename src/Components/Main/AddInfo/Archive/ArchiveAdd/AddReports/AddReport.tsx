@@ -475,7 +475,21 @@ const AddReport: React.FC = () => {
                                 </div>
                                 <div className={'reports_textarea'}>
                                     <textarea rows={30} value={reportInput.value}
-                                              onChange={(e) => reportInput.onChange(e)}/>
+                                              onChange={(e) => reportInput.onChange(e)}
+                                    />
+                                    <div className={'hints_html'}>
+                                        <div className={'hints_html_first'}>
+                                            <span>Подсказки:</span>
+                                        </div>
+                                        <div className={'hints_html_second'}>
+                                            <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                            <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                            <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                            <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                            <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                            <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                             <div className={'reports_save_delete_buttons'}>
@@ -537,7 +551,21 @@ const AddReport: React.FC = () => {
                                 </div>
                                 <div className={'reports_textarea'}>
                                     <textarea rows={30} value={newReportInput.value}
-                                              onChange={(e) => newReportInput.onChange(e)}/>
+                                              onChange={(e) => newReportInput.onChange(e)}
+                                    />
+                                    <div className={'hints_html'}>
+                                        <div className={'hints_html_first'}>
+                                            <span>Подсказки:</span>
+                                        </div>
+                                        <div className={'hints_html_second'}>
+                                            <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
+                                            <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                            <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
+                                            <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
+                                            <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
+                                            <span>Изображение - &lt;img src="ссылка.jpg" /&gt;</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                             <div className={'reports_save_delete_buttons'}>
