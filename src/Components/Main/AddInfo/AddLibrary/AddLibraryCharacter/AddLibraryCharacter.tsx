@@ -83,7 +83,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
     const [fileVoiceCharacterCoverError ,setFileVoiceCharacterCoverError] = useState('')
     const [fileVoiceActorCoverError ,setFileVoiceActorCoverError] = useState('')
 
-    const [fileCharacterCoverUrl ,setFileCharacterCoverUrl] = useState('')
+    const [fileCharacterCoverUrl ,setFileCharacterCoverUrl] = useState<string | null>(null)
     const [fileVoiceCharacterCoverUrl ,setFileVoiceCharacterCoverUrl] = useState('')
     const [fileVoiceActorCoverUrl ,setFileVoiceActorCoverUrl] = useState('')
 
@@ -162,22 +162,39 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
     }
 
     const handleCharacterCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        setFileCharacterCoverError('')
+        const file = e.target.files?.[0];
+        setFileCharacterCoverError('');
 
-        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-            setFileCharacterCoverError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, .jpg');
+        if (!file) {
+            console.log('Файл не выбран');
             return;
         }
+
+        // Проверка формата
+        if (!['image/jpeg', 'image/png'].includes(file.type)) {
+            setFileCharacterCoverError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, .jpg.');
+            return;
+        }
+
+        // Проверка размера
         if (file.size > 1024 * 1024) {
             setFileCharacterCoverError('Выбранный файл превышает максимально допустимый размер (1 МБ).');
             return;
         }
-        const render = new FileReader()
-        render.onloadend = () => {
-            setFileCharacterCoverUrl(render.result as string)
-        }
-        render.readAsDataURL(file)
+
+        // Чтение файла
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            console.log('Файл успешно прочитан');
+            setFileCharacterCoverUrl(reader.result as string);
+        };
+
+        reader.onerror = () => {
+            console.error('Ошибка при чтении файла');
+            setFileCharacterCoverError('Ошибка при загрузке файла. Попробуйте снова.');
+        };
+
+        reader.readAsDataURL(file);
         console.log('Загруженный файл:', file);
     }
     const handleVoiceCharacterCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -549,7 +566,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                             </div>
                             <div className={'add_character_bottom_va_covers'}>
-                                {(currentCharacter?.cover || fileCharacterCoverUrl) &&
+                                {(fileCharacterCoverUrl || fileCharacterCoverUrl) &&
                                     <div>
                                         <span>Обложка персонажа</span>
                                         <img
