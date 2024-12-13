@@ -11,6 +11,7 @@ import imageNF from "../../../../../../public/icons/imageNotFound.jpeg";
 import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
 import Button from "../../../../Button/Button.tsx";
 import Modal from "../../../../Modal/Modal.tsx";
+import NotFound from "../../../../NotFound/NotFound.tsx";
 
 interface IStoriesInfo {
     id: string,
@@ -152,6 +153,10 @@ const LabLibCharacterPage: React.FC = () => {
         return <Loading />
     }
 
+    if (typeof characters === 'object' && Object.keys(characters).length <= 0) {
+        return <NotFound />
+    }
+
     return (
         <div className={'lablib_char_page_root'}>
             <div className={'story_page_root'}>
@@ -268,7 +273,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             }
                                         </div>
                                         <div className={'story_right_description'}>
-                                            <div>
+                                            <div className={'story_right_description_title'}>
                                                 <span><strong>Описание</strong></span>
                                             </div>
                                             <div>
@@ -287,12 +292,12 @@ const LabLibCharacterPage: React.FC = () => {
                         <div className={'story_info_bottom'}>
                             <div className={'char_worlds_info_main'}>
                                 <a href={'#'} style={{pointerEvents: 'none'}}>
-                                <div>
+                                    <div>
                                         <h4>Связанные миры</h4>
                                     </div>
                                 </a>
                                 <div>
-                                    {story ?
+                                    {typeof characters === 'object' && Object.keys(characters).length > 0 ?
                                         Object.values(story).map((stories: IStoriesInfo) =>
                                             <NavLink to={`/library/story/${stories.id}-${stories.name_eng}`}>
                                                 <div className={'story_info_char'} key={stories?.id}>

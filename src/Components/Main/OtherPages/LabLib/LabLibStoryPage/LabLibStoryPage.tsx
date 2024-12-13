@@ -354,7 +354,7 @@ const LabLibStoryPage: React.FC = () => {
                                                 </div>
                                             </div>
                                             <div className={'story_right_description'}>
-                                                <div>
+                                                <div className={'story_right_description_title'}>
                                                     <span><strong>Описание</strong></span>
                                                 </div>
                                                 <div>
