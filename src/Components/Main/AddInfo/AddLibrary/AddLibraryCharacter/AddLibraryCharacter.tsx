@@ -566,7 +566,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                             </div>
                             <div className={'add_character_bottom_va_covers'}>
-                                {(fileCharacterCoverUrl || fileCharacterCoverUrl) &&
+                                {(fileCharacterCoverUrl || currentCharacter?.cover) &&
                                     <div>
                                         <span>Обложка персонажа</span>
                                         <img
