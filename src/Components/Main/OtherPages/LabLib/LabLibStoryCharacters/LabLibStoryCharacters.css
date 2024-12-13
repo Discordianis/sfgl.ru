@@ -59,6 +59,7 @@ h4 > a.back {
     .story_info_char {
         display: flex;
         gap: 10px;
+        flex-direction: column;
     }
     .story_info_char > div:nth-child(2) {
         flex: 1;
