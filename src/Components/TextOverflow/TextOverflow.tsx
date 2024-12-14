@@ -52,6 +52,7 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
         while ((match = regex.exec(rawText)) !== null) {
             const [fullMatch, spoilerContent, divAttributes, divContent] = match;
             fullMatch.toString()
+
             // Добавляем текст перед текущим тегом
             if (lastIndex < match.index) {
                 const precedingText = rawText.slice(lastIndex, match.index);
@@ -97,20 +98,12 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
                 const styleMatch = divAttributes?.match(/style="([\s\S]*?)"/);
                 const styles = styleMatch ? parseStyleString(styleMatch[1]) : {};
 
-                // Разбиваем содержимое div на строки
-                const divLines = divContent
-                    .split('\n')
-                    .filter((line) => line.trim()) // Пропускаем пустые строки
-                    .map((line, idx) => (
-                        <div key={`div-line-${match.index}-${idx}`}>
-                            {line[0] !== '<' && <span style={{ marginLeft: '1em' }}>&emsp;</span>}
-                            {parse(line)}
-                        </div>
-                    ));
+                // Рекурсивная обработка вложенных спойлеров в div
+                const processedDivContent = processTextWithSpoilersAndDivs(divContent);
 
                 children.push(
                     <div key={`div-${match.index}`} style={styles} className={'custom_div_element'}>
-                        {divLines}
+                        {processedDivContent}
                     </div>
                 );
             }
@@ -134,7 +127,6 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
 
         return <div className="text_overflow">{children}</div>;
     };
-
 
     return (
         <div
