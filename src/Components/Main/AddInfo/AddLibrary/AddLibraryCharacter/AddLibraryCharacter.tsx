@@ -559,7 +559,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                         <span>Блок - [div style="..."]элемент[/div]</span>
                                         <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
                                         <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
-                                        <span>Ссылка - &lt;a src="ссылка"&gt;текст&lt;/a&gt;</span>
+                                        <span>Ссылка - &lt;a href="ссылка"&gt;текст&lt;/a&gt;</span>
                                         <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
                                         <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
                                         <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
