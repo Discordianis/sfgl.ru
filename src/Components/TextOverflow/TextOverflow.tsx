@@ -32,59 +32,109 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
         });
     };
 
-    const processTextWithSpoilers = (rawText: string) => {
-        return rawText
-            .split(/\[spoiler\]([\s\S]*?)\[\/spoiler\]/)
-            .map((part, index) => {
-                // Пропускаем пустые части
-                if (!part.trim()) return null;
+    const parseStyleString = (styleString: string) => {
+        return styleString.split(';').reduce((acc: Record<string, string>, styleRule) => {
+            const [key, value] = styleRule.split(':');
+            if (key && value) {
+                acc[key.trim()] = value.trim();
+            }
+            return acc;
+        }, {});
+    };
 
-                if (index % 2 === 1) {
-                    // Уникальный ключ для спойлера
-                    const spoilerKey = `spoiler-${index}-${part.slice(0, 10)}`;
+    const processTextWithSpoilersAndDivs = (rawText: string) => {
+        const children: React.ReactNode[] = [];
+        const regex = /\[spoiler\]([\s\S]*?)\[\/spoiler\]|\[div(.*?)\]([\s\S]*?)\[\/div\]/g;
 
-                    // Это текст внутри спойлера
-                    return (
-                        <div key={spoilerKey} className={`b_spoiler_textoverflow`}>
-                            <div
-                                className={`spoiler_button ${visibleSpoilers.has(spoilerKey) ? 'opened' : ''}`}
-                                onClick={() => toggleSpoiler(spoilerKey)}
-                                style={{
-                                    borderRadius: visibleSpoilers.has(spoilerKey) ? '8px 8px 0 0' : ''
-                                }}
-                            >
-                                <span>Спойлер</span>
-                            </div>
-                            <div
-                                className={`spoiler_content hidden ${visibleSpoilers.has(spoilerKey) ? 'visible' : ''}`}
-                                style={{
-                                    maxHeight: visibleSpoilers.has(spoilerKey) ? '600px' : '0',
-                                    overflow: 'hidden',
-                                }}
-                            >
-                                <span>{parse(part)}</span>
-                            </div>
+        let match;
+        let lastIndex = 0;
+
+        while ((match = regex.exec(rawText)) !== null) {
+            const [fullMatch, spoilerContent, divAttributes, divContent] = match;
+            fullMatch.toString()
+            // Добавляем текст перед текущим тегом
+            if (lastIndex < match.index) {
+                const precedingText = rawText.slice(lastIndex, match.index);
+                const textLines = precedingText
+                    .split('\n')
+                    .filter((line) => line.trim()) // Пропускаем пустые строки
+                    .map((line, idx) => (
+                        <div key={`line-${match.index}-${idx}`}>
+                            {line[0] !== '<' && <span style={{ marginLeft: '1em' }}>&emsp;</span>}
+                            {parse(line)}
                         </div>
-                    );
-                }
+                    ));
+                children.push(...textLines);
+            }
 
-                // Это обычный текст
-                return (
-                    <div key={index} className={'text_overflow'}>
-                        {part
-                            .split('\n')
-                            .filter((line) => line.trim()) // Пропускаем пустые строки
-                            .map((line, idx) => (
-                                <div key={idx}>
-                                    {line[0] !== '<' && <span style={{ marginLeft: '1em' }}>&emsp;</span>}
-                                    {parse(line)}
-                                </div>
-                            ))}
+            if (spoilerContent) {
+                // Обработка тега [spoiler][/spoiler]
+                const spoilerKey = `spoiler-${match.index}-${spoilerContent.slice(0, 10)}`;
+                children.push(
+                    <div key={spoilerKey} className={`b_spoiler_textoverflow`}>
+                        <div
+                            className={`spoiler_button ${visibleSpoilers.has(spoilerKey) ? 'opened' : ''}`}
+                            onClick={() => toggleSpoiler(spoilerKey)}
+                            style={{
+                                borderRadius: visibleSpoilers.has(spoilerKey) ? '8px 8px 0 0' : ''
+                            }}
+                        >
+                            <span>Спойлер</span>
+                        </div>
+                        <div
+                            className={`spoiler_content hidden ${visibleSpoilers.has(spoilerKey) ? 'visible' : ''}`}
+                            style={{
+                                maxHeight: visibleSpoilers.has(spoilerKey) ? '600px' : '0',
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <span>{parse(spoilerContent)}</span>
+                        </div>
                     </div>
                 );
-            })
-            .filter(Boolean); // Убираем все null значения
+            } else if (divContent) {
+                // Обработка тега [div style="..."][/div]
+                const styleMatch = divAttributes?.match(/style="([\s\S]*?)"/);
+                const styles = styleMatch ? parseStyleString(styleMatch[1]) : {};
+
+                // Разбиваем содержимое div на строки
+                const divLines = divContent
+                    .split('\n')
+                    .filter((line) => line.trim()) // Пропускаем пустые строки
+                    .map((line, idx) => (
+                        <div key={`div-line-${match.index}-${idx}`}>
+                            {line[0] !== '<' && <span style={{ marginLeft: '1em' }}>&emsp;</span>}
+                            {parse(line)}
+                        </div>
+                    ));
+
+                children.push(
+                    <div key={`div-${match.index}`} style={styles} className={'custom_div_element'}>
+                        {divLines}
+                    </div>
+                );
+            }
+            lastIndex = regex.lastIndex;
+        }
+
+        // Добавляем оставшийся текст после последнего совпадения
+        if (lastIndex < rawText.length) {
+            const remainingText = rawText.slice(lastIndex);
+            const textLines = remainingText
+                .split('\n')
+                .filter((line) => line.trim()) // Пропускаем пустые строки
+                .map((line, idx) => (
+                    <div key={`line-${lastIndex}-${idx}`}>
+                        {line[0] !== '<' && <span style={{ marginLeft: '1em' }}>&emsp;</span>}
+                        {parse(line)}
+                    </div>
+                ));
+            children.push(...textLines);
+        }
+
+        return <div className="text_overflow">{children}</div>;
     };
+
 
     return (
         <div
@@ -92,7 +142,7 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
             style={{ maxHeight: isExpanded ? '' : `${maxHeight}px` }}
         >
             <div className="text-content" ref={textRef}>
-                {typeof text === 'string' ? processTextWithSpoilers(text) : text}
+                {typeof text === 'string' ? processTextWithSpoilersAndDivs(text) : text}
             </div>
             {(!isExpanded && !isShortText) && (
                 <div className="overlay">

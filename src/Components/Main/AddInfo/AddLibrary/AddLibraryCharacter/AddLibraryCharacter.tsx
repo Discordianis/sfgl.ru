@@ -556,6 +556,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     </div>
                                     <div className={'hints_html_second'}>
                                         <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                        <span>Блок - [div style="..."]элемент[/div]</span>
                                         <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
                                         <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
                                         <span>Ссылка - &lt;a src="ссылка"&gt;текст&lt;/a&gt;</span>
@@ -702,6 +703,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     </div>
                                     <div className={'hints_html_second'}>
                                         <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                        <span>Блок - [div style="..."]элемент[/div]</span>
                                         <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
                                         <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
                                         <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
@@ -853,6 +855,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     </div>
                                     <div className={'hints_html_second'}>
                                         <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                        <span>Блок - [div style="..."]элемент[/div]</span>
                                         <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
                                         <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
                                         <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>

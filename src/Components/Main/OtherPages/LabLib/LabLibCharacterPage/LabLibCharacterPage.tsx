@@ -280,7 +280,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             </div>
                                             <div>
                                                 {characters?.description ?
-                                                    <span><TextOverflow maxHeight={9999} text={characters?.description}/></span>
+                                                    <span><TextOverflow maxHeight={600} text={characters?.description}/></span>
                                                     :
                                                     <span>Описание отсутствует...</span>
                                                 }

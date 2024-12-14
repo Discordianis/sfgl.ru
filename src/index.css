@@ -152,6 +152,12 @@ img, video {
   width: 100px;
 }
 
+.custom_div_element {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .filter_buttons_fill:after {
   content: '▼';
   position: absolute;
