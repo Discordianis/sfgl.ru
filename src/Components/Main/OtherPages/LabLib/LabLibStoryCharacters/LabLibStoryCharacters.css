@@ -52,20 +52,6 @@ h4 > a.back {
     gap: 5px;
 }
 
-@media screen and (max-width: 455px){
-    .story_characters_list {
-        flex-direction: column;
-    }
-    .story_info_char {
-        display: flex;
-        gap: 10px;
-        flex-direction: column;
-    }
-    .story_info_char > div:nth-child(2) {
-        flex: 1;
-    }
-}
-
 @media screen and (max-width: 255px) {
     .story_characters_seconds_title {
         white-space: pre-wrap;

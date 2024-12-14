@@ -134,6 +134,24 @@ img, video {
   width: -webkit-fill-available;
 }
 
+.div_image_big {
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  outline: var(--border-wheat);
+  height: 300px;
+  width: 220px;
+}
+
+.div_image_small {
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  outline: var(--border-wheat);
+  height: 150px;
+  width: 100px;
+}
+
 .filter_buttons_fill:after {
   content: '▼';
   position: absolute;

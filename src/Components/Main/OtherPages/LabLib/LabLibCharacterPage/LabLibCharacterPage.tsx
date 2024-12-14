@@ -170,7 +170,9 @@ const LabLibCharacterPage: React.FC = () => {
                                 <div className={'story_info_left'}>
                                     <div>
                                         <div onClick={handleModal} className={'char_info_cover'}>
-                                            <img src={`${characters?.cover ? characters?.cover : imageNF}`} alt={'story_img'}/>
+                                            <div className={'div_image_big'}
+                                                 style={{backgroundImage: 'url(' + `${characters?.cover ? characters?.cover : imageNF}` + ')'}}>
+                                            </div>
                                         </div>
                                         <Modal open={openModal} onClose={handleClose} onKeyDown={handleCloseModal}>
                                             <div>
@@ -278,7 +280,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             </div>
                                             <div>
                                                 {characters?.description ?
-                                                    <span><TextOverflow maxHeight={600} text={characters?.description}/></span>
+                                                    <span><TextOverflow maxHeight={9999} text={characters?.description}/></span>
                                                     :
                                                     <span>Описание отсутствует...</span>
                                                 }
@@ -302,8 +304,9 @@ const LabLibCharacterPage: React.FC = () => {
                                             <NavLink to={`/library/story/${stories.id}-${stories.name_eng}`}>
                                                 <div className={'story_info_char'} key={stories?.id}>
                                                     <div>
-                                                        <img src={`${stories?.cover ? stories?.cover : imageNF}`}
-                                                             alt={'story_avatar'}/>
+                                                        <div className={'div_image_small'}
+                                                             style={{backgroundImage: 'url(' + `${stories?.cover ? stories?.cover : imageNF}` + ')',}}>
+                                                        </div>
                                                     </div>
                                                     <div>
                                                         <span>{stories?.name_rus}</span>

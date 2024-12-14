@@ -139,8 +139,9 @@ const LabLibStoryCharacters: React.FC = () => {
                                             <NavLink to={`/library/characters/${char.id}-${char.name_eng}`}>
                                                 <div className={'story_info_char'} key={char?.id}>
                                                     <div>
-                                                        <img src={`${char?.cover ? char?.cover : imageNF}`}
-                                                             alt={'char_avatar'}/>
+                                                        <div className={'div_image_small'}
+                                                            style={{backgroundImage: 'url(' + `${char?.cover ? char?.cover : imageNF}` + ')',}}>
+                                                        </div>
                                                     </div>
                                                     <div>
                                                         <span>{char?.name_rus}</span>
@@ -169,8 +170,9 @@ const LabLibStoryCharacters: React.FC = () => {
                                             <NavLink to={`/library/characters/${char.id}-${char.name_eng}`}>
                                                 <div className={'story_info_char'} key={char?.id}>
                                                     <div>
-                                                        <img src={`${char?.cover ? char?.cover : imageNF}`}
-                                                             alt={'char_avatar'}/>
+                                                        <div className={'div_image_small'}
+                                                            style={{backgroundImage: 'url(' + `${char?.cover ? char?.cover : imageNF}` + ')',}}>
+                                                        </div>
                                                     </div>
                                                     <div>
                                                         <span>{char?.name_rus}</span>

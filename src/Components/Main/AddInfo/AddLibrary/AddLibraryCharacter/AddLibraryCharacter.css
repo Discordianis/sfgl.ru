@@ -26,7 +26,7 @@
 
 .add_character_top_list {
     display: flex;
-    gap: 5px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -53,6 +53,7 @@
 
 .add_character_top_list_prop > div {
     display: flex;
+    justify-content: center;
 }
 
 .add_character_top_list_prop.active {
