@@ -687,9 +687,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                            style={{outline: coverEditError ? '#af4545 solid' : ''}}
                                                            accept={'.jpg, .jpeg, .png'}/>
                                                 </label>
-                                                {fileCoverError &&
-                                                    <span>{fileCoverError}</span>
-                                                }
+                                                {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
                                             </div>
                                             <div>
                                                 <label>Постер (16:9):
@@ -698,9 +696,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                            style={{outline: posterEditError ? '#af4545 solid' : ''}}
                                                            accept={'.jpg, .jpeg, .png'}/>
                                                 </label>
-                                                {filePosterError &&
-                                                    <span>{filePosterError}</span>
-                                                }
+                                                {filePosterError && <span style={{color:'#f75151', fontSize: '13px'}}>{filePosterError}</span>}
                                             </div>
                                         </div>
                                     </div>
@@ -995,9 +991,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                            style={{outline: coverNewError ? '#af4545 solid' : ''}}
                                                            accept={'.jpg, .jpeg, .png'}/>
                                                 </label>
-                                                {fileCoverError &&
-                                                    <span>{fileCoverError}</span>
-                                                }
+                                                {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
                                             </div>
                                             <div>
                                                 <label>Постер (16:9):
@@ -1006,9 +1000,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                            style={{outline: posterNewError ? '#af4545 solid' : ''}}
                                                            accept={'.jpg, .jpeg, .png'}/>
                                                 </label>
-                                                {filePosterError &&
-                                                    <span>{filePosterError}</span>
-                                                }
+                                                {filePosterError && <span style={{color:'#f75151', fontSize: '13px'}}>{filePosterError}</span>}
                                             </div>
                                         </div>
                                     </div>
@@ -1236,9 +1228,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                        style={{outline: coverNewError ? '#af4545 solid' : ''}}
                                                        accept={'.jpg, .jpeg, .png'}/>
                                             </label>
-                                            {fileCoverError &&
-                                                <span>{fileCoverError}</span>
-                                            }
+                                            {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
                                         </div>
                                         <div>
                                             <label>Постер (16:9):
@@ -1246,9 +1236,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                        style={{outline: posterNewError ? '#af4545 solid' : ''}}
                                                        accept={'.jpg, .jpeg, .png'}/>
                                             </label>
-                                            {filePosterError &&
-                                                <span>{filePosterError}</span>
-                                            }
+                                            {filePosterError && <span style={{color:'#f75151', fontSize: '13px'}}>{filePosterError}</span>}
                                         </div>
                                     </div>
                                 </div>

@@ -170,19 +170,16 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
             return;
         }
 
-        // Проверка формата
         if (!['image/jpeg', 'image/png'].includes(file.type)) {
             setFileCharacterCoverError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, .jpg.');
             return;
         }
 
-        // Проверка размера
         if (file.size > 1024 * 1024) {
             setFileCharacterCoverError('Выбранный файл превышает максимально допустимый размер (1 МБ).');
             return;
         }
 
-        // Чтение файла
         const reader = new FileReader();
         reader.onloadend = () => {
             console.log('Файл успешно прочитан');
@@ -517,6 +514,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                 <input type={"file"} accept={'.jpg, .jpeg, .png'}
                                                 onChange={handleCharacterCoverChange} ref={characterCoverEdit}/>
                                             </label>
+                                            {fileCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCharacterCoverError}</span>}
                                         </div>
                                     </div>
                                 </div>
@@ -531,6 +529,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} accept={'.jpg, .jpeg, .png'}
                                             onChange={handleVoiceActorCoverChange} ref={seyuCoverEdit}/>
                                         </label>
+                                        {fileVoiceActorCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceActorCoverError}</span>}
                                     </div>
                                     <div>
                                         <label>Имя персонажа озвучки:
@@ -542,6 +541,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} accept={'.jpg, .jpeg, .png'}
                                             onChange={handleVoiceCharacterCoverChange} ref={characterVoiceCoverEdit}/>
                                         </label>
+                                        {fileVoiceCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceCharacterCoverError}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -664,6 +664,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                 <input type={"file"} accept={'.jpg, .jpeg, .png'}
                                                        onChange={handleCharacterCoverChange} ref={characterCoverNew}/>
                                             </label>
+                                            {fileCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCharacterCoverError}</span>}
                                         </div>
                                     </div>
                                 </div>
@@ -678,6 +679,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} accept={'.jpg, .jpeg, .png'}
                                                    onChange={handleVoiceActorCoverChange} ref={seyuCoverNew}/>
                                         </label>
+                                        {fileVoiceActorCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceActorCoverError}</span>}
                                     </div>
                                     <div>
                                         <label>Имя персонажа озвучки:
@@ -689,6 +691,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} accept={'.jpg, .jpeg, .png'}
                                                    onChange={handleVoiceCharacterCoverChange} ref={characterVoiceCoverNew}/>
                                         </label>
+                                        {fileVoiceCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceCharacterCoverError}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -813,6 +816,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                 <input type={"file"} accept={'.jpg, .jpeg, .png'}
                                                        onChange={handleCharacterCoverChange} ref={characterCoverNew}/>
                                             </label>
+                                            {fileCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCharacterCoverError}</span>}
                                         </div>
                                     </div>
                                 </div>
@@ -828,6 +832,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} accept={'.jpg, .jpeg, .png'}
                                                    onChange={handleVoiceActorCoverChange} ref={seyuCoverNew}/>
                                         </label>
+                                        {fileVoiceActorCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceActorCoverError}</span>}
                                     </div>
                                     <div>
                                         <label>Имя персонажа озвучки:
@@ -841,6 +846,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                    onChange={handleVoiceCharacterCoverChange}
                                                    ref={characterVoiceCoverNew}/>
                                         </label>
+                                        {fileVoiceCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceCharacterCoverError}</span>}
                                     </div>
                                 </div>
                             </div>

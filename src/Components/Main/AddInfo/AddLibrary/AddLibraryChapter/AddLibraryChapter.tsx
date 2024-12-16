@@ -493,6 +493,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <label>Изображение для главы (опционально):
                                             <input type={'file'} onChange={handleCover} ref={coverEdit}/>
                                         </label>
+                                        {coverError && <span style={{color:'#f75151', fontSize: '13px'}}>{coverError}</span>}
                                     </div>
                                     <div className={'textarea_span'}>
                                         <span>Текст главы:</span>
@@ -572,6 +573,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <label>Изображение для главы (опционально):
                                             <input type={'file'} onChange={handleCover} ref={coverNew}/>
                                         </label>
+                                        {coverError && <span style={{color:'#f75151', fontSize: '13px'}}>{coverError}</span>}
                                     </div>
                                     <div className={'textarea_span'}>
                                         <span>Текст главы:</span>
@@ -644,6 +646,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     <label>Изображение для главы (опционально):
                                         <input type={'file'} onChange={handleCover} ref={coverNew}/>
                                     </label>
+                                    {coverError && <span style={{color:'#f75151', fontSize: '13px'}}>{coverError}</span>}
                                 </div>
                                 <div className={'textarea_span'}>
                                     <span>Текст главы:</span>
