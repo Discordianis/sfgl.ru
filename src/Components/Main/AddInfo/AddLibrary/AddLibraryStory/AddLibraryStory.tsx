@@ -209,24 +209,27 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
             }
             if (currentStory) {
                 setCurrentStory(currentStory)
-                setActiveStory(currentStory?.id)
                 setSelectedUsers([])
                 setTypeSelectedCharacters({})
                 setOpenCharacterList(false)
                 setCreateNewStory(false)
-                if (storyCoverEdit.current) {
-                    storyCoverEdit.current.value = ''
-                }
-                if (storyPosterEdit.current) {
-                    storyPosterEdit.current.value = ''
-                }
-                setFileCoverError('')
-                setFilePosterError('')
-                setFileCoverUrl('')
-                setFilePosterUrl('')
             }
         }
     }
+
+    useEffect(() => {
+        setFileCoverError('')
+        setFilePosterError('')
+        setFileCoverUrl('')
+        setFilePosterUrl('')
+        if (storyCoverEdit?.current) {
+            storyCoverEdit.current.value = ''
+        }
+        if (storyPosterEdit?.current) {
+            storyPosterEdit.current.value = ''
+        }
+        setActiveStory(currentStory?.id)
+    }, [currentStory]);
 
     const addAcceptCharacter = (id: string, type: 'main' | 'second') => {
 

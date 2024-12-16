@@ -114,6 +114,9 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
         if (createNewCharacter) {
             setActiveCharacter(null)
             setCurrentCharacter(null)
+            setFileCharacterCoverError('')
+            setFileVoiceActorCoverError('')
+            setFileVoiceCharacterCoverError('')
         }
     }, [createNewCharacter]);
 
@@ -160,6 +163,24 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
             setCreateNewCharacter(false)
         }
     }
+
+    useEffect(() => {
+        setFileCharacterCoverError('')
+        setFileVoiceActorCoverError('')
+        setFileVoiceCharacterCoverError('')
+        setFileCharacterCoverUrl('')
+        setFileVoiceActorCoverUrl('')
+        setFileVoiceCharacterCoverUrl('')
+        if (characterCoverEdit?.current) {
+            characterCoverEdit.current.value = ''
+        }
+        if (characterVoiceCoverEdit?.current) {
+            characterVoiceCoverEdit.current.value = ''
+        }
+        if (seyuCoverEdit?.current) {
+            seyuCoverEdit.current.value = ''
+        }
+    }, [currentCharacter]);
 
     const handleCharacterCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

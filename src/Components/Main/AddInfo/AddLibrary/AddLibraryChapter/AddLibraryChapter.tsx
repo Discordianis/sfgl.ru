@@ -132,6 +132,14 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
     }
 
     useEffect(() => {
+        setCoverError('')
+        setCoverUrl('')
+        if (coverEdit?.current) {
+            coverEdit.current.value = ''
+        }
+    }, [currentChapter, currentStory]);
+
+    useEffect(() => {
         if (allLibraryData?.info?.chapters_edit && activeStory) {
             const updatedStory = Object.values(allLibraryData?.info?.chapters_edit).find(
                 (find: IAllStoryInfo) => find.id === activeStory
