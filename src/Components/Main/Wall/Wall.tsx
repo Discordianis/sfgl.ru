@@ -113,7 +113,8 @@ const Wall: React.FC = () => {
                     reportDateB - reportDateA : filter === 'createdDate' ?
                         createdDateB - createdDateA :
                         modifyDateB - modifyDateA
-            }).filter((report: IReportsInfo) => !moment(report?.report_date).isAfter(moment().format('YYYY-MM-DD HH:mm:ss')));
+            }).filter((report: IReportsInfo) => !moment(report?.report_date).isAfter(moment().format('YYYY-MM-DD HH:mm:ss')))
+                .filter((report: IReportsInfo) => report?.hidden === '0');
             setSortedReportsList(sortedReports);
 
             if (sortedReports) {
