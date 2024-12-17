@@ -150,13 +150,16 @@
     flex-direction: column;
 }
 
-.lablib_menu_description > span {
+.lablib_menu_description .text_overflow {
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     overflow: hidden;
     -webkit-line-clamp: 10;
     max-height: 300px;
     display: -webkit-box;
+    white-space: pre-wrap;
+    text-indent: 0.875em;
+    padding: 5px 0;
 }
 
 .lablib_menu_description a {
@@ -178,12 +181,6 @@
     border-radius: 8px;
     margin: 5px 0;
     border: var(--border-wheat);
-}
-
-.lablib_menu_description > span {
-    white-space: pre-wrap;
-    text-indent: 0.875em;
-    padding: 5px 0;
 }
 
 .library_page_no_story {

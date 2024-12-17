@@ -5,8 +5,8 @@ import {RootState} from "../../../../redux";
 import Loading from "../../../Loading/Loading.tsx";
 import {NavLink} from "react-router-dom";
 import imageNF from '../../../../../public/icons/imageNotFoundLong.jpeg'
-import parse from "html-react-parser";
 import witches from '../../../../../public/background/witches.jpg'
+import TextOverflow from "../../../TextOverflow/TextOverflow.tsx";
 
 interface IStoriesInfo {
     id: string,
@@ -144,17 +144,11 @@ const LabLibMenu: React.FC = () => {
                         </div>
                     {selectedStory &&
                         <div className={'lablib_menu_description'}>
-                        <span>
-                            {selectedStory?.description ? selectedStory?.description
-                                    .split('\n')
-                                    .map((text, index) =>
-                                            <span key={index}>
-                                    {parse(text)}
-                                </span>
-                                    )
-                                : <span>Описание отсутствует...</span>
+                            {selectedStory?.description ?
+                                <TextOverflow text={selectedStory?.description} maxHeight={9999} />
+                                :
+                                <span>Описание отсутствует...</span>
                             }
-                        </span>
                     <NavLink to={`/library/story/${selectedStory.id}-${selectedStory.name_eng}`}>
                         <div>Зайти в область истории</div>
                     </NavLink>
