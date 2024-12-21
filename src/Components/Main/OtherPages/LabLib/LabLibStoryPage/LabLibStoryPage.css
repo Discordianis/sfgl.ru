@@ -215,6 +215,10 @@
     flex-direction: column;
 }
 
+.story_image {
+    text-align: center;
+}
+
 .story_right_author > div:nth-child(2) > div:nth-child(2) > a > span {
     color: var(--text-gray);
     font-weight: 400;
