@@ -26,7 +26,7 @@ import LabLibCharacterPage from "./Components/Main/OtherPages/LabLib/LabLibChara
 import LabLibStoryCharacters from "./Components/Main/OtherPages/LabLib/LabLibStoryCharacters/LabLibStoryCharacters.tsx";
 import LabLibRead from "./Components/Main/OtherPages/LabLib/LabLibRead/LabLibRead.tsx";
 import AddLibrary from "./Components/Main/AddInfo/AddLibrary/AddLibrary.tsx";
-import Wall from "./Components/Main/Wall/Wall.tsx";
+import Wall from "./Components/Main/OtherPages/Wall/Wall.tsx";
 
 export default function App() {
     const token = localStorage.getItem('token');

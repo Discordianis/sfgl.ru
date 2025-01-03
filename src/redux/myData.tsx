@@ -41,5 +41,5 @@ const dataSlice = createSlice({
     },
 });
 
-export const {fetchDataSuccess } = dataSlice.actions;
+export const {fetchDataSuccess} = dataSlice.actions;
 export const dataReducer = dataSlice.reducer;

@@ -1,0 +1,23 @@
+.reports_news_root {
+    max-width: 1000px;
+    width: 100%;
+    margin: 5px auto 5px auto;
+    border-radius: 8px;
+    background: var(--background-trans-color);
+}
+
+.end_new_reports {
+    text-align: center;
+    padding: 5px;
+    background: #6b5b48;
+    margin: 0 10px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.filter_but_head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}

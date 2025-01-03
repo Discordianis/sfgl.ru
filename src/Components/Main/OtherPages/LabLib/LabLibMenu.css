@@ -162,6 +162,24 @@
     padding: 5px 0;
 }
 
+.library_create_btn a {
+    white-space: nowrap;
+    padding: 10px;
+    background: #3e3152c2;
+    border-radius: 8px;
+    outline: transparent 1px solid;
+    transition: outline-color 0.3s ease-in-out;
+    font-size: 20px;
+}
+
+.library_create_btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-top: var(--border-wheat);
+    padding: 10px;
+}
+
 .lablib_menu_description a {
     width: fit-content;
 }

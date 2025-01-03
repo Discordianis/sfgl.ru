@@ -6,6 +6,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useNotification } from "../../../../../hooks/useSuccess.tsx";
 import Loading from "../../../../Loading/Loading.tsx";
 import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
+import parse from "html-react-parser";
 
 interface IStoriesInfo {
     id: string,
@@ -33,6 +34,7 @@ interface IChaptersInfo {
     number: string,
     story_id: string,
     text: string,
+    no_format: string
 }
 
 interface IChapters {
@@ -245,7 +247,11 @@ const LabLibRead: React.FC = () => {
                         <>
                             <h1>Глава {chapter?.number} – {chapter?.name}</h1>
                             <div className={'lablib_read_text_map'}>
-                                <TextOverflow maxHeight={99999} text={chapter?.text} />
+                                {chapter?.no_format === '0' ?
+                                    <TextOverflow maxHeight={99999} text={chapter?.text} />
+                                    :
+                                    <span>{parse(chapter?.text)}</span>
+                                }
                                 {chapter?.image &&
                                     <div className={'story_image'}>
                                         <img src={`${chapter?.image}`} alt={'story_img'}/>

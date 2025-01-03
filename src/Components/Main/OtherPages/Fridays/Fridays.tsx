@@ -11,6 +11,7 @@ import sfglMusic from '../../../../../public/icons/SFGLFridayMusic.jpg'
 import sfglVideo from '../../../../../public/icons/SFGLFridayVideo.jpg'
 import AudioImagePlayer from "../../../AudioPlayer/AudioImagePlayer.tsx";
 import titleImg from '../../../../../public/background/text-bg.png'
+import {Link} from "react-router-dom";
 
 interface IFridayInfo {
     author: string,
@@ -39,6 +40,7 @@ const Fridays:React.FC = () => {
     const [tab, setTab] = useState('lastFriday')
     const token = localStorage.getItem('token')
     const server = useSelector((state: RootState) => state.server.server)
+    const myData = useSelector((state: RootState) => state.myData.data?.info)
     const [allFridays, setAllFridays] = useState<IFriday | null>(null);
     const [lastFriday, setLastFriday] = useState<IFridayInfo | null>(null);
     const [currentImageFriday, setCurrentImageFriday] = useState<IFridayInfo | null>(null);
@@ -187,57 +189,68 @@ const Fridays:React.FC = () => {
             </div>
             <div className={'friday_window'}>
                 {tab === 'lastFriday' &&
-                    <div className={'last_friday_main'}>
-                        {allFridays.info.length !== 0 ?
-                            <>
-                                <div className={'last_friday_content'}>
-                                    {lastFriday?.image &&
+                    <>
+                        <div className={'last_friday_main'}>
+                            {allFridays.info.length !== 0 ?
+                                <>
+                                    <div className={'last_friday_content'}>
+                                        {lastFriday?.image &&
+                                            <div>
+                                                <img onClick={handleOpenModal} src={`${lastFriday?.image}`}
+                                                     alt={'last_friday'}/>
+                                                <Modal open={modalImageIsOpen} onClose={handleCloseModal}
+                                                       onKeyDown={handleCloseEscape}>
+                                                    <Button onClick={handleCloseModal}>x</Button>
+                                                    <div style={{marginTop: '50px'}}>
+                                                        <img src={`${lastFriday?.image}`} alt={'last_friday'}/>
+                                                    </div>
+                                                </Modal>
+                                            </div>
+                                        }
+                                        {lastFriday?.music &&
+                                            <div>
+                                                <AudioImagePlayer src={`${lastFriday?.music}`} image={`${sfglMusic}`}
+                                                                  isPlay={null}/>
+                                            </div>
+                                        }
+                                        {lastFriday?.video &&
+                                            <div>
+                                                <video controls src={`${lastFriday?.video}`} poster={`${sfglVideo}`}/>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className={'last_friday_desc'}>
                                         <div>
-                                            <img onClick={handleOpenModal} src={`${lastFriday?.image}`}
-                                                 alt={'last_friday'}/>
-                                            <Modal open={modalImageIsOpen} onClose={handleCloseModal}
-                                                   onKeyDown={handleCloseEscape}>
-                                                <Button onClick={handleCloseModal}>x</Button>
-                                                <div style={{marginTop: '50px'}}>
-                                                    <img src={`${lastFriday?.image}`} alt={'last_friday'}/>
-                                                </div>
-                                            </Modal>
+                                            <h4>Пятница #{lastFriday?.number} от {formatDate(lastFriday?.date)}</h4>
                                         </div>
-                                    }
-                                    {lastFriday?.music &&
                                         <div>
-                                            <AudioImagePlayer src={`${lastFriday?.music}`} image={`${sfglMusic}`} isPlay={null}/>
+                                            <span>Автор: {lastFriday?.custom_nickname}</span>
                                         </div>
-                                    }
-                                    {lastFriday?.video &&
+                                        {lastFriday?.text &&
+                                            <div>
+                                                <span>Приписка: «{lastFriday?.text}»</span>
+                                            </div>
+                                        }
                                         <div>
-                                            <video controls src={`${lastFriday?.video}`} poster={`${sfglVideo}`}/>
+                                            <span>(Изменено: {formatLongDate(lastFriday?.date_modified)})</span>
                                         </div>
-                                    }
+                                    </div>
+                                </>
+                                :
+                                <div>
+                                    <span>Нет ни единой пятницы...</span>
                                 </div>
-                                <div className={'last_friday_desc'}>
-                                    <div>
-                                        <h4>Пятница #{lastFriday?.number} от {formatDate(lastFriday?.date)}</h4>
-                                    </div>
-                                    <div>
-                                        <span>Автор: {lastFriday?.custom_nickname}</span>
-                                    </div>
-                                    {lastFriday?.text &&
-                                        <div>
-                                            <span>Приписка: «{lastFriday?.text}»</span>
-                                        </div>
-                                    }
-                                    <div>
-                                        <span>(Изменено: {formatLongDate(lastFriday?.date_modified)})</span>
-                                    </div>
-                                </div>
-                            </>
-                            :
-                            <div>
-                                <span>Нет ни единой пятницы...</span>
-                            </div>
-                        }
-                    </div>
+                            }
+                        </div>
+                        <div className={'create_report_href'}>
+                            <Button>
+                                <Link to={`/users/${myData?.nickname}/createInfo/fridays`}>
+                                    Загрузить пятницу
+                                </Link>
+                            </Button>
+                        </div>
+                    </>
+
                 }
                 {tab === 'fridaysList' && (
                     <div className={'fridays_list_main'}>
@@ -249,21 +262,24 @@ const Fridays:React.FC = () => {
                                     <div key={item.id}>
 
                                         {item.image && (
-                                            <div className={'fridays_list_title'} onClick={() => handleOpenModalCurrImage(item.number.toString())}>
+                                            <div className={'fridays_list_title'}
+                                                 onClick={() => handleOpenModalCurrImage(item.number.toString())}>
                                                 <h3>Пятница #{item.number} ({item.custom_nickname})</h3>
                                                 <img src={`${titleImg}`} alt={'title_img'}/>
                                             </div>
                                         )}
 
                                         {item.video && (
-                                            <div className={'fridays_list_title'} onClick={() => handleOpenModalCurrVideo(item.number.toString())}>
+                                            <div className={'fridays_list_title'}
+                                                 onClick={() => handleOpenModalCurrVideo(item.number.toString())}>
                                                 <h3>Пятница #{item.number} ({item.custom_nickname})</h3>
                                                 <img src={`${titleImg}`} alt={'title_img'}/>
                                             </div>
                                         )}
 
                                         {item.music && (
-                                            <div className={'fridays_list_title'} onClick={() => handleOpenModalCurrMusic(item.number.toString())}>
+                                            <div className={'fridays_list_title'}
+                                                 onClick={() => handleOpenModalCurrMusic(item.number.toString())}>
                                                 <h3>Пятница #{item.number} ({item.custom_nickname})</h3>
                                                 <img src={`${titleImg}`} alt={'title_img'}/>
                                             </div>
@@ -281,7 +297,8 @@ const Fridays:React.FC = () => {
                                     <Button onClick={handleCloseModal}>x</Button>
                                     <div style={{marginTop: currentImageFriday?.text ? '50px' : ''}}>
                                         {currentImageFriday?.text && <span>{currentImageFriday?.text}</span>}
-                                        <img style={{marginTop: !currentImageFriday?.text ? '60px' : ''}} src={`${currentImageFriday?.image}`} alt={'last_friday'}/>
+                                        <img style={{marginTop: !currentImageFriday?.text ? '60px' : ''}}
+                                             src={`${currentImageFriday?.image}`} alt={'last_friday'}/>
                                     </div>
                                 </Modal>
                             </div>
@@ -291,14 +308,16 @@ const Fridays:React.FC = () => {
                             <div className={'fridays_list_videos'}>
                                 <Modal open={modalVideoIsOpen} onClose={handleCloseModal} onKeyDown={handleCloseEscape}>
                                     <Button onClick={handleCloseModal}>x</Button>
-                                    <div style={{marginTop: currentVideoFriday?.text ? '50px' : ''}} className={'modal_postContent'}>
+                                    <div style={{marginTop: currentVideoFriday?.text ? '50px' : ''}}
+                                         className={'modal_postContent'}>
                                         {currentVideoFriday?.text && <span>{currentVideoFriday?.text}</span>}
-                                        <video style={{marginTop: currentImageFriday?.text === '' ? '60px' : ''}} ref={videoRef} controls src={`${currentVideoFriday?.video}`}
+                                        <video style={{marginTop: currentImageFriday?.text === '' ? '60px' : ''}}
+                                               ref={videoRef} controls src={`${currentVideoFriday?.video}`}
                                                poster={`${sfglVideo}`}/>
                                     </div>
                                 </Modal>
                             </div>
-                            )}
+                        )}
 
                         {currentMusicFriday?.music && (
                             <div className={'fridays_list_music'}>
@@ -306,11 +325,13 @@ const Fridays:React.FC = () => {
                                     <Button onClick={handleCloseModal}>x</Button>
                                     <div style={{marginTop: currentImageFriday?.text ? '50px' : ''}}>
                                         {currentMusicFriday?.text && <span>{currentMusicFriday?.text}</span>}
-                                        <AudioImagePlayer  style={{marginTop: !currentImageFriday?.text ? '60px' : ''}} src={`${currentMusicFriday?.music}`} image={`${sfglMusic}`} isPlay={modalMusicIsOpen}/>
+                                        <AudioImagePlayer style={{marginTop: !currentImageFriday?.text ? '60px' : ''}}
+                                                          src={`${currentMusicFriday?.music}`} image={`${sfglMusic}`}
+                                                          isPlay={modalMusicIsOpen}/>
                                     </div>
                                 </Modal>
                             </div>
-                            )}
+                        )}
                     </div>
                 )}
 

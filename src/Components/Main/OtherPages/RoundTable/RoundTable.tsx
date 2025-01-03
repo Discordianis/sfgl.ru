@@ -3,6 +3,8 @@ import {useSelector} from "react-redux";
 import Loading from "../../../Loading/Loading.tsx";
 import './RoundTable.css'
 import {RootState} from "../../../../redux";
+import {Link} from "react-router-dom";
+import Button from "../../../Button/Button.tsx";
 
 interface IInfo {
     author: string,
@@ -27,6 +29,7 @@ const RoundTable:React.FC = () => {
 
     const token = localStorage.getItem('token')
     const server = useSelector((state: RootState) => state.server.server)
+    const myData = useSelector((state: RootState) => state.myData.data?.info)
     const [jsonData, setJsonData] = useState<ITable | null>(null);
     const [loading, setLoading] = useState(true)
     const [selectedTable, setSelectedTable] = useState('')
@@ -133,6 +136,15 @@ const RoundTable:React.FC = () => {
     }
 
     useEffect(() => {
+        if (jsonData) {
+            const mapping = Object.values(jsonData?.info).map((map: IInfo) => map.number)
+            const maxLength = Math.max(...mapping)
+            setSelectedData(Object.values(jsonData?.info).find((find: IInfo) => find.number.toString() === maxLength.toString()))
+            setSelectedTable(maxLength.toString())
+        }
+    }, [jsonData]);
+
+    useEffect(() => {
         if (selectedTable.length !== 0) {
             const find = Object.values(jsonData.info).find((data: IInfo) => data.number.toString() === selectedTable)
             if (find) {
@@ -148,14 +160,22 @@ const RoundTable:React.FC = () => {
     return (
         <div className={'rt_root'}>
             {jsonData && jsonData.info && Object.keys(jsonData.info).length > 0 ?
-                <div className={'filter_buttons'}>
-                    <select value={selectedTable} onChange={(e) => setSelectedTable(e.target.value)}>
-                        <option value={''} hidden>Выберите Круглый Стол...</option>
-                        {Object.values(jsonData.info).sort((a: IInfo, b: IInfo) => a.number - b.number).map(num =>
-                            <option value={num.number} key={num.id}>Круглый Стол #{num.number}</option>
-
-                        )}
-                    </select>
+                <div className={'filter_but_head'}>
+                    <div className={'filter_buttons'}>
+                        <select value={selectedTable} onChange={(e) => setSelectedTable(e.target.value)}>
+                            <option value={''} hidden>Выберите Круглый Стол...</option>
+                            {Object.values(jsonData.info).sort((a: IInfo, b: IInfo) => b.number - a.number).map(num =>
+                                <option value={num.number} key={num.id}>Круглый Стол #{num.number}</option>
+                            )}
+                        </select>
+                    </div>
+                    <div className={'create_report_href'}>
+                        <Button>
+                            <Link to={`/users/${myData?.nickname}/createInfo/roundTable`}>
+                                Написать итоги
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
                 :
                 <div className={'no_roundtables'}>

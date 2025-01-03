@@ -28,7 +28,7 @@ const LabLibMenu: React.FC = () => {
 
     const body = document.body
     const server = useSelector((state: RootState) => state.server.server)
-    const myData = useSelector((state: RootState) => state.myData.data)
+    const myData = useSelector((state: RootState) => state.myData.data?.info)
     const token = localStorage.getItem('token')
 
     const [stories, setStories] = useState<IStoriesInfo | null>(null)
@@ -118,17 +118,20 @@ const LabLibMenu: React.FC = () => {
                             </div>
                             <div className={'lablib_menu_selector'}>
                                 {Object.values(stories).map((story: IStoriesInfo) =>
-                                <div className={'lablib_selector_preview'} key={story.id}
-                                     onClick={() => getStoryById(story.id)}>
-                                    <div
-                                        className={isActive === story?.id ? 'lablib_selector_image active' : 'lablib_selector_image'}>
-                                        <img src={`${story?.cover ? story?.cover : imageNF}`} alt={'title_image'}/>
+                                    <div className={'lablib_selector_preview'} key={story.id}
+                                         onClick={() => getStoryById(story.id)}>
+                                        <div
+                                            className={isActive === story?.id ? 'lablib_selector_image active' : 'lablib_selector_image'}>
+                                            <img src={`${story?.cover ? story?.cover : imageNF}`} alt={'title_image'}/>
+                                        </div>
+                                        <div className={'lablib_selector_titles'}>
+                                            <h4>{story.name_rus}</h4>
+                                        </div>
                                     </div>
-                                    <div className={'lablib_selector_titles'}>
-                                        <h4>{story.name_rus}</h4>
-                                    </div>
-                                </div>
                                 )}
+                            </div>
+                            <div className={'library_create_btn'}>
+                                <NavLink to={`/users/${myData?.nickname}/createInfo/library`}>Написать историю</NavLink>
                             </div>
                         </>
                         :
@@ -137,7 +140,7 @@ const LabLibMenu: React.FC = () => {
                                 <span><strong>Нет ни одной истории...</strong></span>
                             </div>
                             <div className={'no_library_create_first'}>
-                                <NavLink to={`/users/${myData?.info?.nickname}/createInfo/library`}>Создать историю</NavLink>
+                                <NavLink to={`/users/${myData?.nickname}/createInfo/library`}>Создать историю</NavLink>
                             </div>
                         </div>
                     }

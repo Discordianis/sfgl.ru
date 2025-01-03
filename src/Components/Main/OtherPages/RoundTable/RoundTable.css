@@ -52,6 +52,7 @@
 .rt_root .filter_buttons {
     max-width: 300px;
     width: 100%;
+    margin: 15px 0;
 }
 
 .rt_root .filter_buttons:after {

@@ -19,7 +19,8 @@ interface IAllChaptersInfo {
     name: string,
     number: string,
     story_id: string,
-    text: string
+    text: string,
+    no_format: string
 }
 
 interface IAllStoryInfo {
@@ -79,11 +80,13 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
     const numberEdit = useInput('', {})
     const coverEdit = useRef<HTMLInputElement | null>(null)
     const textEdit = useInput('', {})
+    const [noFormatEdit, setNoFormatEdit] = useState<'0' | '1' | string>('0')
 
     const nameNew = useInput('', {})
     const numberNew = useInput('', {})
     const coverNew = useRef<HTMLInputElement | null>(null)
     const textNew = useInput('', {})
+    const [noFormatNew, setNoFormatNew] = useState<'0' | '1' | string>('0')
 
     const [editInputErrors, setEditInputErrors] = useState(false)
     const [newInputErrors, setNewInputErrors] = useState(false)
@@ -197,6 +200,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
             nameEdit.setValue(currentChapter?.name || '')
             numberEdit.setValue(currentChapter?.number || '')
             textEdit.setValue(currentChapter?.text || '')
+            setNoFormatEdit(currentChapter?.no_format || '0')
         }
     }, [currentChapter]);
 
@@ -204,6 +208,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
         nameNew.setValue('')
         numberNew.setValue('')
         textNew.setValue('')
+        setNoFormatNew('0')
         if (coverNew?.current) {
             coverNew.current.value = ''
         }
@@ -265,7 +270,8 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                 author: currentChapter?.author,
                 name: nameEdit.value,
                 number: numberEdit.value,
-                text: textEdit.value
+                text: textEdit.value,
+                no_format: noFormatEdit
             },
             conditions: {
                 id: currentChapter?.id
@@ -279,7 +285,8 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                 name: nameNew.value,
                 number: numberNew.value,
                 text: textNew.value,
-                story_id: currentStory?.id
+                story_id: currentStory?.id,
+                no_format: noFormatNew
             }
         }
 
@@ -501,10 +508,19 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <label>Изображение для главы (опционально):
                                             <input type={'file'} onChange={handleCover} ref={coverEdit}/>
                                         </label>
-                                        {coverError && <span style={{color:'#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                        {coverError &&
+                                            <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                    </div>
+                                    <div>
+                                        <span>Включить форматирование?</span>
+                                        <label className="switch">
+                                            <input type="checkbox" value={noFormatEdit} checked={noFormatEdit === '0'}
+                                                   onChange={() => setNoFormatEdit(noFormatEdit === '1' ? '0' : '1')}/>
+                                            <span className="slider round"></span>
+                                        </label>
                                     </div>
                                     <div className={'textarea_span'}>
-                                        <span>Текст главы:</span>
+                                    <span>Текст главы:</span>
                                         <textarea rows={30} value={textEdit.value}
                                                   onChange={(e) => textEdit.onChange(e)}
                                         />
@@ -527,7 +543,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     {(currentChapter?.image || coverUrl) &&
                                         <div className={'add_library_chapter_image'}>
                                             <div>
-                                            <h4>Изображение для главы</h4>
+                                                <h4>Изображение для главы</h4>
                                                 <img
                                                     src={coverUrl ? coverUrl : currentChapter?.image ? currentChapter?.image : imageNF}
                                                     alt={'chapter_image'}
@@ -541,7 +557,8 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     <div className={'add_library_chapter_buttons'}>
                                         <div className={'delete_buttons_root'}>
                                             {!nihility ?
-                                                <Button style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция Небытия...</Button>
+                                                <Button style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция
+                                                    Небытия...</Button>
                                                 :
                                                 <>
                                                     <Button onClick={() => setNihility(false)}>Отмена</Button>
@@ -581,7 +598,16 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <label>Изображение для главы (опционально):
                                             <input type={'file'} onChange={handleCover} ref={coverNew}/>
                                         </label>
-                                        {coverError && <span style={{color:'#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                        {coverError &&
+                                            <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                    </div>
+                                    <div>
+                                        <span>Включить форматирование?</span>
+                                        <label className="switch">
+                                            <input type="checkbox" value={noFormatNew} checked={noFormatNew === '0'}
+                                                   onChange={() => setNoFormatEdit(noFormatNew === '1' ? '0' : '1')}/>
+                                            <span className="slider round"></span>
+                                        </label>
                                     </div>
                                     <div className={'textarea_span'}>
                                         <span>Текст главы:</span>
@@ -654,7 +680,16 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     <label>Изображение для главы (опционально):
                                         <input type={'file'} onChange={handleCover} ref={coverNew}/>
                                     </label>
-                                    {coverError && <span style={{color:'#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                    {coverError &&
+                                        <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                </div>
+                                <div>
+                                    <span>Включить форматирование?</span>
+                                    <label className="switch">
+                                        <input type="checkbox" value={noFormatNew} checked={noFormatNew === '0'}
+                                               onChange={() => setNoFormatEdit(noFormatNew === '1' ? '0' : '1')}/>
+                                        <span className="slider round"></span>
+                                    </label>
                                 </div>
                                 <div className={'textarea_span'}>
                                     <span>Текст главы:</span>
@@ -696,7 +731,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                         </div>
                             :
                             <div style={{textAlign: 'center'}} className={'add_first_chapter_no_story'}>
-                                <span>Нет ни одной истории, в которой вы бы смогли написать главу...</span>
+                            <span>Нет ни одной истории, в которой вы бы смогли написать главу...</span>
                                 <Button onClick={() => setCreateNewChapter(false)}>Закрыть</Button>
                             </div>
                     }
