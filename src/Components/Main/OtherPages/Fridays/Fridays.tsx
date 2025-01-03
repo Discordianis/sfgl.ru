@@ -11,7 +11,7 @@ import sfglMusic from '../../../../../public/icons/SFGLFridayMusic.jpg'
 import sfglVideo from '../../../../../public/icons/SFGLFridayVideo.jpg'
 import AudioImagePlayer from "../../../AudioPlayer/AudioImagePlayer.tsx";
 import titleImg from '../../../../../public/background/text-bg.png'
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 interface IFridayInfo {
     author: string,
@@ -243,11 +243,9 @@ const Fridays:React.FC = () => {
                             }
                         </div>
                         <div className={'create_report_href'}>
-                            <Button>
-                                <Link to={`/users/${myData?.nickname}/createInfo/fridays`}>
-                                    Загрузить пятницу
-                                </Link>
-                            </Button>
+                            <NavLink to={`/users/${myData?.nickname}/createInfo/fridays`}>
+                                Загрузить пятницу
+                            </NavLink>
                         </div>
                     </>
 

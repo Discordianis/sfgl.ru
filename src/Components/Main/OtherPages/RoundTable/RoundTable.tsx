@@ -3,8 +3,7 @@ import {useSelector} from "react-redux";
 import Loading from "../../../Loading/Loading.tsx";
 import './RoundTable.css'
 import {RootState} from "../../../../redux";
-import {Link} from "react-router-dom";
-import Button from "../../../Button/Button.tsx";
+import {NavLink} from "react-router-dom";
 
 interface IInfo {
     author: string,
@@ -170,11 +169,9 @@ const RoundTable:React.FC = () => {
                         </select>
                     </div>
                     <div className={'create_report_href'}>
-                        <Button>
-                            <Link to={`/users/${myData?.nickname}/createInfo/roundTable`}>
-                                Написать итоги
-                            </Link>
-                        </Button>
+                        <NavLink to={`/users/${myData?.nickname}/createInfo/roundTable`}>
+                            Написать итоги
+                        </NavLink>
                     </div>
                 </div>
                 :
@@ -184,7 +181,7 @@ const RoundTable:React.FC = () => {
             }
             {selectedData &&
                 <div className={'rt_window'}>
-                    <div className={'rt_window_title'}>
+                <div className={'rt_window_title'}>
                         <span>Итоги Круглого стола #{selectedData?.number} ({reformDate(selectedData?.date)})</span>
                     </div>
                     <div className={'rt_window_time'}>

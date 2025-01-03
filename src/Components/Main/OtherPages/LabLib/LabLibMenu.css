@@ -168,7 +168,7 @@
     background: #3e3152c2;
     border-radius: 8px;
     outline: transparent 1px solid;
-    transition: outline-color 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
     font-size: 20px;
 }
 
@@ -178,6 +178,10 @@
     width: 100%;
     border-top: var(--border-wheat);
     padding: 10px;
+}
+
+.library_create_btn a:hover {
+    background: #554470C2;
 }
 
 .lablib_menu_description a {

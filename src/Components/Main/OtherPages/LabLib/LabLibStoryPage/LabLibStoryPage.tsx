@@ -108,6 +108,7 @@ interface IAllChapters {
 
 const LabLibStoryPage: React.FC = () => {
     const server = useSelector((state: RootState) => state.server.server)
+    const myData = useSelector((state: RootState) => state.myData.data?.info)
     const token = localStorage.getItem('token')
     const params = useParams()
 
@@ -385,6 +386,11 @@ const LabLibStoryPage: React.FC = () => {
                                                 :
                                                 <span><b><center>Нет ни одной главы...</center></b></span>
                                             }
+                                            <div className={'create_report_href'}>
+                                                <NavLink to={`/users/${myData?.nickname}/createInfo/library`}>
+                                                    Написать историю
+                                                </NavLink>
+                                            </div>
                                         </div>
                                     }
                                 </div>

@@ -3,12 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../redux";
 import Loading from "../../../Loading/Loading.tsx";
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import moment from "moment";
 import 'moment/dist/locale/ru.js';
 import parse from "html-react-parser";
 import TextOverflowOld from "../../../TextOverflowOld/TextOverflowOld.tsx";
-import Button from "../../../Button/Button.tsx";
 
 interface IReportsInfo {
     created_date?: string
@@ -196,11 +195,9 @@ const Wall: React.FC = () => {
                                     </select>
                                 </div>
                                 <div className={'create_report_href'}>
-                                    <Button>
-                                        <Link to={`/users/${myData?.nickname}/createInfo/archive`}>
-                                            Написать отчёт
-                                        </Link>
-                                    </Button>
+                                    <NavLink to={`/users/${myData?.nickname}/createInfo/archive`}>
+                                        Написать отчёт
+                                    </NavLink>
                                 </div>
                             </div>
 
