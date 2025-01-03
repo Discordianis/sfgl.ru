@@ -234,7 +234,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
 
         setPosting(true)
 
-        if (coverError.length > 0) {
+        if (coverError?.length > 0) {
             showNotification(`${coverError}`, 'error')
             setPosting(false)
             return;
@@ -315,7 +315,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                 setAllLibraryData(dataAll);
 
                 if (activeStory) {
-                    setActiveStory(null); // Сбрасываем
+                    setActiveStory(null);
                     setTimeout(() => setActiveStory(dataAll.info?.chapters_edit?.[0]?.id || activeStory), 0);
                 }
 
@@ -401,6 +401,73 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                 setNihility(false)
                 showNotification('Глава отправлена в Небытие', "success")
                 setPosting(false)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (currentChapter) {
+            setCoverUrl(currentChapter?.image)
+        }
+    }, [currentChapter]);
+
+    const deleteImgFc = () => {
+        setCoverUrl(null)
+        setCoverError(null)
+        if (coverEdit.current) {
+            coverEdit.current.value = ''
+        }
+        if (coverNew.current) {
+            coverNew.current.value = ''
+        }
+    }
+
+    const deleteImg = async () => {
+        deleteImgFc()
+        if (!createNewChapter && coverUrl.startsWith('/images/chapters')) {
+            setPosting(true)
+            const updBody = {
+                token: token,
+                action: 'updateChapter',
+                data: {
+                    author: currentChapter?.author,
+                    name: nameEdit.value,
+                    number: numberEdit.value,
+                    text: textEdit.value,
+                    no_format: noFormatEdit,
+                    image: null
+                },
+                conditions: {
+                    id: currentChapter?.id
+                }
+            }
+            const res = await fetch(server, {
+                method: 'POST',
+                body: JSON.stringify(updBody)
+            })
+            const data = await res.json()
+            if (!data.status) {
+                showNotification('Упс, что-то пошло не так...', "error")
+                console.log(data.info)
+                setPosting(false)
+            }
+            else {
+                const resAll = await fetch(server, {
+                    method: 'POST',
+                    body: JSON.stringify({token: token, action: 'getAllForEditLibrary'})
+                })
+                const dataAll = await resAll.json()
+
+                if (!dataAll?.status) {
+                    console.log(dataAll?.info)
+                    showNotification('Упс, что-то пошло не так...', "error")
+                    setPosting(false)
+                }
+                else {
+                    setAllLibraryData(dataAll)
+                    showNotification('Удаление успешно', "success")
+                    setPosting(false)
+                }
             }
         }
     }
@@ -509,7 +576,11 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} onChange={handleCover} ref={coverEdit}/>
                                         </label>
                                         {coverError &&
-                                            <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                            <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>
+                                        }
+                                        {(coverUrl) &&
+                                            <Button onClick={deleteImg}>Удалить изображение</Button>
+                                        }
                                     </div>
                                     <div>
                                         <span>Включить форматирование?</span>
@@ -540,12 +611,12 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                             </div>
                                         </div>
                                     </div>
-                                    {(currentChapter?.image || coverUrl) &&
+                                    {(coverUrl) &&
                                         <div className={'add_library_chapter_image'}>
                                             <div>
                                                 <h4>Изображение для главы</h4>
                                                 <img
-                                                    src={coverUrl ? coverUrl : currentChapter?.image ? currentChapter?.image : imageNF}
+                                                    src={coverUrl}
                                                     alt={'chapter_image'}
                                                 />
                                                 <span>Изображение будет отображаться в конце главы.</span>
@@ -557,8 +628,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     <div className={'add_library_chapter_buttons'}>
                                         <div className={'delete_buttons_root'}>
                                             {!nihility ?
-                                                <Button style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция
-                                                    Небытия...</Button>
+                                                <Button style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция Небытия...</Button>
                                                 :
                                                 <>
                                                     <Button onClick={() => setNihility(false)}>Отмена</Button>
@@ -568,7 +638,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         </div>
                                         <div className={'add_save_button'}>
                                             <Button onClick={uploadChapter}
-                                                    disabled={coverError.length > 0 || editInputErrors || posting || Number(numberEdit.value) < 0}>
+                                                    disabled={coverError?.length > 0 || editInputErrors || posting || Number(numberEdit.value) < 0}>
                                                 Сохранить изменения
                                             </Button>
                                         </div>
@@ -599,13 +669,17 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} onChange={handleCover} ref={coverNew}/>
                                         </label>
                                         {coverError &&
-                                            <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                            <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>
+                                        }
+                                        {(coverUrl) &&
+                                            <Button onClick={deleteImg}>Удалить изображение</Button>
+                                        }
                                     </div>
                                     <div>
                                         <span>Включить форматирование?</span>
                                         <label className="switch">
                                             <input type="checkbox" value={noFormatNew} checked={noFormatNew === '0'}
-                                                   onChange={() => setNoFormatEdit(noFormatNew === '1' ? '0' : '1')}/>
+                                                   onChange={() => setNoFormatNew(noFormatNew === '1' ? '0' : '1')}/>
                                             <span className="slider round"></span>
                                         </label>
                                     </div>
@@ -681,13 +755,17 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <input type={'file'} onChange={handleCover} ref={coverNew}/>
                                     </label>
                                     {coverError &&
-                                        <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>}
+                                        <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>
+                                    }
+                                    {(coverUrl) &&
+                                        <Button onClick={deleteImg}>Удалить изображение</Button>
+                                    }
                                 </div>
                                 <div>
                                     <span>Включить форматирование?</span>
                                     <label className="switch">
                                         <input type="checkbox" value={noFormatNew} checked={noFormatNew === '0'}
-                                               onChange={() => setNoFormatEdit(noFormatNew === '1' ? '0' : '1')}/>
+                                               onChange={() => setNoFormatNew(noFormatNew === '1' ? '0' : '1')}/>
                                         <span className="slider round"></span>
                                     </label>
                                 </div>

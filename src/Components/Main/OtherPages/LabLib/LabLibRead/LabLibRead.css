@@ -249,6 +249,12 @@
     background-color: #272727;
 }
 
+@media screen and (max-width: 768px){
+    .lablib_read_text {
+        max-width: 90%;
+    }
+}
+
 @media screen and (max-width: 430px){
     .lablib_read_header {
         flex-direction: column;
