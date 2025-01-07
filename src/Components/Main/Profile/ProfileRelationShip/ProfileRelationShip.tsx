@@ -25,7 +25,8 @@ interface IReports {
     report_date: string | number | Date,
     text: string,
     user_nickname: string,
-    image: string
+    image: string,
+    no_format: string
 }
 
 interface IAllArchive {
@@ -370,23 +371,31 @@ const ProfileRelationShip: React.FC = () => {
                                                     <div className={'profile_rs_report'} key={index} style={{background: report.hidden == 1 ? '#451b1b4f' : ''}}>
                                                         <div>
                                                             <span>Отчёт от {reformDate(report.report_date as string)}</span>
-                                                            <div className={'report_span_root'}>
-                                                                {parse((report.text
-                                                                    .split('\n')
-                                                                    .map((line, index) =>
-                                                                        `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                                                    )).join(''))
-                                                                }
-                                                            </div>
-                                                            </div>
-                                                            {report?.image &&
-                                                                <div className={'report_image'}>
-                                                                    <img src={`${report?.image}`}
-                                                                         alt={'report_image'}/>
+                                                            {report?.no_format === '0' ?
+                                                                <div className={'report_span_root'}>
+                                                                    {parse((report.text
+                                                                        .split('\n')
+                                                                        .map((line, index) =>
+                                                                            `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
+                                                                        )).join(''))
+                                                                    }
+                                                                </div>
+                                                                :
+                                                                <div className={'report_span_root'}>
+                                                                    <span>
+                                                                        {parse(report.text)}
+                                                                    </span>
                                                                 </div>
                                                             }
                                                         </div>
-                                                        ))
+                                                        {report?.image &&
+                                                            <div className={'report_image'}>
+                                                                <img src={`${report?.image}`}
+                                                                     alt={'report_image'}/>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                ))
                                             )}
                                             {Object.values(archiveData?.info.reports).length > 1 && (
                                                 <>
@@ -396,14 +405,22 @@ const ProfileRelationShip: React.FC = () => {
                                                             <div className={'profile_rs_report'} key={index + 1} style={{background: report.hidden == 1 ? '#451b1b4f' : ''}}>
                                                                 <div>
                                                                     <span>Отчёт от {reformDate(report.report_date as string)}</span>
-                                                                    <div className={'report_span_root'}>
-                                                                        {parse((report.text
-                                                                            .split('\n')
-                                                                            .map((line, index) =>
-                                                                                `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                                                            )).join(''))
-                                                                        }
-                                                                    </div>
+                                                                    {report?.no_format === '0' ?
+                                                                        <div className={'report_span_root'}>
+                                                                            {parse((report.text
+                                                                                .split('\n')
+                                                                                .map((line, index) =>
+                                                                                    `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
+                                                                                )).join(''))
+                                                                            }
+                                                                        </div>
+                                                                        :
+                                                                        <div className={'report_span_root'}>
+                                                                    <span>
+                                                                        {parse(report.text)}
+                                                                    </span>
+                                                                        </div>
+                                                                    }
                                                                 </div>
                                                                 {report?.image &&
                                                                     <div className={'report_image'}>
