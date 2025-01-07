@@ -17,6 +17,7 @@ interface IReportInfo {
     text: string,
     user_id: string,
     user_nickname: string,
+    no_format: string
 }
 
 interface IReport {
@@ -32,6 +33,7 @@ interface IReport {
             text: string,
             user_id: string,
             user_nickname: string,
+            no_format: string
         }
     }
 }
@@ -48,6 +50,9 @@ const AddReport: React.FC = () => {
     const [dateNewInputError, setNewDateInputError] = useState(false);
     const [disabledCreateReport, setDisabledCreateReport] = useState(true)
     const [createdNew, setCreatedNew] = useState(false)
+
+    const [noFormatEdit, setNoFormatEdit] = useState<'0' | '1' | string>('0')
+    const [noFormatNew, setNoFormatNew] = useState<'0' | '1' | string>('0')
 
     const reportInput = useInput('', {})
     const dateInput = useInput('', {})
@@ -142,6 +147,7 @@ const AddReport: React.FC = () => {
                 hidden: hideReport,
                 user_nickname: userData?.data.info.custom_nickname,
                 text: reportInput.value,
+                no_format: noFormatEdit,
                 image: null
             },
             conditions: {id: currentArchiveData?.id}
@@ -156,6 +162,7 @@ const AddReport: React.FC = () => {
                 hidden: newHideReport,
                 user_nickname: userData?.data.info.custom_nickname,
                 text: newReportInput.value,
+                no_format: noFormatNew,
                 image: null
             }
         };
@@ -375,6 +382,7 @@ const AddReport: React.FC = () => {
             reportInput.setValue(currentArchiveData?.text || '')
             dateInput.setValue(currentArchiveData?.report_date || '')
             setHideReport(currentArchiveData?.hidden || '0')
+            setNoFormatEdit(currentArchiveData?.no_format || '0')
         }
     }, [currentArchiveData, createdNew]);
 
@@ -462,6 +470,15 @@ const AddReport: React.FC = () => {
                                                 <option value={'1'}>Скрыть отчёт</option>
                                             </select>
                                         </div>
+                                        <div>
+                                            <span>Включить форматирование?</span>
+                                            <label className="switch">
+                                                <input type="checkbox" value={noFormatEdit}
+                                                       checked={noFormatEdit === '0'}
+                                                       onChange={() => setNoFormatEdit(noFormatEdit === '1' ? '0' : '1')}/>
+                                                <span className="slider round"></span>
+                                            </label>
+                                        </div>
                                     </div>
                                     {(fileUrl || currentArchiveData?.image) &&
                                         <div className={'image_rt_preview'}>
@@ -505,7 +522,7 @@ const AddReport: React.FC = () => {
                                         <Button disabled={posting || (!currentArchiveData?.text)}
                                                 onClick={() => setConfirmDelete(true)}>Удалить</Button>
                                         <Button
-                                            disabled={!fileUrl && (posting || dateInputError || (reportInput.value === '' || dateInput.value === '' || hideReport === '') || (reportInput.value === currentArchiveData?.text && dateInput.value === currentArchiveData?.report_date))}
+                                            disabled={posting}
                                             onClick={createNewReport}>
                                             Сохранить
                                         </Button>
@@ -541,6 +558,15 @@ const AddReport: React.FC = () => {
                                                 <option value={'0'}>Не скрывать отчёт</option>
                                                 <option value={'1'}>Скрыть отчёт</option>
                                             </select>
+                                        </div>
+                                        <div>
+                                            <span>Включить форматирование?</span>
+                                            <label className="switch">
+                                                <input type="checkbox" value={noFormatNew}
+                                                       checked={noFormatNew === '0'}
+                                                       onChange={() => setNoFormatNew(noFormatNew === '1' ? '0' : '1')}/>
+                                                <span className="slider round"></span>
+                                            </label>
                                         </div>
                                     </div>
                                     {fileUrl &&
