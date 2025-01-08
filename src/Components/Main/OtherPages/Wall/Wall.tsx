@@ -18,7 +18,8 @@ interface IReportsInfo {
     image: string
     text: string
     user_id: string
-    user_nickname: string
+    user_nickname: string,
+    no_format: string,
 }
 
 interface IArchiveData {
@@ -218,12 +219,17 @@ const Wall: React.FC = () => {
                                         </div>
                                     </div>
                                 </NavLink>
-                                <span><TextOverflowOld maxHeight={1000} text={parse((report.text
-                                    .split('\n')
-                                    .map((line, index) =>
-                                        `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
-                                    )).join(''))
-                                }/>
+                                <span>
+                                    {report?.no_format === '0' ?
+                                        <TextOverflowOld maxHeight={1000} text={parse((report.text
+                                            .split('\n')
+                                            .map((line, index) =>
+                                                `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
+                                            )).join(''))
+                                        }/>
+                                        :
+                                        parse(report.text)
+                                    }
                                 </span>
                             </div>
                         )}
