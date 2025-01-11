@@ -301,7 +301,7 @@
 }
 
 .story_page_chapter_list .text-block.expanded {
-    max-height: 9999px;
+    max-height: 99999px;
 }
 
 .chapters_props {

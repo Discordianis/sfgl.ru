@@ -172,7 +172,7 @@ img, video {
   color: #a82323;
   text-align: center;
   display: inline-block;
-  width: 93.5%;
+  width: calc(100% - 57px);
   white-space: nowrap;
   cursor: pointer;
   position: relative;

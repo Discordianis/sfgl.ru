@@ -5,10 +5,6 @@
     border-radius: 8px;
 }
 
-.text-block.expanded {
-    max-height: 9999px;
-}
-
 .text-content {
     padding: 15px 5px;
 }
