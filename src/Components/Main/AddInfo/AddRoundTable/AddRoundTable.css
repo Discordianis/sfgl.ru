@@ -128,3 +128,12 @@
 .image_rt_preview {
     display: flex;
 }
+
+@media screen and (max-width: 756px) {
+    .rt_form_notext {
+        margin: unset;
+    }
+    .image_rt_preview > img {
+        width: 100%;
+    }
+}
