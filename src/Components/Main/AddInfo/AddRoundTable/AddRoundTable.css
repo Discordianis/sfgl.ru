@@ -111,7 +111,7 @@
 }
 
 .image_rt_preview > img {
-    max-width: 800px;
+    max-width: 100%;
     max-height: 300px;
     outline: var(--border-wheat);
 }
@@ -121,7 +121,6 @@
     justify-content: space-between;
     margin-right: 100px;
     align-items: center;
-    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -129,11 +128,16 @@
     display: flex;
 }
 
-@media screen and (max-width: 756px) {
+@media screen and (max-width: 1000px) {
     .rt_form_notext {
         margin: unset;
     }
     .image_rt_preview > img {
-        width: 100%;
+        max-width: 100%;
+        max-height: 376px;
+        outline: var(--border-wheat);
+    }
+    .rt_form_notext {
+        flex-wrap: wrap;
     }
 }
