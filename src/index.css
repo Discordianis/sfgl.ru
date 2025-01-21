@@ -314,6 +314,12 @@ h1 {
   }
 }
 
+@media screen and (max-width: 768px) {
+  div, span {
+    font-size: 13px;
+  }
+}
+
 @media screen and (max-width: 420px) {
   .home_main_title {
     font-size: 50px;

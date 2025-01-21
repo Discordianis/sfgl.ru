@@ -85,7 +85,7 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
                         <div
                             className={`spoiler_content hidden ${visibleSpoilers.has(spoilerKey) ? 'visible' : ''}`}
                             style={{
-                                maxHeight: visibleSpoilers.has(spoilerKey) ? '600px' : '0',
+                                maxHeight: visibleSpoilers.has(spoilerKey) ? '99999px' : '0',
                                 overflow: 'hidden',
                             }}
                         >

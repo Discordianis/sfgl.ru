@@ -48,7 +48,7 @@ const LabLibMenu: React.FC = () => {
                 setLoading(false)
             }
             else {
-                setStories(data?.info)
+                setStories(data?.info.filter((filter: IStoriesInfo) => filter.name_eng !== 'Date A Life'))
                 setLoading(false)
             }
         }

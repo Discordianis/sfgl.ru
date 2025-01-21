@@ -1,44 +1,36 @@
 import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
-import Loading from "../../Loading/Loading.tsx";
 import {RootState} from "../../../redux";
+import Loading from "../../Loading/Loading.tsx";
 
 const ProfileButton: React.FC = () => {
 
-    const token = localStorage.getItem('token')
-    const server = useSelector((state: RootState) => state.server.server)
-    const [profile, setProfile] = useState(null)
+    const myData = useSelector((state: RootState) => state.myData.data)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const fetching = async () => {
-            const userRes = await fetch(`${server}`, {
-                method: 'POST',
-                body: JSON.stringify({action: 'getMyself', token: token})
-            })
-            const data = await userRes.json();
-            setProfile(data)
+        if (myData) {
             setLoading(false)
         }
-        fetching()
-    }, []);
-
-    if (loading) {
-        return (
-            <div className={'small_loading'}>
-                <Loading />
-            </div>
-        )
-    }
+        else {
+            setLoading(true)
+        }
+    }, [myData]);
 
     return (
         <div className="profile_button_root">
             <div>
                 <nav>
-                    <NavLink to={`/users/${profile?.info.nickname}`} reloadDocument={true}>
-                        <img src={`${profile?.info.avatar}`} alt="user-avatar"/>
-                        <span>{profile?.info.custom_nickname}</span>
+                    <NavLink to={`/users/${myData?.info.nickname}`} reloadDocument={true}>
+                        {loading ?
+                            <div className={'header_loading'}>
+                                <Loading />
+                            </div>
+                            :
+                            <img src={`${myData?.info.avatar}`} alt="user-avatar"/>
+                        }
+                        <span>{myData?.info.custom_nickname}</span>
                     </NavLink>
                 </nav>
             </div>

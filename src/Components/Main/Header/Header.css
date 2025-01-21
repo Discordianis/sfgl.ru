@@ -100,6 +100,11 @@
     width: fill-available;
 }
 
+.header_loading img{
+    max-height: 50px;
+    max-width: 50px;
+}
+
 .profile_button_root > div {
     height: 100%
 }
