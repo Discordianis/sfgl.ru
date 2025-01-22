@@ -300,7 +300,7 @@ const LabLibCharacterPage: React.FC = () => {
                                 </a>
                                 <div>
                                     {typeof characters === 'object' && Object.keys(characters).length > 0 ?
-                                        Object.values(story).map((stories: IStoriesInfo) =>
+                                        Object.values(story).filter((filter: IStoriesInfo) => filter.name_eng !== 'Date A Life').map((stories: IStoriesInfo) =>
                                             <NavLink to={`/library/story/${stories.id}-${stories.name_eng}`}>
                                                 <div className={'story_info_char'} key={stories?.id}>
                                                     <div>

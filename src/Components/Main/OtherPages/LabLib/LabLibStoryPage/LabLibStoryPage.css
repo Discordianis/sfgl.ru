@@ -351,9 +351,6 @@
 }
 
 @media screen and (max-width: 455px){
-    .story_characters_list {
-        flex-direction: column;
-    }
     .story_info_char > div:nth-child(2) {
         flex: 1;
     }

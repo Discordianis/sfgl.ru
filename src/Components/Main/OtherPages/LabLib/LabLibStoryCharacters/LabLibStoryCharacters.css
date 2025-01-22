@@ -49,6 +49,7 @@ h4 > a.back {
 
 .story_characters_list {
     display: flex;
+    flex-wrap: wrap;
     gap: 5px;
 }
 
