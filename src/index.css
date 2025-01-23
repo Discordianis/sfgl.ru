@@ -320,12 +320,6 @@ h1 {
   }
 }
 
-@media screen and (max-width: 420px) {
-  .home_main_title {
-    font-size: 50px;
-  }
-}
-
 @media screen and (max-width: 572px) {
   .main_window_current > div > div {
     flex-wrap: wrap;

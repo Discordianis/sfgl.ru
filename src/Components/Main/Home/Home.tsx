@@ -11,17 +11,13 @@ const Home: React.FC = () => {
             <div className={'home_info'}>
                 <div className={'home_title'}>
                     <div className={'home_main_title'}>
-                <span>
-                    <strong>Future</strong>
-                </span>
-                        <span>
-                    Gadget Lab
-                </span>
+                        <h3>Future</h3>
+                        <h3>Gadget Lab</h3>
                     </div>
                     <div className={'home_subtitle'}>
-                <span>
+                <h3>
                     Хранилище вечных и великих душ Хранителей
-                </span>
+                </h3>
                     </div>
                 </div>
                 <div className={'home_social'}>
@@ -36,7 +32,7 @@ const Home: React.FC = () => {
                     </a>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     )
 }

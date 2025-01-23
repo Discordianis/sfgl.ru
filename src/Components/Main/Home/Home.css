@@ -72,3 +72,23 @@
     grid-area: 2 / 2 / 3 / 3;
     display: flex;
 }
+
+@media screen and (max-width: 520px) {
+    .home_main_title {
+        font-size: 50px;
+    }
+
+    .home_subtitle {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .home_main_title {
+        font-size: 30px;
+    }
+
+    .home_subtitle {
+        font-size: 15px;
+    }
+}
