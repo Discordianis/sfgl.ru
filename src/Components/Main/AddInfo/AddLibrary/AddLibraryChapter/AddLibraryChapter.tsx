@@ -486,7 +486,9 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                 <h3>Список историй</h3>
                             </div>
                             <div className={'add_library_story_list'}>
-                                {Object.values(allLibraryData?.info?.chapters_edit).map((story: IAllStoryInfo, index) =>
+                                {Object.values(allLibraryData?.info?.chapters_edit)
+                                    .sort((a,b) => a.name_rus.localeCompare(b.name_rus, 'ru'))
+                                    .map((story: IAllStoryInfo, index) =>
                                     <div key={index}
                                          className={`add_library_story_prop ${activeStory === story.id ? 'active' : ''}`}
                                          onClick={() => getCurrentStory(story?.id)}>

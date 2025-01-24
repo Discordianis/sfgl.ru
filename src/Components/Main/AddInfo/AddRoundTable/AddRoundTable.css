@@ -66,13 +66,6 @@
     outline: var(--border-wheat);
 }
 
-.reports_add_list {
-    display: flex;
-    margin: 5px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
 .reports_form {
     display: flex;
     flex-direction: column;

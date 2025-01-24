@@ -607,7 +607,9 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                             <h3>Список историй</h3>
                         </div>
                         <div className={'add_library_story_list'}>
-                            {Object.values(allLibraryData?.info?.stories_edit).map((story: IAllStoriesInfo, index) =>
+                            {Object.values(allLibraryData?.info?.stories_edit)
+                                .sort((a,b) => a.name_rus.localeCompare(b.name_rus, 'ru'))
+                                .map((story: IAllStoriesInfo, index) =>
                                 <div key={index}
                                      className={`add_library_story_prop ${activeStory === story.id ? 'active' : ''}`}
                                      onClick={() => getCurrentStory(story?.id)}>
@@ -744,7 +746,9 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                             <span><strong>Текущие персонажи:</strong></span>
                                                         </div>
                                                         <div>
-                                                            {Object.values(allStoryCharacters).map((character: IAllCharactersInfo, index) =>
+                                                            {Object.values(allStoryCharacters)
+                                                                .sort((a,b) => a.name_rus.localeCompare(b.name_rus, 'ru'))
+                                                                .map((character: IAllCharactersInfo, index) =>
                                                                 <div className={'story_accept_user_prop'} key={index}>
                                                                     <div>
                                                                         <div className={'story_accept_user_avatar'}>
@@ -772,7 +776,9 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                         </div>
                                                         <div className={'story_accept_root_now_list'}>
                                                             <div>
-                                                                {Object.values(selectedUsers).map((accept: IAllCharactersInfo, index) =>
+                                                                {Object.values(selectedUsers)
+                                                                    .sort((a: IAllCharactersInfo,b: IAllCharactersInfo) => a.name_rus.localeCompare(b.name_rus, 'ru'))
+                                                                    .map((accept: IAllCharactersInfo, index) =>
                                                                     <div className={'story_accept_user_prop'}
                                                                          key={index}>
                                                                         <div>
@@ -819,6 +825,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                             allStoryCharacters ?
                                                                 !allStoryCharacters.find(selected => selected.id === filter?.id) :
                                                                 true)
+                                                        .sort((a,b) => a.name_rus.localeCompare(b.name_rus, 'ru'))
 
                                                         .map((user: IAllCharactersInfo, index) =>
                                                             <div className={'story_accept_user_prop'} key={index}>
@@ -1030,8 +1037,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     </div>
                                     {!openCharacterList &&
                                         <div>
-                                            <Button onClick={() => setOpenCharacterList(true)}>Персонажи
-                                                истории</Button>
+                                            <Button onClick={() => setOpenCharacterList(true)}>Персонажи истории</Button>
                                         </div>
                                     }
                                     {(openCharacterList && allCharacters) ?
@@ -1047,7 +1053,9 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                         </div>
                                                         <div className={'story_accept_root_now_list'}>
                                                             <div>
-                                                                {Object.values(selectedUsers).map((accept: IAllCharactersInfo, index) =>
+                                                                {Object.values(selectedUsers)
+                                                                    .sort((a: IAllCharactersInfo ,b: IAllCharactersInfo) => a.name_rus.localeCompare(b.name_rus, 'ru'))
+                                                                    .map((accept: IAllCharactersInfo, index) =>
                                                                     <div className={'story_accept_user_prop'}
                                                                          key={index}>
                                                                         <div>
@@ -1101,6 +1109,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                             allCharacters ?
                                                                 Object.values(allCharacters).some((find: IAllCharactersInfo) => find.id !== filter.id) :
                                                                 true)
+                                                        .sort((a,b) => a.name_rus.localeCompare(b.name_rus, 'ru'))
                                                         .map((user: IAllCharactersInfo, index) =>
                                                             <div className={'story_accept_user_prop'} key={index}>
                                                                 <div>
@@ -1267,8 +1276,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     </div>
                                     {!openCharacterList &&
                                         <div>
-                                            <Button onClick={() => setOpenCharacterList(true)}>Персонажи
-                                                истории</Button>
+                                            <Button onClick={() => setOpenCharacterList(true)}>Персонажи истории</Button>
                                         </div>
                                     }
                                     {(openCharacterList && allCharacters) ?
@@ -1284,7 +1292,9 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                         </div>
                                                         <div className={'story_accept_root_now_list'}>
                                                             <div>
-                                                                {Object.values(selectedUsers).map((accept: IAllCharactersInfo, index) =>
+                                                                {Object.values(selectedUsers)
+                                                                    .sort((a: IAllCharactersInfo ,b: IAllCharactersInfo) => a.name_rus.localeCompare(b.name_rus, 'ru'))
+                                                                    .map((accept: IAllCharactersInfo, index) =>
                                                                     <div className={'story_accept_user_prop'}
                                                                          key={index}>
                                                                         <div>
@@ -1338,6 +1348,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                             allCharacters ?
                                                                 Object.values(allCharacters).some((find: IAllCharactersInfo) => find.id !== filter.id) :
                                                                 true)
+                                                        .sort((a,b) => a.name_rus.localeCompare(b.name_rus, 'ru'))
                                                         .map((user: IAllCharactersInfo, index) =>
                                                             <div className={'story_accept_user_prop'} key={index}>
                                                                 <div>

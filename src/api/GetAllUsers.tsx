@@ -66,9 +66,17 @@ const GetAllUsers: React.FC = () => {
             if (offlineTimeA < 2 * 60 * 1000 && offlineTimeB >= 2 * 60 * 1000) {
                 return -1;
             }
-            return 0;
+
+            const isRussianA = /^[а-яА-ЯёЁ]/.test(a.custom_nickname);
+            const isRussianB = /^[а-яА-ЯёЁ]/.test(b.custom_nickname);
+
+            if (isRussianA && !isRussianB) return -1;
+            if (!isRussianA && isRussianB) return 1;
+
+            return a.custom_nickname.localeCompare(b.custom_nickname, 'ru');
         })
         : [];
+
 
     const checkOnline = (lastOnlineDate: Date | string) => {
         const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;

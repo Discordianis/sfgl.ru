@@ -406,7 +406,9 @@ const LabLibStoryPage: React.FC = () => {
                             </NavLink>
                             <div>
                                 {(characters?.info.length > 0 && Object.values(characters?.info).filter((filt: ICharactersInfo) => filt.role === 'main').length > 0) ?
-                                    Object.values(characters?.info).filter((filt: ICharactersInfo) => filt.role === 'main').map((char: ICharactersInfo) =>
+                                    Object.values(characters?.info).filter((filt: ICharactersInfo) => filt.role === 'main')
+                                        .sort((a: ICharactersInfo, b: ICharactersInfo) => a.name_rus.localeCompare(b.name_rus, 'ru'))
+                                        .map((char: ICharactersInfo) =>
                                         <NavLink to={`/library/characters/${char.id}-${char.name_eng}`}>
                                             <div className={'story_info_char'} key={char?.id}>
                                                 <div>

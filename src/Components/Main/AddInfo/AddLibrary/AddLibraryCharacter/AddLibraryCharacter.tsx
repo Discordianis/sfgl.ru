@@ -444,9 +444,9 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
     }
 
     const filteredCharacters = allCharactersData?.info?.characters_edit
-        ? Object.values(allCharactersData.info.characters_edit).filter(
-            filter => filter.author === myData?.data?.info?.nickname
-        )
+        ? Object.values(allCharactersData.info.characters_edit)
+            .filter(filter => filter.author === myData?.data?.info?.nickname)
+            .sort((a,b) => a.name_rus.localeCompare(b.name_rus, 'ru'))
         : [];
 
     if (loading) {
