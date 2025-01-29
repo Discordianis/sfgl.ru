@@ -189,6 +189,7 @@
     max-width: 400px;
     transform: translateX(-100%);
     transition: transform 0.5s ease;
+    overflow: auto;
 }
 
 .popup_opened {

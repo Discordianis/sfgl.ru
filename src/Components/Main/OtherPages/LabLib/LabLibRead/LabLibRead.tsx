@@ -77,6 +77,18 @@ const LabLibRead: React.FC = () => {
     }, [popupRef, openModal]);
 
     useEffect(() => {
+        if (openModal) {
+            document.body.style.overflow = 'hidden'
+        }
+        else {
+            document.body.style.overflow = 'hidden auto'
+        }
+        return () => {
+            document.body.style.overflow = 'hidden auto'
+        }
+    }, [openModal]);
+
+    useEffect(() => {
         const fetching = async () => {
             const res = await fetch(server, {
                 method: 'POST',

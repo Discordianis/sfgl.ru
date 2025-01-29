@@ -1,11 +1,24 @@
-import React from "react";
+import React, {useEffect} from "react";
 import telegram from '../../../../public/icons/telegram.jpg'
 import shikimori from '../../../../public/icons/shikimori.jpg'
 import discord from '../../../../public/icons/discord.jpg'
 import './Home.css'
 import Footer from "../Footer/Footer.tsx";
+import {useGetTestMutation} from "../../../redux/test.tsx";
 
 const Home: React.FC = () => {
+
+    const [testApi, {data}] = useGetTestMutation()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await testApi('').unwrap()
+        }
+        fetchData().then()
+    }, []);
+
+    console.log(data)
+
     return (
         <div className={'home_page_root'}>
             <div className={'home_info'}>

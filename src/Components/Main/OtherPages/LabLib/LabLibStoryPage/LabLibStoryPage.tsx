@@ -250,12 +250,9 @@ const LabLibStoryPage: React.FC = () => {
                                         </div>
                                     </Modal>
                                     {(story?.status !== 'announce' && story?.chapters_count !== '0' && story?.chapters_count) &&
-                                    <div>
-                                        <NavLink
-                                            to={`/library/story/${params.story}/read/${chapterNumber ? chapterNumber : '1'}`}>
-                                            <Button>{chapterNumber ? 'Продолжить читать' : 'Начать читать'}</Button>
+                                        <NavLink to={`/library/story/${params.story}/read/${chapterNumber ? chapterNumber : '1'}`} className={'button'}>
+                                            {chapterNumber ? 'Продолжить читать' : 'Начать читать'}
                                         </NavLink>
-                                    </div>
                                     }
                                 </div>
                             </div>
@@ -280,7 +277,7 @@ const LabLibStoryPage: React.FC = () => {
                                                             <div
                                                                 className={story?.status === 'ongoing' ? 'story_right_status_ongoing' :
                                                                     story?.status === 'ended' ? 'story_right_status_ended' :
-                                                                        story?.status === 'announce' ? 'story_right_status_announce' : 'story_right_status_unknown'}>
+                                                                    story?.status === 'announce' ? 'story_right_status_announce' : 'story_right_status_unknown'}>
                                                     <span>{story?.status === 'ongoing' ? 'Онгоинг' :
                                                         story?.status === 'ended' ? 'Вышло' :
                                                             story?.status === 'announce' ? 'Анонс' : 'Неизвестно'}</span>
@@ -412,12 +409,10 @@ const LabLibStoryPage: React.FC = () => {
                                         <NavLink to={`/library/characters/${char.id}-${char.name_eng}`}>
                                             <div className={'story_info_char'} key={char?.id}>
                                                 <div>
-                                                    <div className={'div_image_small'}
-                                                        style={{backgroundImage: 'url(' + `${char?.cover ? char?.cover : imageNF}` + ')'}}>
-                                                    </div>
+                                                    <img src={char?.cover ? char?.cover : imageNF} alt={''}/>
                                                 </div>
                                                 <div>
-                                                    <span>{char?.name_rus}</span>
+                                                <span>{char?.name_rus}</span>
                                                 </div>
                                             </div>
                                         </NavLink>

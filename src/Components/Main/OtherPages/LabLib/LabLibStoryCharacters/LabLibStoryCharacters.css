@@ -53,6 +53,15 @@ h4 > a.back {
     gap: 5px;
 }
 
+@media screen and (max-width: 465px) {
+    .story_characters_list, .story_info_char_main > div:nth-child(2) {
+        display: grid;
+        gap: 5px;
+        justify-items: center;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media screen and (max-width: 255px) {
     .story_characters_seconds_title {
         white-space: pre-wrap;
