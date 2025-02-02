@@ -226,9 +226,21 @@ const Wall: React.FC = () => {
                                             .map((line, index) =>
                                                 `${index > 0 ? '\n' : ''}${line[0] !== '<' ? '&emsp;&emsp;' : ''}${line}`
                                             )).join(''))
-                                        }/>
+                                        }>
+                                            {report?.image &&
+                                                <div className={'report_image'}>
+                                                    <img src={report?.image} alt={'report_img'} />
+                                                </div>
+                                            }
+                                        </TextOverflowOld>
                                         :
-                                        parse(report.text)
+                                        <TextOverflowOld text={parse(report?.text)} maxHeight={1000}>
+                                            {report?.image &&
+                                                <div className={'report_image'}>
+                                                    <img src={report?.image} alt={'report_img'} />
+                                                </div>
+                                            }
+                                        </TextOverflowOld>
                                     }
                                 </span>
                             </div>

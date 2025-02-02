@@ -148,7 +148,6 @@ const AddReport: React.FC = () => {
                 user_nickname: userData?.data.info.custom_nickname,
                 text: reportInput.value,
                 no_format: noFormatEdit,
-                image: null
             },
             conditions: {id: currentArchiveData?.id}
         };
