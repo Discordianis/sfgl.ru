@@ -328,7 +328,7 @@ const AddRoundTable:React.FC = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+            if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif' && file.type !== 'image/webp') {
                 setFileError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, ,jpg или .gif');
                 return;
             } else {
@@ -475,7 +475,7 @@ const AddRoundTable:React.FC = () => {
                                                 <div>
                                                     <label>Изображение с Круглого Стола (опционально):
                                                         <input type={'file'} onChange={handleFileChange}
-                                                               accept={'.png, .jpg, .jpeg, .gif'} ref={imageRef}/>
+                                                               accept={'.png, .jpg, .jpeg, .gif, .webp'} ref={imageRef}/>
                                                     </label>
                                                     {fileError && <span>{fileError}</span>}
                                                 </div>
@@ -571,7 +571,7 @@ const AddRoundTable:React.FC = () => {
                                                 <div>
                                                     <label>Изображение с Круглого Стола (опционально):
                                                         <input type={'file'} onChange={handleFileChange}
-                                                               accept={'.png, .jpg, .jpeg, .gif'} ref={imageRef}/>
+                                                               accept={'.png, .jpg, .jpeg, .gif, .webp'} ref={imageRef}/>
                                                     </label>
                                                     {fileError && <span>{fileError}</span>}
                                                 </div>

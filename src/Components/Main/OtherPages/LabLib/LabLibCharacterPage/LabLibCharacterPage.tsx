@@ -198,9 +198,11 @@ const LabLibCharacterPage: React.FC = () => {
                                                     <div>
                                                         <span><strong>Статус: </strong></span>
                                                     </div>
-                                                    <div
-                                                        className={(characters?.life_status === 'lively') ? 'char_right_status_lively' : characters?.life_status === 'dead' ? 'char_right_status_dead' : 'char_right_status_unknown'}>
-                                                        <span>{(characters?.life_status === 'lively') ? 'Жив(-а)' : characters?.life_status === 'dead' ? 'Мертв(-а)' : 'Неизвестно'}</span>
+                                                    <div className={'char_right_status'}>
+                                                        <div
+                                                            className={(characters?.life_status === 'lively') ? 'char_right_status_lively' : characters?.life_status === 'dead' ? 'char_right_status_dead' : 'char_right_status_unknown'}>
+                                                            <span>{(characters?.life_status === 'lively') ? 'Жив(-а)' : characters?.life_status === 'dead' ? 'Мертв(-а)' : 'Неизвестно'}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -304,9 +306,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             <NavLink to={`/library/story/${stories.id}-${stories.name_eng}`}>
                                                 <div className={'story_info_char'} key={stories?.id}>
                                                     <div>
-                                                        <div className={'div_image_small'}
-                                                             style={{backgroundImage: 'url(' + `${stories?.cover ? stories?.cover : imageNF}` + ')',}}>
-                                                        </div>
+                                                        <img src={stories?.cover ? stories?.cover : imageNF} alt={'story_img'}/>
                                                     </div>
                                                     <div>
                                                         <span>{stories?.name_rus}</span>

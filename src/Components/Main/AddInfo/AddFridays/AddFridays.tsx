@@ -358,7 +358,7 @@ const AddFridays:React.FC = () => {
 
         if (file) {
             if (typeContent === 'image') {
-                if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+                if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif' && file.type !== 'image/webp') {
                     setFileError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, ,jpg или .gif');
                     return;
                 }
@@ -547,7 +547,7 @@ const AddFridays:React.FC = () => {
                                             <div>
                                                 {typeContent === 'image' &&
                                                     <label>Выберите изображение:
-                                                        <input type={'file'} accept={'.png, .jpg, .jpeg, .gif'}
+                                                        <input type={'file'} accept={'.png, .jpg, .jpeg, .gif, .webp'}
                                                                onChange={handleFileChange} ref={fileImageRef}/>
                                                     </label>
                                                 }
@@ -664,7 +664,7 @@ const AddFridays:React.FC = () => {
                                             <div className={'add_fridays_input'}>
                                                 {typeContent === 'image' &&
                                                     <label>Выберите изображение:
-                                                        <input type={'file'} accept={'.png, .jpg, .jpeg, .gif'}
+                                                        <input type={'file'} accept={'.png, .jpg, .jpeg, .gif, .webp'}
                                                                onChange={handleFileChange} ref={fileImageRef}/>
                                                     </label>
                                                 }

@@ -171,7 +171,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
 
         setCoverError('')
 
-        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+        if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/webp') {
             setCoverError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, .jpg')
             return;
         }

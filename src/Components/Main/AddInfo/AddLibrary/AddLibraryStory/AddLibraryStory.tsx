@@ -328,7 +328,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
         const file = e.target.files?.[0]
         setFileCoverError('')
 
-        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+        if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/webp') {
             setFileCoverError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, .jpg');
             return;
         }
@@ -347,7 +347,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
         const file = e.target.files?.[0]
         setFilePosterError('')
 
-        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+        if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/webp') {
             setFilePosterError('Неверный формат файла. Пожалуйста, загрузите файл в формате .png, .jpeg, или .jpg');
             return;
         }
@@ -690,7 +690,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                     <input type={"file"} ref={storyCoverEdit}
                                                            onChange={handleCoverChange}
                                                            style={{outline: coverEditError ? '#af4545 solid' : ''}}
-                                                           accept={'.jpg, .jpeg, .png'}/>
+                                                           accept={'.jpg, .jpeg, .png, .webp'}/>
                                                 </label>
                                                 {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
                                             </div>
@@ -699,7 +699,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                     <input type={"file"} ref={storyPosterEdit}
                                                            onChange={handlePosterChange}
                                                            style={{outline: posterEditError ? '#af4545 solid' : ''}}
-                                                           accept={'.jpg, .jpeg, .png'}/>
+                                                           accept={'.jpg, .jpeg, .png, .webp'}/>
                                                 </label>
                                                 {filePosterError && <span style={{color:'#f75151', fontSize: '13px'}}>{filePosterError}</span>}
                                             </div>
@@ -999,7 +999,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                     <input type={"file"} ref={storyCoverNew}
                                                            onChange={handleCoverChange}
                                                            style={{outline: coverNewError ? '#af4545 solid' : ''}}
-                                                           accept={'.jpg, .jpeg, .png'}/>
+                                                           accept={'.jpg, .jpeg, .png, .webp'}/>
                                                 </label>
                                                 {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
                                             </div>
@@ -1008,7 +1008,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                     <input type={"file"} ref={storyPosterNew}
                                                            onChange={handlePosterChange}
                                                            style={{outline: posterNewError ? '#af4545 solid' : ''}}
-                                                           accept={'.jpg, .jpeg, .png'}/>
+                                                           accept={'.jpg, .jpeg, .png, .webp'}/>
                                                 </label>
                                                 {filePosterError && <span style={{color:'#f75151', fontSize: '13px'}}>{filePosterError}</span>}
                                             </div>
@@ -1238,7 +1238,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                             <label>Обложка (4:3):
                                                 <input type={"file"} ref={storyCoverNew} onChange={handleCoverChange}
                                                        style={{outline: coverNewError ? '#af4545 solid' : ''}}
-                                                       accept={'.jpg, .jpeg, .png'}/>
+                                                       accept={'.jpg, .jpeg, .png, .webp'}/>
                                             </label>
                                             {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
                                         </div>
@@ -1246,7 +1246,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                             <label>Постер (16:9):
                                                 <input type={"file"} ref={storyPosterNew} onChange={handlePosterChange}
                                                        style={{outline: posterNewError ? '#af4545 solid' : ''}}
-                                                       accept={'.jpg, .jpeg, .png'}/>
+                                                       accept={'.jpg, .jpeg, .png, .webp'}/>
                                             </label>
                                             {filePosterError && <span style={{color:'#f75151', fontSize: '13px'}}>{filePosterError}</span>}
                                         </div>

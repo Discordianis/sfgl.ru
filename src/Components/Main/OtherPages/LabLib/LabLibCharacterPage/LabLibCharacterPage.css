@@ -2,18 +2,36 @@
     padding: 0 10px;
     background: #1b851b;
     border-radius: 15px;
+    width: fit-content;
 }
 
 .char_right_status_dead {
     padding: 0 10px;
     background: #e13f3f;
     border-radius: 15px;
+    width: fit-content;
 }
 
 .char_right_status_unknown {
     padding: 0 10px;
     background: #656565;
     border-radius: 15px;
+    width: fit-content;
+}
+
+.char_right_status {
+    filter: grayscale(1) blur(10px) opacity(0.5);
+    background: gray;
+    border-radius: 8px;
+    width: 130px;
+    transition: filter 1s ease-in-out, background-color 2s ease-in-out;
+    user-select: none;
+}
+
+.char_right_status:hover {
+    filter: none;
+    background: none;
+    transition: filter 1s ease-in-out, background-color 0.7s ease-in-out;
 }
 
 .story_right_description_title {
