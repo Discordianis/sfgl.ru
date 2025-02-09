@@ -24,7 +24,7 @@
 .lablib_read_header_root {
     display: flex;
     position: sticky;
-    top: 51px;
+    top: 65px;
     background: #181818;
     padding-top: 10px;
     transition: transform 0.5s ease-in-out;
@@ -35,6 +35,12 @@
     margin: 0 20px 10px 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid grey;
+}
+
+@media screen and (max-width: 1292px) {
+    .lablib_read_header_root {
+        top: 51px;
+    }
 }
 
 .lablib_read_title {
