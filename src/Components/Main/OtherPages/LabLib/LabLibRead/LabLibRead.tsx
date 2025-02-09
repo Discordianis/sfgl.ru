@@ -59,6 +59,24 @@ const LabLibRead: React.FC = () => {
     const [openModal, setOpenModal] = useState(false)
     const popupRef = useRef<HTMLDivElement | null>(null)
 
+    const [isVisible, setIsVisible] = useState<boolean>(true)
+    const [lastScroll, setLastScroll] = useState<number>(0)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScroll = window.scrollY
+            if (currentScroll < lastScroll || currentScroll < 50) {
+                setIsVisible(true)
+            }
+            else {
+                setIsVisible(false)
+            }
+            setLastScroll(currentScroll)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [lastScroll]);
+
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             const target = e.target as Node;
@@ -175,7 +193,7 @@ const LabLibRead: React.FC = () => {
     return (
         <div className={'lablib_read_root'}>
             <div>
-                <div className={'lablib_read_header_root'}>
+                <div className={'lablib_read_header_root'} style={{transform: `translateY(${isVisible ? '0px' : '-100px'})`}}>
                     <div className={'lablib_read_header'}>
                         <NavLink to={`/library/story/${params.story}`} className={'lablib_read_title'}>
                             {story?.name_eng && <span>{story.name_eng}</span>}

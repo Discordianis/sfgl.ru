@@ -8,6 +8,10 @@
     align-items: center;
 }
 
+.lablib_read_root {
+    background: #181818
+}
+
 .lablib_read_header {
     display: flex;
     flex-direction: row;
@@ -19,6 +23,12 @@
 
 .lablib_read_header_root {
     display: flex;
+    position: sticky;
+    top: 51px;
+    background: #181818;
+    padding-top: 10px;
+    transition: transform 0.5s ease-in-out;
+    z-index: 1;
     justify-content: center;
     width: 100%;
     max-width: 1400px;
@@ -135,7 +145,7 @@
 }
 
 .lablib_read_text .lablib_read_text_map img {
-    max-width: 800px;
+    max-width: 850px;
     width: 100%;
 }
 

@@ -34,11 +34,6 @@ header{
   justify-content: space-between;
 }
 
-.lablib_read_root {
-  padding-top: 10px;
-  background: #181818
-}
-
 input {
   width: 100%;
   max-width: 300px;
