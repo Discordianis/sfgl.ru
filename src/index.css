@@ -210,10 +210,11 @@ a {
   font-weight: 500;
   color: var(--text-not-active);
   text-decoration: inherit;
-  transition: color 0.3s;
+  transition: color 0.3s ease-in-out, filter 0.2s ease-in-out;
 }
 a:hover {
   color: var(--text-active);
+  filter: brightness(1.1);
 }
 a:active{
   color: var(--text-not-active);
