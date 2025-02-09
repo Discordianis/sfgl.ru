@@ -193,7 +193,44 @@ const LabLibRead: React.FC = () => {
     return (
         <div className={'lablib_read_root'}>
             <div>
-                <div className={'lablib_read_header_root'} style={{transform: `translateY(${isVisible ? '0px' : '-100px'})`}}>
+                <div className={`popup_root ${openModal ? 'visible' : 'hidden'}`}>
+                    <div className={`popup_prop ${openModal ? 'popup_opened' : ''}`} ref={popupRef}>
+                        <div className="popup_content">
+                            <div className="lablib_modal_chapters">
+                                <div className="lablib_modal_controls">
+                                    <div>
+                                        <div className="popup_close_button"
+                                             onClick={() => setOpenModal(false)}>
+                                            <span>←</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4>Список глав</h4>
+                                    </div>
+                                </div>
+                                <div className="lablib_modal_chapters_list">
+                                    {allChapters &&
+                                        Object.values(allChapters).map((chap: IChaptersInfo, index) => (
+                                            <NavLink reloadDocument={true}
+                                                     to={`/library/story/${params.story}/read/${chap?.number}`}
+                                                     key={index}>
+                                                <div>
+                                                    <div>
+                                                        <span>Глава {chap?.number}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span style={{color: '#a1a1a1'}}> – {chap?.name}</span>
+                                                    </div>
+                                                </div>
+                                            </NavLink>
+                                        ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={'lablib_read_header_root'}
+                     style={{transform: `translateY(${isVisible ? '0px' : '-100px'})`}}>
                     <div className={'lablib_read_header'}>
                         <NavLink to={`/library/story/${params.story}`} className={'lablib_read_title'}>
                             {story?.name_eng && <span>{story.name_eng}</span>}
@@ -217,44 +254,6 @@ const LabLibRead: React.FC = () => {
                                 <span>Оглавление</span>
                                 <span>{chapter?.name}</span>
                             </div>
-
-                            <div className={`popup_root ${openModal ? 'visible' : 'hidden'}`}>
-                                <div className={`popup_prop ${openModal ? 'popup_opened' : ''}`} ref={popupRef}>
-                                    <div className="popup_content">
-                                        <div className="lablib_modal_chapters">
-                                            <div className="lablib_modal_controls">
-                                                <div>
-                                                    <div className="popup_close_button"
-                                                         onClick={() => setOpenModal(false)}>
-                                                        <span>←</span>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <h4>Список глав</h4>
-                                                </div>
-                                            </div>
-                                            <div className="lablib_modal_chapters_list">
-                                                {allChapters &&
-                                                    Object.values(allChapters).map((chap: IChaptersInfo, index) => (
-                                                        <NavLink reloadDocument={true}
-                                                            to={`/library/story/${params.story}/read/${chap?.number}`}
-                                                            key={index}>
-                                                            <div>
-                                                                <div>
-                                                                    <span>Глава {chap?.number}</span>
-                                                                </div>
-                                                                <div>
-                                                                    <span style={{color: '#a1a1a1'}}> – {chap?.name}</span>
-                                                                </div>
-                                                            </div>
-                                                        </NavLink>
-                                                    ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <NavLink
                                 to={`/library/story/${params.story}/read/${Number(chapter?.number) + 1}`}
                                 reloadDocument={true}
@@ -278,7 +277,7 @@ const LabLibRead: React.FC = () => {
                             <h1>Глава {chapter?.number} – {chapter?.name}</h1>
                             <div className={'lablib_read_text_map'}>
                                 {chapter?.no_format === '0' ?
-                                    <TextOverflow maxHeight={99999} text={chapter?.text} />
+                                    <TextOverflow maxHeight={99999} text={chapter?.text}/>
                                     :
                                     <span>{parse(chapter?.text)}</span>
                                 }
@@ -309,13 +308,13 @@ const LabLibRead: React.FC = () => {
                     <span>Конец главы</span>
                     <div className={'chapters_controls'}>
                         <NavLink reloadDocument={true}
-                            to={`/library/story/${params.story}/read/${Number(chapter?.number) - 1}`}
-                            className={Number(chapter?.number) > minChapterNumber ? 'chapters_controls_left' : 'chapters_controls_left navDisable'}>
-                        <span>Предыдущая глава</span>
+                                 to={`/library/story/${params.story}/read/${Number(chapter?.number) - 1}`}
+                                 className={Number(chapter?.number) > minChapterNumber ? 'chapters_controls_left' : 'chapters_controls_left navDisable'}>
+                            <span>Предыдущая глава</span>
                         </NavLink>
                         <NavLink reloadDocument={true}
-                            to={`/library/story/${params.story}/read/${Number(chapter?.number) + 1}`}
-                            className={Number(chapter?.number) < maxChapterNumber ? 'chapters_controls_right' : 'chapters_controls_right navDisable'}>
+                                 to={`/library/story/${params.story}/read/${Number(chapter?.number) + 1}`}
+                                 className={Number(chapter?.number) < maxChapterNumber ? 'chapters_controls_right' : 'chapters_controls_right navDisable'}>
                             <span>Следующая глава</span>
                         </NavLink>
                     </div>
