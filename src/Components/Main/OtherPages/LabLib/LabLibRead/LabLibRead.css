@@ -281,6 +281,13 @@
     margin-left: 12px !important;
 }
 
+@media screen and (max-width: 1292px) {
+    header {
+        margin-bottom: 5px;
+        padding: 7px 20px;
+    }
+}
+
 @media screen and (max-width: 768px){
     .lablib_read_text {
         max-width: 90%;
