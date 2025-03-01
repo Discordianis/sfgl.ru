@@ -53,6 +53,7 @@ interface ICharacters {
     va_char_avatar: string,
     va_char_name: string,
     va_name: string,
+    names: string,
     length: number
 }
 
@@ -188,6 +189,11 @@ const LabLibCharacterPage: React.FC = () => {
                                     <div>
                                         <div className={'story_right_commons'}>
                                             <div>
+                                                {characters?.names &&
+                                                    <div>
+                                                        <span><strong>Прочие имена:</strong> {characters?.names}</span>
+                                                    </div>
+                                                }
                                                 <div>
                                                     <span><strong>Дата рождения: </strong>{characters?.birthday ? moment(characters?.birthday).format('D MMM YYYY [г.]') : 'Неизвестно'}</span>
                                                 </div>
@@ -218,7 +224,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             </div>
                                             <div>
                                                 <div className={'char_right_author'}>
-                                                    <div>
+                                                <div>
                                                         <h4>Автор:</h4>
                                                     </div>
                                                     <div>
@@ -302,7 +308,7 @@ const LabLibCharacterPage: React.FC = () => {
                                 </a>
                                 <div>
                                     {typeof characters === 'object' && Object.keys(characters).length > 0 ?
-                                        Object.values(story).filter((filter: IStoriesInfo) => filter.name_eng !== 'Date A Life').map((stories: IStoriesInfo) =>
+                                        Object.values(story).map((stories: IStoriesInfo) =>
                                             <NavLink to={`/library/story/${stories.id}-${stories.name_eng}`}>
                                                 <div className={'story_info_char'} key={stories?.id}>
                                                     <div>

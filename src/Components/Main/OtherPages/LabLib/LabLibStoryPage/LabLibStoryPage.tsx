@@ -374,12 +374,21 @@ const LabLibStoryPage: React.FC = () => {
                                                             <NavLink to={`/library/story/${params.story}/read/${chap?.number}`}>
                                                                 <div className={'chapters_props'}>
                                                                     <span className={'chapter_first'}><strong>Глава {chap?.number}</strong></span>
-                                                                    <span className={'chapter_second'}> – {chap?.name}</span>
+                                                                    <span className={'chapter_second'}>
+                                                                        – {chap?.name}
+                                                                        <span className={'chapter_third'}
+                                                                              style={{
+                                                                                  color: chap?.author === 'MrZaxter' ? '#bf7617' : chap?.author === 'Chortowod' ? '#b94ab0' : chap?.author === 'Kot' ? '#2b72bd' : 'gray',
+                                                                                  fontWeight: 'normal', marginLeft: '5px'
+                                                                              }}>
+                                                                        [{chap?.author}]
+                                                                    </span>
+                                                                    </span>
                                                                 </div>
                                                             </NavLink>
                                                         </div>
                                                     )
-                                                } />
+                                                }/>
                                                 :
                                                 <span><b><center>Нет ни одной главы...</center></b></span>
                                             }

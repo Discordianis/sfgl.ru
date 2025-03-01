@@ -53,12 +53,11 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
             const [fullMatch, spoilerContent, divAttributes, divContent] = match;
             fullMatch.toString()
 
-            // Добавляем текст перед текущим тегом
             if (lastIndex < match.index) {
                 const precedingText = rawText.slice(lastIndex, match.index);
                 const textLines = precedingText
                     .split('\n')
-                    .filter((line) => line.trim()) // Пропускаем пустые строки
+                    .filter((line) => line.trim())
                     .map((line, idx) => (
                         <div key={`line-${match.index}-${idx}`}>
                             {line[0] !== '<' && <span style={{ marginLeft: '1em' }}>&emsp;</span>}
@@ -69,7 +68,6 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
             }
 
             if (spoilerContent) {
-                // Обработка тега [spoiler][/spoiler]
                 const spoilerKey = `spoiler-${match.index}-${spoilerContent.slice(0, 10)}`;
                 children.push(
                     <div key={spoilerKey} className={`b_spoiler_textoverflow`}>
@@ -94,7 +92,6 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
                     </div>
                 );
             } else if (divContent) {
-                // Обработка тега [div style="..."][/div]
                 const styleMatch = divAttributes?.match(/style="([\s\S]*?)"/);
                 const styles = styleMatch ? parseStyleString(styleMatch[1]) : {};
 

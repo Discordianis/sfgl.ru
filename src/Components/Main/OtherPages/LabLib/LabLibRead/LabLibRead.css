@@ -39,7 +39,7 @@
 
 @media screen and (max-width: 1292px) {
     .lablib_read_header_root {
-        top: 51px;
+        top: 65px;
     }
 }
 
@@ -108,14 +108,6 @@
     transition: background-color 0.3s ease;
 }
 
-.chapters_controls > div:not(.popup_root, .hidden, .visible) {
-    padding: 0 15px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-    max-width: 400px;
-}
-
 .chapters_controls > a:hover, .chapters_controls > div:hover:not(.popup_root, .hidden, .visible), .lablib_read_title:hover {
     background: rgba(128, 128, 128, 0.45);
 }
@@ -130,7 +122,7 @@
 .lablib_read_text {
     text-align: start;
     max-width: 63%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .lablib_read_end {
@@ -161,6 +153,14 @@
     white-space: pre-wrap;
     display: block;
     padding: 5px 0;
+}
+
+.chapters_controls > div:not(.popup_root, .hidden, .visible) {
+    padding: 0 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    max-width: 255px;
 }
 
 .lablib_modal_chapters_list > a > div {
@@ -209,7 +209,7 @@
 }
 
 .popup_opened {
-    transform: translateX(0); /* Появление при открытии */
+    transform: translateX(0);
 }
 
 .lablib_modal_controls {
@@ -264,6 +264,21 @@
 
 .lablib_read_end a {
     background-color: #272727;
+    width: 165px;
+    display: flex;
+    justify-content: center;
+}
+
+.MuiStack-root.read_reactions.css-w6mnnp {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 0;
+}
+
+.btn_mui_cust {
+    margin-left: 12px !important;
 }
 
 @media screen and (max-width: 768px){
@@ -272,7 +287,7 @@
     }
 }
 
-@media screen and (max-width: 430px){
+@media screen and (max-width: 600px){
     .lablib_read_header {
         flex-direction: column;
     }
@@ -306,4 +321,25 @@
         align-items: center;
         justify-content: center;
     }
+}
+
+.read_reactions {
+    display: flex;
+    margin: 0 10px 16px 10px;
+    gap: 10px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.read_reactions > div {
+    padding: 8px;
+    cursor: pointer;
+    user-select: none;
+    background: #272727;
+    border-radius: 8px;
+}
+
+.read_reactions_content {
+    display: flex;
+    gap: 5px;
 }

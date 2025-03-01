@@ -11,7 +11,7 @@ const AudioPlayer: React.FC<ISrc> = ({ src }) => {
 
     useEffect(() => {
         if (audioRef.current) {
-            audioRef.current.volume = 0.06; // Устанавливаем громкость на 2%
+            audioRef.current.volume = 0.06;
             audioRef.current.loop = true
         }
     }, []);
@@ -32,7 +32,7 @@ const AudioPlayer: React.FC<ISrc> = ({ src }) => {
     useEffect(() => {
         const audio = audioRef.current;
 
-        if (audio) { // Проверяем, что audio не null
+        if (audio) {
             const handlePlay = () => setIsPlaying(true);
             const handlePause = () => setIsPlaying(false);
 

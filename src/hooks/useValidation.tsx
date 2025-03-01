@@ -10,7 +10,7 @@ interface IValidations {
     passwordUpperCaseError?: boolean
     passwordSymbolError?: boolean
     passwordNumberError?: boolean
-    repeatPasswordError?: string; // Должен быть строка для сравнения
+    repeatPasswordError?: string;
 }
 
 interface IValidationResult {
@@ -23,7 +23,7 @@ interface IValidationResult {
     passwordUpperCaseError?: boolean
     passwordSymbolError?: boolean
     passwordNumberError?: boolean
-    repeatPasswordError: boolean; // Результат проверки
+    repeatPasswordError: boolean;
     anyError: boolean;
 }
 
@@ -40,12 +40,9 @@ export default function useValidation(value: string, validations: IValidations):
     const [repeatPasswordError, setRepeatPasswordError] = useState<boolean>(false);
     const [anyError, setAnyError] = useState<boolean>(false);
 
-//валидация почты
     const re = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
-//валидация никнейма
     const rn = /^[a-zA-Z0-9]+$/
     const rnrus = /^[a-zA-ZА-Яа-яёЁ0-9 _-]+$/
-//валидация пароля
     const rpUpperCase = /^(?=.*[A-Z]).+$/;
     const rpSymbol = /[!@#$%^&*(),.?":{}|<>[\]\/;‘’“”`~\-+\\=_]/;
     const rpNumber = /^(?=.*[0-9]).+$/;

@@ -24,7 +24,8 @@ interface IAllCharactersInfo {
     va_char_avatar: string,
     va_char_name: string,
     va_name: string,
-    role: string
+    role: string,
+    names: string,
 }
 
 interface IAllData {
@@ -65,6 +66,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
     const characterVoiceNameEdit = useInput('', {})
     const characterVoiceCoverEdit = useRef<HTMLInputElement | null>(null)
     const descriptionEdit = useInput('', {})
+    const secondNameEdit = useInput('', {})
 
     const rusNameNew = useInput('', {})
     const engNameNew = useInput('', {})
@@ -78,6 +80,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
     const characterVoiceNameNew = useInput('', {})
     const characterVoiceCoverNew = useRef<HTMLInputElement | null>(null)
     const descriptionNew = useInput('', {})
+    const secondNameNew = useInput('', {})
 
     const [fileCharacterCoverError ,setFileCharacterCoverError] = useState('')
     const [fileVoiceCharacterCoverError ,setFileVoiceCharacterCoverError] = useState('')
@@ -131,6 +134,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
             seyuNameEdit.setValue(currentCharacter?.va_name || '')
             characterVoiceNameEdit.setValue(currentCharacter?.va_char_name || '')
             descriptionEdit.setValue(currentCharacter?.description || '')
+            secondNameEdit.setValue(currentCharacter?.names || '')
         }
     }, [currentCharacter]);
 
@@ -144,6 +148,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
         seyuNameNew.setValue('')
         characterVoiceNameNew.setValue('')
         descriptionNew.setValue('')
+        secondNameNew.setValue('')
         if (characterCoverNew?.current) {
             characterCoverNew.current.value = ''
         }
@@ -332,6 +337,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                 life_status: statusEdit,
                 name_eng: engNameEdit.value,
                 name_rus: rusNameEdit.value,
+                names: secondNameEdit.value,
                 va_char_name: characterVoiceNameEdit.value,
                 va_name: seyuNameEdit.value
             },
@@ -350,6 +356,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                 life_status: statusNew,
                 name_eng: engNameNew.value,
                 name_rus: rusNameNew.value,
+                names: secondNameNew.value,
                 va_char_name: characterVoiceNameNew.value,
                 va_name: seyuNameNew.value
             },
@@ -499,12 +506,20 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     <div className={'add_character_bottom_inputs'}>
                                         <div>
                                             <label>Имя персонажа(рус.):
-                                                <input type={'text'} value={rusNameEdit.value} onChange={(e) => rusNameEdit.onChange(e)}/>
+                                                <input type={'text'} value={rusNameEdit.value}
+                                                       onChange={(e) => rusNameEdit.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Имя персонажа(англ.):
-                                                <input type={'text'} value={engNameEdit.value} onChange={(e) => engNameEdit.onChange(e)}/>
+                                                <input type={'text'} value={engNameEdit.value}
+                                                       onChange={(e) => engNameEdit.onChange(e)}/>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>Прочие имена:
+                                                <input type={'text'} value={secondNameEdit.value}
+                                                       onChange={(e) => secondNameEdit.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div className={'filter_buttons'}>
@@ -517,25 +532,31 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                         </div>
                                         <div>
                                             <label>Дата рождения:
-                                                <input type={"date"} value={birthdayEdit.value} onChange={(e) => birthdayEdit.onChange(e)}/>
+                                                <input type={"date"} value={birthdayEdit.value}
+                                                       onChange={(e) => birthdayEdit.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Возраст в годах:
-                                                <input type={"number"} min={0} value={ageEdit.value} onChange={(e) => ageEdit.onChange(e)}/>
+                                                <input type={"number"} min={0} value={ageEdit.value}
+                                                       onChange={(e) => ageEdit.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Рост в см:
-                                                <input type={"number"} min={0} value={heigthEdit.value} onChange={(e) => heigthEdit.onChange(e)}/>
+                                                <input type={"number"} min={0} value={heigthEdit.value}
+                                                       onChange={(e) => heigthEdit.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Обложка (4:3):
                                                 <input type={"file"} accept={'.jpg, .jpeg, .png, .webp'}
-                                                onChange={handleCharacterCoverChange} ref={characterCoverEdit}/>
+                                                       onChange={handleCharacterCoverChange} ref={characterCoverEdit}/>
                                             </label>
-                                            {fileCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCharacterCoverError}</span>}
+                                            {fileCharacterCoverError && <span style={{
+                                                color: '#f75151',
+                                                fontSize: '13px'
+                                            }}>{fileCharacterCoverError}</span>}
                                         </div>
                                     </div>
                                 </div>
@@ -649,12 +670,20 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                     <div className={'add_character_bottom_inputs'}>
                                         <div>
                                             <label>Имя персонажа(рус.):
-                                                <input type={'text'} value={rusNameNew.value} onChange={(e) => rusNameNew.onChange(e)}/>
+                                                <input type={'text'} value={rusNameNew.value}
+                                                       onChange={(e) => rusNameNew.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Имя персонажа(англ.):
-                                                <input type={'text'} value={engNameNew.value} onChange={(e) => engNameNew.onChange(e)}/>
+                                                <input type={'text'} value={engNameNew.value}
+                                                       onChange={(e) => engNameNew.onChange(e)}/>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label>Прочие имена:
+                                                <input type={'text'} value={secondNameNew.value}
+                                                       onChange={(e) => secondNameNew.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div className={'filter_buttons'}>
@@ -667,17 +696,20 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                         </div>
                                         <div>
                                             <label>Дата рождения:
-                                                <input type={"date"} value={birthdayNew.value} onChange={(e) => birthdayNew.onChange(e)}/>
+                                                <input type={"date"} value={birthdayNew.value}
+                                                       onChange={(e) => birthdayNew.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Возраст в годах:
-                                                <input type={"number"} min={0} value={ageNew.value} onChange={(e) => ageNew.onChange(e)}/>
+                                                <input type={"number"} min={0} value={ageNew.value}
+                                                       onChange={(e) => ageNew.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Рост в см:
-                                                <input type={"number"} min={0} value={heigthNew.value} onChange={(e) => heigthNew.onChange(e)}/>
+                                                <input type={"number"} min={0} value={heigthNew.value}
+                                                       onChange={(e) => heigthNew.onChange(e)}/>
                                             </label>
                                         </div>
                                         <div>
@@ -685,14 +717,18 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                 <input type={"file"} accept={'.jpg, .jpeg, .png, .webp'}
                                                        onChange={handleCharacterCoverChange} ref={characterCoverNew}/>
                                             </label>
-                                            {fileCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCharacterCoverError}</span>}
+                                            {fileCharacterCoverError && <span style={{
+                                                color: '#f75151',
+                                                fontSize: '13px'
+                                            }}>{fileCharacterCoverError}</span>}
                                         </div>
                                     </div>
                                 </div>
                                 <div className={'add_character_bottom_va'}>
                                     <div>
                                         <label>Имя сэйю:
-                                            <input type={'text'} value={seyuNameNew.value} onChange={(e) => seyuNameNew.onChange(e)}/>
+                                            <input type={'text'} value={seyuNameNew.value}
+                                                   onChange={(e) => seyuNameNew.onChange(e)}/>
                                         </label>
                                     </div>
                                     <div>
@@ -806,6 +842,12 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                        onChange={(e) => engNameNew.onChange(e)}/>
                                             </label>
                                         </div>
+                                        <div>
+                                            <label>Прочие имена:
+                                                <input type={'text'} value={secondNameNew.value}
+                                                       onChange={(e) => secondNameNew.onChange(e)}/>
+                                            </label>
+                                        </div>
                                         <div className={'filter_buttons'}>
                                             <span>Статус:</span>
                                             <select value={statusNew} onChange={(e) => setStatusNew(e.target.value)}>
@@ -837,7 +879,10 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                 <input type={"file"} accept={'.jpg, .jpeg, .png, .webp'}
                                                        onChange={handleCharacterCoverChange} ref={characterCoverNew}/>
                                             </label>
-                                            {fileCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCharacterCoverError}</span>}
+                                            {fileCharacterCoverError && <span style={{
+                                                color: '#f75151',
+                                                fontSize: '13px'
+                                            }}>{fileCharacterCoverError}</span>}
                                         </div>
                                     </div>
                                 </div>

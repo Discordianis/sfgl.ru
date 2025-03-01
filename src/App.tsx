@@ -27,6 +27,7 @@ import LabLibStoryCharacters from "./Components/Main/OtherPages/LabLib/LabLibSto
 import LabLibRead from "./Components/Main/OtherPages/LabLib/LabLibRead/LabLibRead.tsx";
 import AddLibrary from "./Components/Main/AddInfo/AddLibrary/AddLibrary.tsx";
 import Wall from "./Components/Main/OtherPages/Wall/Wall.tsx";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export default function App() {
     const token = localStorage.getItem('token');
@@ -35,44 +36,64 @@ export default function App() {
         dispatch(fetchData());
     }, [dispatch]);
 
+    const theme = createTheme({
+        palette: {
+            primary: {
+                light: '#292929',
+                main: '#272727',
+                dark: '#212121',
+                contrastText: '#fff',
+            },
+            secondary: {
+                light: '#3468cf',
+                main: '#3061c3',
+                dark: '#2850a1',
+                contrastText: '#000',
+            },
+        },
+    });
+
     return (
         <div className={'main'}>
-            <BrowserRouter basename={import.meta.env.BASE_URL}>
-                <Background />
-                <Header />
-                <Routes>
-                    <Route path={'/'} Component={Home} />
-                    {token ?
-                    <>
-                        <Route path={'/archive'} Component={MainMenu} />
-                        <Route path={'/login'} Component={LoginPage} />
-                        <Route path={'/registration'} Component={Registration} />
-                        <Route path={'/users/:nickname'} Component={Profile} />
-                        <Route path={'/library'} Component={LabLibMenu} />
-                        <Route path={'/library/story/:story'} Component={LabLibStoryPage} />
-                        <Route path={'/library/story/:story/read/:read'} Component={LabLibRead} />
-                        <Route path={'/library/story/:story/characters'} Component={LabLibStoryCharacters} />
-                        <Route path={'/library/characters/:characters'} Component={LabLibCharacterPage} />
-                        <Route path={'/users/:nickname/settings'} Component={ProfileSettings} />
-                        <Route path={'/users/:nickname/createInfo/archive'} Component={ArchiveAdd} />
-                        <Route path={'/users/:nickname/createInfo/roundTable'} Component={AddRoundTable} />
-                        <Route path={'/users/:nickname/createInfo/fridays'} Component={AddFridays} />
-                        <Route path={'/users/:nickname/createInfo/library'} Component={AddLibrary} />
-                        <Route path={'/admin'} Component={AdminPage} />
-                        <Route path={'/faq'} Component={Faq} />
-                        <Route path={'/wall'} Component={Wall} />
-                        <Route path={'/roundtable'} Component={RoundTable} />
-                        <Route path={'/fridays'} Component={Fridays} />
-                        <Route path={'*'} Component={notFound} />
-                    </>
-                    :
-                    <>
-                        <Route path={'*'} Component={LoginPage} />
-                        <Route path={'/registration'} Component={Registration} />
-                    </>
-                    }
-                </Routes>
-            </BrowserRouter>
+            <ThemeProvider theme={theme}>
+                    <BrowserRouter basename={import.meta.env.BASE_URL}>
+                        <Background />
+                        <Header />
+                        <Routes>
+                            <Route path={'/'} Component={Home} />
+                            {token ?
+                                <>
+                                    <Route path={'/archive'} Component={MainMenu} />
+                                    <Route path={'/login'} Component={LoginPage} />
+                                    <Route path={'/registration'} Component={Registration} />
+                                    <Route path={'/users/:nickname'} Component={Profile} />
+                                    <Route path={'/library'} Component={LabLibMenu} />
+                                    <Route path={'/library/story/:story'} Component={LabLibStoryPage} />
+                                    <Route path={'/library/story/:story/read/:read'} Component={LabLibRead} />
+                                    <Route path={'/library/story/:story/characters'} Component={LabLibStoryCharacters} />
+                                    <Route path={'/library/characters/:characters'} Component={LabLibCharacterPage} />
+                                    <Route path={'/users/:nickname/settings'} Component={ProfileSettings} />
+                                    <Route path={'/users/:nickname/createInfo/archive'} Component={ArchiveAdd} />
+                                    <Route path={'/users/:nickname/createInfo/roundTable'} Component={AddRoundTable} />
+                                    <Route path={'/users/:nickname/createInfo/fridays'} Component={AddFridays} />
+                                    <Route path={'/users/:nickname/createInfo/library'} Component={AddLibrary} />
+                                    <Route path={'/admin'} Component={AdminPage} />
+                                    <Route path={'/faq'} Component={Faq} />
+                                    <Route path={'/wall'} Component={Wall} />
+                                    <Route path={'/roundtable'} Component={RoundTable} />
+                                    <Route path={'/fridays'} Component={Fridays} />
+                                    <Route path={'*'} Component={notFound} />
+                                </>
+                                :
+                                <>
+                                    <Route path={'*'} Component={LoginPage} />
+                                    <Route path={'/registration'} Component={Registration} />
+                                </>
+                            }
+                        </Routes>
+                    </BrowserRouter>
+            </ThemeProvider>
+
         </div>
     );
 }

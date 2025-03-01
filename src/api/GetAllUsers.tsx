@@ -73,7 +73,7 @@ const GetAllUsers: React.FC = () => {
             if (isRussianA && !isRussianB) return -1;
             if (!isRussianA && isRussianB) return 1;
 
-            return a.custom_nickname.localeCompare(b.custom_nickname, 'ru');
+            return a.custom_nickname?.localeCompare(b.custom_nickname, 'ru');
         })
         : [];
 
