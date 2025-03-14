@@ -5,9 +5,10 @@ import parse from "html-react-parser";
 interface ITextBlockProps {
     text: string | React.ReactNode;
     maxHeight: number;
+    open?: boolean
 }
 
-const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
+const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight, open }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isShortText, setIsShortText] = useState(false);
     const [visibleSpoilers, setVisibleSpoilers] = useState<Set<string>>(new Set());
@@ -42,6 +43,11 @@ const TextOverflow: React.FC<ITextBlockProps> = ({ text, maxHeight }) => {
         }, {});
     };
 
+    useEffect(() => {
+        if (open) {
+            setIsExpanded(open)
+        }
+    }, [open]);
     const processTextWithSpoilersAndDivs = (rawText: string) => {
         const children: React.ReactNode[] = [];
         const regex = /\[spoiler\]([\s\S]*?)\[\/spoiler\]|\[div(.*?)\]([\s\S]*?)\[\/div\]/g;

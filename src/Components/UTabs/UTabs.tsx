@@ -9,7 +9,11 @@ interface UTabsProps extends HTMLAttributes<HTMLDivElement>{
 const UTabs: React.FC<UTabsProps> = ({children, isActive, ...props}) => {
     return (
         <>
-            <div className={isActive ? 'utabs active' : 'utabs'} {...props}>{children}</div>
+            <div className={isActive ? 'utabs active' : 'utabs'} {...props}>
+                <div data-text={children}>
+                    <span>{children}</span>
+                </div>
+            </div>
         </>
     )
 }

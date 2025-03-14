@@ -68,7 +68,6 @@ const LabLibMenu: React.FC = () => {
     useEffect(() => {
         if (selectedStory) {
             body.style.backgroundImage = `url('${selectedStory.poster}')`
-            body.style.backdropFilter = 'brightness(0.8)'
             body.style.backgroundSize = 'cover';
             body.style.backgroundAttachment = 'fixed';
             body.style.backgroundPosition = 'center';
@@ -76,7 +75,6 @@ const LabLibMenu: React.FC = () => {
         }
         return () => {
             body.style.backgroundImage = 'none'
-            body.style.backdropFilter = 'none'
         }
     }, [selectedStory]);
 
@@ -93,7 +91,6 @@ const LabLibMenu: React.FC = () => {
             const body = document.body
             if (body && fog) {
                 body.style.backgroundImage = `url('${witches}')`
-                body.style.backdropFilter = 'brightness(0.8)'
                 body.style.backgroundSize = 'cover';
                 body.style.backgroundAttachment = 'fixed';
                 body.style.backgroundPosition = 'center left';

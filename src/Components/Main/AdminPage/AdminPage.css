@@ -25,7 +25,14 @@
 
 .admin_page_utabs > div {
     width: auto;
-    flex: 1;
+}
+
+.admin_page_root .admin_achieve_input label {
+    max-width: 320px;
+}
+
+.admin_page_action button {
+    margin: 5px;
 }
 
 .admin_page_action {
@@ -205,6 +212,7 @@
 
 .admin_page_action > .profile_ach_root > .profile_ach {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     width: calc(50% - 5px);
     background: var(--background-dark-brown);
@@ -223,13 +231,4 @@
 .admin_page_root .filter_buttons {
     max-width: 250px;
     width: 100%;
-}
-
-.admin_page_root .filter_buttons:after {
-    content: '▼';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
 }

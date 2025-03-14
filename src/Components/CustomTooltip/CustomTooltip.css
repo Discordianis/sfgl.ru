@@ -1,0 +1,180 @@
+.MuiTooltip-tooltip.MuiTooltip-tooltipArrow {
+    background: #08080bc4 !important;
+    backdrop-filter: blur(5px);
+    max-height: 380px;
+    overflow-y: scroll;
+}
+
+.MuiTooltip-tooltip.MuiTooltip-tooltipArrow .MuiTooltip-arrow::before {
+    background: rgba(47, 47, 60, 0.77) !important;
+    backdrop-filter: blur(5px);
+}
+
+.tooltip_character_root .char_info_right_tltp {
+    max-width: calc(100% - 204px);
+    display: flex;
+    gap: 15px;
+    flex: 1;
+}
+
+.tooltip_character_root .char_info_right_tltp > div {
+    flex: 1;
+}
+
+.tooltip_character_root .story_right_commons > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: var(--background-dark-brown);
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+}
+
+.tooltip_character_root .story_right_commons {
+    display: flex;
+    gap: 5px;
+}
+
+.tooltip_character_root .character_right_status {
+    display: flex;
+    gap: 5px;
+}
+
+.tooltip_character_root .char_right_status_lively {
+    padding: 0 10px;
+    background: #1b851b;
+    border-radius: 15px;
+    width: fit-content;
+}
+
+.tooltip_character_root .char_right_status_dead {
+    padding: 0 10px;
+    background: #e13f3f;
+    border-radius: 15px;
+    width: fit-content;
+}
+
+.tooltip_character_root .char_right_status_unknown {
+    padding: 0 10px;
+    background: #656565;
+    border-radius: 15px;
+    width: fit-content;
+}
+
+.tooltip_character_root .char_right_status {
+    filter: grayscale(1) blur(10px) opacity(0.5);
+    background: gray;
+    border-radius: 8px;
+    width: 130px;
+    transition: filter 1s ease-in-out, background-color 2s ease-in-out;
+    user-select: none;
+}
+
+.tooltip_character_root .char_right_status:hover {
+    filter: none;
+    background: none;
+    transition: filter 1s ease-in-out, background-color 0.7s ease-in-out;
+}
+
+.tooltip_character_root .char_right_author img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    outline: var(--border-wheat);
+}
+
+.tooltip_character_root .char_right_author {
+    border-radius: 8px;
+    display: flex;
+    gap: 5px;
+    height: fit-content;
+    flex-direction: column;
+}
+
+.tooltip_character_root .char_right_author > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.tooltip_character_root .char_right_author > div:nth-child(2) > div:nth-child(1) {
+    display: flex;
+    height: fit-content;
+}
+
+.tooltip_character_root .char_right_author > div:nth-child(2) > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+}
+
+.tooltip_character_root .char_right_author > div:nth-child(2) > div:nth-child(2) > a > span {
+    color: var(--text-gray);
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.tooltip_character_root .char_right_author > div:nth-child(2) > div:nth-child(2) > a {
+    display: flex;
+}
+
+.tooltip_character_root .char_right_author > div:nth-child(2) > div:nth-child(2) > a > span:hover {
+    color: #bfa881;
+}
+
+.tooltip_character_root .story_info_left > div > div > img {
+    height: 150px;
+    width: 100px;
+    outline: var(--border-wheat);
+    object-fit: cover;
+}
+
+.tooltip_character_root .story_info_left > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tooltip_character_root .story_info_left > div > div:nth-child(1) {
+    display: flex;
+}
+
+.tooltip_character_root .char_info_cover {
+    cursor: pointer;
+}
+
+.tooltip_character_root .div_image_big {
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    outline: var(--border-wheat);
+    height: 150px;
+    width: 100px;
+}
+
+.tooltip_character_root .char_page_va_root {
+    display: flex;
+    gap: 5px;
+}
+
+.tooltip_character_root .char_page_va_root > div {
+    padding: 10px;
+    background: var(--background-dark-brown);
+    border-radius: 8px;
+    margin: 5px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.tooltip_character_root .char_page_va_char img, .tooltip_character_root .char_page_va_seiyuu img {
+    height: 120px;
+    width: 80px;
+    outline: var(--border-wheat);
+    object-fit: cover;
+}
+
+.char_desc_tltp .text-block.expanded{
+
+}

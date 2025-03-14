@@ -3,11 +3,12 @@ import React, {useEffect, useRef, useState} from "react";
 import {useNotification} from "../../../../../hooks/useSuccess.tsx";
 import Loading from "../../../../Loading/Loading.tsx";
 import imageNF from "../../../../../../public/icons/imageNotFound.jpeg"
-import Button from "../../../../Button/Button.tsx";
 import useInput from "../../../../../hooks/useInput.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../../redux";
 import HoldButton from "../../../../Button/HoldButton.tsx";
+import {Button, TextField} from "@mui/material";
+import {chapterPlaceholders} from "../../../../../placeholders/chapterPlaceholders.tsx";
 
 interface IAllChaptersInfo {
     author: string,
@@ -90,6 +91,14 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
 
     const [editInputErrors, setEditInputErrors] = useState(false)
     const [newInputErrors, setNewInputErrors] = useState(false)
+
+    const [placeholder, setPlaceholder] = useState("");
+
+    useEffect(() => {
+        const keys = Object.keys(chapterPlaceholders);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        setPlaceholder(chapterPlaceholders[randomKey]);
+    }, [currentChapter, createNewChapter]);
 
     useEffect(() => {
         const fetching = async () => {
@@ -527,12 +536,12 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                                      onClick={() => getCurrentChapter(chapter?.id)}>
                                                     <div className={'add_library_chapter_prop_title'}>
                                                         {(chapter?.number) ?
-                                                            <Button onClick={() => getCurrentChapter(chapter?.id)}
+                                                            <Button sx={{margin: '0 3px', padding: '5px', minWidth: '90px'}} variant={'outlined'} onClick={() => getCurrentChapter(chapter?.id)}
                                                                     style={{color: chapter?.forbidden ? '#656565' : ''}}>
                                                                 <strong>Глава {chapter?.number}</strong>
                                                             </Button>
                                                             :
-                                                            <Button onClick={() => getCurrentChapter(chapter?.id)}
+                                                            <Button variant={'outlined'} onClick={() => getCurrentChapter(chapter?.id)}
                                                                     style={{color: chapter?.forbidden ? '#656565' : ''}}>
                                                                 Глава ???
                                                             </Button>
@@ -545,14 +554,14 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     </div>
                                     <div>
                                         {(!createNewChapter && currentStory?.chapters) &&
-                                            <Button onClick={() => setCreateNewChapter(true)}>Создать главу</Button>}
+                                            <Button variant={'outlined'} onClick={() => setCreateNewChapter(true)}>Создать главу</Button>}
                                     </div>
                                 </div>
                             </div>
                             : currentStory &&
                             <div className={'add_first_chapter'}>
                                 <span>Нет ни одной главы для этой истории...</span>
-                                <Button onClick={() => setCreateNewChapter(true)}>Создать первую главу</Button>
+                                <Button variant={'outlined'} onClick={() => setCreateNewChapter(true)}>Создать первую главу</Button>
                             </div>
                         }
                         {(!createNewChapter && currentChapter) &&
@@ -562,9 +571,15 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                                 <div className={'add_library_chapter_inputs'}>
                                     <div>
-                                        <label>Название главы:
-                                            <input type={'text'} value={nameEdit.value}
-                                                   onChange={(e) => nameEdit.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Название главы'}
+                                                type={'text'}
+                                                value={nameEdit.value}
+                                                error={nameEdit.emptyInput}
+                                                onChange={(e) => nameEdit.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
@@ -581,7 +596,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                             <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>
                                         }
                                         {(coverUrl) &&
-                                            <Button onClick={deleteImg}>Удалить изображение</Button>
+                                            <Button variant={'outlined'} onClick={deleteImg}>Удалить изображение</Button>
                                         }
                                     </div>
                                     <div>
@@ -593,10 +608,34 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         </label>
                                     </div>
                                     <div className={'textarea_span'}>
-                                    <span>Текст главы:</span>
-                                        <textarea rows={30} value={textEdit.value}
-                                                  onChange={(e) => textEdit.onChange(e)}
-                                        />
+                                        <label>
+                                            <TextField
+                                                multiline
+                                                variant={'outlined'}
+                                                label={'Текст главы'}
+                                                placeholder={placeholder}
+                                                minRows={2}
+                                                sx={{
+                                                    '&::before': {
+                                                        border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                        transform: 'scaleX(0)',
+                                                        left: '2.5px',
+                                                        right: '2.5px',
+                                                        bottom: 0,
+                                                        top: 'unset',
+                                                        transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                        borderRadius: 0,
+                                                        borderBottomLeftRadius: '64px 20px',
+                                                        borderBottomRightRadius: '64px 20px',
+                                                    },
+                                                    '&:focus-within::before': {
+                                                        transform: 'scaleX(1)',
+                                                    },
+                                                }}
+                                                value={textEdit.value}
+                                                onChange={(e) => textEdit.onChange(e)}
+                                            />
+                                        </label>
                                         <div className={'hints_html'}>
                                             <div className={'hints_html_first'}>
                                                 <span>Подсказки:</span>
@@ -630,16 +669,19 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     <div className={'add_library_chapter_buttons'}>
                                         <div className={'delete_buttons_root'}>
                                             {!nihility ?
-                                                <Button style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция Небытия...</Button>
+                                                <Button variant={'outlined'} style={{color: '#b34949'}}
+                                                        onClick={() => setNihility(true)}>Функция Небытия...</Button>
                                                 :
                                                 <>
-                                                    <Button onClick={() => setNihility(false)}>Отмена</Button>
-                                                    <HoldButton onClick={() => deleteChapter(currentChapter?.id)}>Удалить главу</HoldButton>
+                                                    <Button variant={'outlined'}
+                                                            onClick={() => setNihility(false)}>Отмена</Button>
+                                                    <HoldButton onClick={() => deleteChapter(currentChapter?.id)}>Удалить
+                                                        главу</HoldButton>
                                                 </>
                                             }
                                         </div>
                                         <div className={'add_save_button'}>
-                                            <Button onClick={uploadChapter}
+                                            <Button variant={'outlined'} onClick={uploadChapter}
                                                     disabled={coverError?.length > 0 || editInputErrors || posting || Number(numberEdit.value) < 0}>
                                                 Сохранить изменения
                                             </Button>
@@ -655,9 +697,15 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                                 <div className={'add_library_chapter_inputs'}>
                                     <div>
-                                        <label>Название главы:
-                                            <input type={'text'} value={nameNew.value}
-                                                   onChange={(e) => nameNew.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Название главы'}
+                                                type={'text'}
+                                                value={nameNew.value}
+                                                error={nameNew.emptyInput}
+                                                onChange={(e) => nameEdit.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
@@ -674,7 +722,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                             <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>
                                         }
                                         {(coverUrl) &&
-                                            <Button onClick={deleteImg}>Удалить изображение</Button>
+                                            <Button variant={'outlined'} onClick={deleteImg}>Удалить изображение</Button>
                                         }
                                     </div>
                                     <div>
@@ -686,10 +734,34 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         </label>
                                     </div>
                                     <div className={'textarea_span'}>
-                                        <span>Текст главы:</span>
-                                        <textarea rows={30} value={textNew.value}
-                                                  onChange={(e) => textNew.onChange(e)}
-                                        />
+                                        <label>
+                                            <TextField
+                                                multiline
+                                                variant={'outlined'}
+                                                label={'Текст главы'}
+                                                placeholder={placeholder}
+                                                minRows={2}
+                                                sx={{
+                                                    '&::before': {
+                                                        border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                        transform: 'scaleX(0)',
+                                                        left: '2.5px',
+                                                        right: '2.5px',
+                                                        bottom: 0,
+                                                        top: 'unset',
+                                                        transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                        borderRadius: 0,
+                                                        borderBottomLeftRadius: '64px 20px',
+                                                        borderBottomRightRadius: '64px 20px',
+                                                    },
+                                                    '&:focus-within::before': {
+                                                        transform: 'scaleX(1)',
+                                                    },
+                                                }}
+                                                value={textNew.value}
+                                                onChange={(e) => textNew.onChange(e)}
+                                            />
+                                        </label>
                                         <div className={'hints_html'}>
                                             <div className={'hints_html_first'}>
                                                 <span>Подсказки:</span>
@@ -718,7 +790,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     }
                                 </div>
                                 <div className={'add_save_button'}>
-                                    <Button onClick={uploadChapter}
+                                    <Button variant={'outlined'} onClick={uploadChapter}
                                             disabled={coverError.length > 0 || newInputErrors || posting || Number(numberNew.value) < 0}>
                                         Создать главу
                                     </Button>
@@ -732,18 +804,25 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                     {!createNewChapter ?
                         <div className={'add_first_chapter'}>
                             <span>Нет ни одной главы...</span>
-                            <Button onClick={() => setCreateNewChapter(true)}>Создать первую главу</Button>
+                            <Button variant={'outlined'} onClick={() => setCreateNewChapter(true)}>Создать первую
+                                главу</Button>
                         </div>
                         : allLibraryData?.info?.chapters_edit ?
-                        <div className={'add_library_chapter_main'}>
-                            <div className={'decorated_title'}>
-                                <h3>Создание главы</h3>
+                            <div className={'add_library_chapter_main'}>
+                                <div className={'decorated_title'}>
+                                    <h3>Создание главы</h3>
                             </div>
                             <div className={'add_library_chapter_inputs'}>
                                 <div>
-                                    <label>Название главы:
-                                        <input type={'text'} value={nameNew.value}
-                                               onChange={(e) => nameNew.onChange(e)}/>
+                                    <label>
+                                        <TextField
+                                            variant={'outlined'}
+                                            label={'Название главы'}
+                                            type={'text'}
+                                            value={nameNew.value}
+                                            error={nameNew.emptyInput}
+                                            onChange={(e) => nameNew.onChange(e)}
+                                        />
                                     </label>
                                 </div>
                                 <div>
@@ -760,7 +839,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <span style={{color: '#f75151', fontSize: '13px'}}>{coverError}</span>
                                     }
                                     {(coverUrl) &&
-                                        <Button onClick={deleteImg}>Удалить изображение</Button>
+                                        <Button variant={'outlined'} onClick={deleteImg}>Удалить изображение</Button>
                                     }
                                 </div>
                                 <div>
@@ -773,8 +852,34 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                                 <div className={'textarea_span'}>
                                     <span>Текст главы:</span>
-                                    <textarea rows={30} value={textNew.value}
-                                              onChange={(e) => textNew.onChange(e)}/>
+                                    <label>
+                                        <TextField
+                                            multiline
+                                            variant={'outlined'}
+                                            label={'Текст главы'}
+                                            placeholder={placeholder}
+                                            minRows={2}
+                                            sx={{
+                                                '&::before': {
+                                                    border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                    transform: 'scaleX(0)',
+                                                    left: '2.5px',
+                                                    right: '2.5px',
+                                                    bottom: 0,
+                                                    top: 'unset',
+                                                    transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                    borderRadius: 0,
+                                                    borderBottomLeftRadius: '64px 20px',
+                                                    borderBottomRightRadius: '64px 20px',
+                                                },
+                                                '&:focus-within::before': {
+                                                    transform: 'scaleX(1)',
+                                                },
+                                            }}
+                                            value={textNew.value}
+                                            onChange={(e) => textNew.onChange(e)}
+                                        />
+                                    </label>
                                 </div>
                                 <div className={'hints_html'}>
                                     <div className={'hints_html_first'}>
@@ -802,9 +907,9 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     </div>
                                 }
                             </div>
-                            <div className={'add_save_button'}>
-                                <Button onClick={uploadChapter}
-                                        disabled={coverError.length > 0 || newInputErrors || posting || Number(numberNew.value) < 0}>
+                                <div className={'add_save_button'}>
+                                    <Button variant={'outlined'} onClick={uploadChapter}
+                                            disabled={coverError.length > 0 || newInputErrors || posting || Number(numberNew.value) < 0}>
                                     Создать главу
                                 </Button>
                             </div>
@@ -812,7 +917,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                             :
                             <div style={{textAlign: 'center'}} className={'add_first_chapter_no_story'}>
                             <span>Нет ни одной истории, в которой вы бы смогли написать главу...</span>
-                                <Button onClick={() => setCreateNewChapter(false)}>Закрыть</Button>
+                                <Button variant={'outlined'} onClick={() => setCreateNewChapter(false)}>Закрыть</Button>
                             </div>
                     }
                 </div>

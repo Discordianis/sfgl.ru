@@ -189,7 +189,7 @@
 
 .lablib_menu_description > a > div {
     padding: 10px 15px;
-    background: var(--background-dark-brown);
+    background: #4b4b7dc9;
     border-radius: 8px;
     margin: 5px 0;
     border: transparent 1px solid;
@@ -198,7 +198,7 @@
 
 .lablib_menu_description > a > div:hover {
     padding: 10px 15px;
-    background: var(--background-dark-brown);
+    background: #57578fc9;
     border-radius: 8px;
     margin: 5px 0;
     border: var(--border-wheat);

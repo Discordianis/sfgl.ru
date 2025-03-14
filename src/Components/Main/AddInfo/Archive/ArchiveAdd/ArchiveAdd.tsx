@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import useInput from "../../../../../hooks/useInput.tsx";
 import {useParams} from "react-router-dom";
-import Button from "../../../../Button/Button.tsx";
 import './ArchiveAdd.css'
 import Loading from "../../../../Loading/Loading.tsx";
 import UTabs from "../../../../UTabs/UTabs.tsx";
@@ -14,6 +13,7 @@ import {useSelector} from "react-redux";
 import {useNotification} from "../../../../../hooks/useSuccess.tsx";
 import {RootState} from "../../../../../redux";
 import moment from "moment";
+import {Button, MenuItem, Select} from "@mui/material";
 
 interface IArchive {
     status: boolean,
@@ -402,12 +402,12 @@ const ArchiveAdd:React.FC = () => {
                                 <h3>Ваш текущий статус</h3>
                                 <div>
                                     <div className={'filter_buttons_fill'}>
-                                        <select value={nowRelation} onChange={(e) => setNowRelation(e.target.value)}>
-                                            <option value={''} disabled hidden>Выберите статус...</option>
-                                            <option value={'Состою в отношениях'}>Состою в отношениях</option>
-                                            <option value={'Состою в браке'}>Состою в браке</option>
-                                            <option value={'Не состою в отношениях'}>Не состою в отношениях</option>
-                                        </select>
+                                        <Select variant={'filled'} value={nowRelation} onChange={(e) => setNowRelation(e.target.value)}>
+                                            <MenuItem value={''} disabled hidden>Выберите статус...</MenuItem>
+                                            <MenuItem value={'Состою в отношениях'}>Состою в отношениях</MenuItem>
+                                            <MenuItem value={'Состою в браке'}>Состою в браке</MenuItem>
+                                            <MenuItem value={'Не состою в отношениях'}>Не состою в отношениях</MenuItem>
+                                        </Select>
                                     </div>
                                 </div>
                                 <div className={'common_statistic_input'}>
@@ -487,8 +487,8 @@ const ArchiveAdd:React.FC = () => {
                                                                         />
                                                                     </div>
                                                                     <div className="cropper-buttons">
-                                                                        <Button onClick={handleCrop}>Сохранить</Button>
-                                                                        <Button onClick={handleCancel}>Отмена</Button>
+                                                                        <Button variant={'outlined'} onClick={handleCrop}>Сохранить</Button>
+                                                                        <Button variant={'outlined'} onClick={handleCancel}>Отмена</Button>
                                                                     </div>
                                                                 </>
                                                             )}
@@ -510,7 +510,7 @@ const ArchiveAdd:React.FC = () => {
                                                         </select>
                                                     </div>
                                                 }
-                                                <Button type={"button"}
+                                                <Button variant={'outlined'} type={"button"}
                                                         onClick={() => setAddImaginaryUser(!addImaginaryUser)}>{addImaginaryUser ? '...Или добавить существующего пользователя' : '...Или добавить мнимого пользователя'}</Button>
                                             </div>
                                         }
@@ -526,7 +526,7 @@ const ArchiveAdd:React.FC = () => {
                                         </label>
                                     </div>
                                 }
-                                <Button
+                                <Button variant={'outlined'}
                                     disabled={posting || dateInputError || customUserNameInput.maxLengthError}>Сохранить</Button>
 
                             </form>

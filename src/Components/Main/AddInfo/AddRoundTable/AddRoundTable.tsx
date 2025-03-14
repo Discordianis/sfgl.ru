@@ -1,12 +1,15 @@
 import React, {useEffect, useRef, useState} from "react";
 import './AddRoundTable.css'
-import Button from "../../../Button/Button.tsx";
 import useInput from "../../../../hooks/useInput.tsx";
 import Loading from "../../../Loading/Loading.tsx";
 import {useSelector} from "react-redux";
 import {useNotification} from "../../../../hooks/useSuccess.tsx";
 import {RootState} from "../../../../redux";
 import moment from "moment";
+import {Button, TextField} from "@mui/material";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
+import {DatePicker, DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {tablePlaceholders} from "../../../../placeholders/tablePlaceholders.tsx";
 
 interface ITableInfo {
     author: string,
@@ -83,6 +86,14 @@ const AddRoundTable:React.FC = () => {
 
     const [isActive, setIsActive] = useState('')
 
+    const [placeholder, setPlaceholder] = useState("");
+
+    useEffect(() => {
+        const keys = Object.keys(tablePlaceholders);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        setPlaceholder(tablePlaceholders[randomKey]);
+    }, [currentArchiveData, createdNew]);
+
     useEffect(() => {
         if (createdNew) {
             setDisabledCreateReport(true)
@@ -155,6 +166,10 @@ const AddRoundTable:React.FC = () => {
         if (imageRef && imageRef.current?.files[0]) {
             updForm.append('image', imageRef.current?.files[0])
             newForm.append('image', imageRef.current?.files[0])
+        }
+        if (!imageRef.current?.files[0]) {
+            updateReportJson.data.image = currentArchiveData?.image;
+            updForm.append('post', JSON.stringify(updateReportJson));
         }
 
         updForm.append('post', JSON.stringify(updateReportJson))
@@ -411,23 +426,23 @@ const AddRoundTable:React.FC = () => {
                                 {(!loading && !currentArchiveData && archiveData?.info.length === 0 && !createdNew) &&
                                     <div className={'create_first_report'}>
                                         <span>Не написано ни одного итога. Желаете создать своё первое творение?</span>
-                                        <Button onClick={() => setCreatedNew(true)}>Создать</Button>
+                                        <Button variant={'outlined'} onClick={() => setCreatedNew(true)}>Создать</Button>
                                     </div>
                                 }
                                 {(!loading && archiveData?.info) &&
                                     <div className={'reports_add_list'}>
                                         {Object.values(archiveData.info).sort((a: ITableInfo, b: ITableInfo) => a.number - b.number).map((report: ITableInfo, index: number) => (
-                                            <div className={isActive === `${report.number}` ? 'reports_list active' : 'reports_list'} key={report.number || index}
+                                            <Button variant={'outlined'} sx={{margin: '0 3px', padding: '5px', minWidth: '160px'}} className={isActive === `${report.number}` ? 'reports_list active' : 'reports_list'} key={report.number || index}
                                                  onClick={() => getReportById(report.id, report.number.toString())}>
                                                 <span>Круглый Стол #{report?.number}</span>
-                                            </div>
+                                            </Button>
                                         ))}
                                         {(createdNew) ?
-                                            <div className={'reports_list active'} onClick={getNewReport}>
+                                            <Button variant={'outlined'} sx={{margin: '0 3px', padding: '5px'}} className={'reports_list active'} onClick={getNewReport}>
                                                 <span>Круглый Стол</span>
-                                            </div>
+                                            </Button>
                                             : (currentArchiveData || archiveData.info.length !== 0) &&
-                                            <Button onClick={() => setCreatedNew(true)}
+                                            <Button variant={'outlined'} onClick={() => setCreatedNew(true)}
                                                     disabled={disabledCreateReport}>
                                                 <span>+</span>
                                             </Button>
@@ -447,29 +462,45 @@ const AddRoundTable:React.FC = () => {
                                                                onChange={(e) => numberInput.onChange(e)}/>
                                                     </label>
                                                 </div>
-                                                <div
-                                                    className={dateInputError ? 'report_date_input error' : 'report_date_input'}>
+                                                <div className={dateInputError ? 'report_date_input error' : 'report_date_input'}>
                                                     <label>Дата Круглого Стола:
-                                                        <input type={'date'}
-                                                               max={moment().format('YYYY-MM-DD')}
-                                                               value={dateInput.value}
-                                                               onChange={(e) => dateInput.onChange(e)}/>
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DatePicker
+                                                                value={moment(dateInput.value)}
+                                                                onChange={(e) => dateInput.setValue(moment(e).format('YYYY-MM-DD'))}
+                                                                maxDate={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                 </div>
                                                 <div>
                                                     <label>Начало Круглого Стола:
-                                                        <input type={'datetime-local'}
-                                                               max={moment().format('YYYY-MM-DD HH:MM')}
-                                                               value={dateStartInput.value}
-                                                               onChange={(e) => dateStartInput.onChange(e)}/>
-
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DateTimePicker
+                                                                viewRenderers={{
+                                                                    hours: null,
+                                                                    minutes: null,
+                                                                    seconds: null,
+                                                                }}
+                                                                value={moment(dateStartInput.value)}
+                                                                onChange={(e) => dateStartInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                                maxDateTime={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                     <label>Конец Круглого Стола:
-                                                        <input type={'datetime-local'}
-                                                               max={moment().format('YYYY-MM-DD HH:MM')}
-                                                               value={dateEndInput.value}
-                                                               onChange={(e) => dateEndInput.onChange(e)}/>
-
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DateTimePicker
+                                                                viewRenderers={{
+                                                                    hours: null,
+                                                                    minutes: null,
+                                                                    seconds: null,
+                                                                }}
+                                                                value={moment(dateEndInput.value)}
+                                                                onChange={(e) => dateEndInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                                maxDateTime={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                 </div>
                                                 <div>
@@ -481,7 +512,7 @@ const AddRoundTable:React.FC = () => {
                                                 </div>
                                                 {(currentArchiveData?.image || fileUrl) &&
                                                     <div>
-                                                        <Button onClick={deleteImage}>Удалить изображение</Button>
+                                                        <Button variant={'outlined'} onClick={deleteImage}>Удалить изображение</Button>
                                                     </div>
                                                 }
                                             </div>
@@ -496,8 +527,31 @@ const AddRoundTable:React.FC = () => {
                                             }
                                         </div>
                                         <div className={'reports_textarea'}>
-                                            <textarea rows={30} value={reportInput.value}
-                                                      onChange={(e) => reportInput.onChange(e)}
+                                            <TextField
+                                                multiline
+                                                variant={'outlined'}
+                                                label={'Итоги Круглого Стола'}
+                                                placeholder={placeholder}
+                                                minRows={2}
+                                                sx={{
+                                                    '&::before': {
+                                                        border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                        transform: 'scaleX(0)',
+                                                        left: '2.5px',
+                                                        right: '2.5px',
+                                                        bottom: 0,
+                                                        top: 'unset',
+                                                        transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                        borderRadius: 0,
+                                                        borderBottomLeftRadius: '64px 20px',
+                                                        borderBottomRightRadius: '64px 20px',
+                                                    },
+                                                    '&:focus-within::before': {
+                                                        transform: 'scaleX(1)',
+                                                    },
+                                                }}
+                                                value={reportInput.value}
+                                                onChange={(e) => reportInput.onChange(e)}
                                             />
                                             <div className={'hints_html'}>
                                                 <div className={'hints_html_first'}>
@@ -513,15 +567,15 @@ const AddRoundTable:React.FC = () => {
                                         {confirmDelete ?
                                             <>
                                                 <p>Вы уверены, что хотите удалить этот Круглый Стол?</p>
-                                                <Button onClick={() => setConfirmDelete(false)}>Нет</Button>
-                                                <Button onClick={() => deleteReport(currentArchiveData.id)}
+                                                <Button variant={'outlined'} onClick={() => setConfirmDelete(false)}>Нет</Button>
+                                                <Button variant={'outlined'} onClick={() => deleteReport(currentArchiveData.id)}
                                                         disabled={disabledDelete}>Да</Button>
                                             </>
                                             :
                                             <>
-                                                <Button disabled={posting || (!currentArchiveData?.text)}
+                                                <Button variant={'outlined'} disabled={posting || (!currentArchiveData?.text)}
                                                         onClick={() => setConfirmDelete(true)}>Удалить</Button>
-                                                <Button
+                                                <Button variant={'outlined'}
                                                     disabled={posting || dateInputError || (reportInput.value === '' || dateInput.value === '' || hideReport === '') || (reportInput.value === currentArchiveData?.text && dateInput.value === currentArchiveData?.report_date)}
                                                     onClick={createNewReport}>
                                                     Сохранить
@@ -546,26 +600,43 @@ const AddRoundTable:React.FC = () => {
                                                 <div
                                                     className={dateNewInputError ? 'report_date_input error' : 'report_date_input'}>
                                                     <label>Дата Круглого Стола:
-                                                        <input type={'date'}
-                                                               max={moment().format('YYYY-MM-DD')}
-                                                               value={newDateInput.value}
-                                                               onChange={(e) => newDateInput.onChange(e)}/>
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DatePicker
+                                                                value={moment(newDateInput.value)}
+                                                                onChange={(e) => newDateInput.setValue(moment(e).format('YYYY-MM-DD'))}
+                                                                maxDate={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                 </div>
                                                 <div>
                                                     <label>Начало Круглого Стола:
-                                                        <input type={'datetime-local'}
-                                                               max={moment().format('YYYY-MM-DD HH:MM')}
-                                                               value={newDateStartInput.value}
-                                                               onChange={(e) => newDateStartInput.onChange(e)}/>
-
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DateTimePicker
+                                                                viewRenderers={{
+                                                                    hours: null,
+                                                                    minutes: null,
+                                                                    seconds: null,
+                                                                }}
+                                                                value={moment(newDateStartInput.value)}
+                                                                onChange={(e) => newDateStartInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                                maxDateTime={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                     <label>Конец Круглого Стола:
-                                                        <input type={'datetime-local'}
-                                                               max={moment().format('YYYY-MM-DD HH:MM')}
-                                                               value={newDateEndInput.value}
-                                                               onChange={(e) => newDateEndInput.onChange(e)}/>
-
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DateTimePicker
+                                                                viewRenderers={{
+                                                                    hours: null,
+                                                                    minutes: null,
+                                                                    seconds: null,
+                                                                }}
+                                                                value={moment(newDateEndInput.value)}
+                                                                onChange={(e) => newDateEndInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                                maxDateTime={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                 </div>
                                                 <div>
@@ -583,8 +654,31 @@ const AddRoundTable:React.FC = () => {
                                             }
                                         </div>
                                         <div className={'reports_textarea'}>
-                                            <textarea rows={30} value={newReportInput.value}
-                                                      onChange={(e) => newReportInput.onChange(e)}
+                                            <TextField
+                                                multiline
+                                                variant={'outlined'}
+                                                label={'Итоги Круглого Стола'}
+                                                placeholder={placeholder}
+                                                minRows={2}
+                                                sx={{
+                                                    '&::before': {
+                                                        border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                        transform: 'scaleX(0)',
+                                                        left: '2.5px',
+                                                        right: '2.5px',
+                                                        bottom: 0,
+                                                        top: 'unset',
+                                                        transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                        borderRadius: 0,
+                                                        borderBottomLeftRadius: '64px 20px',
+                                                        borderBottomRightRadius: '64px 20px',
+                                                    },
+                                                    '&:focus-within::before': {
+                                                        transform: 'scaleX(1)',
+                                                    },
+                                                }}
+                                                value={newReportInput.value}
+                                                onChange={(e) => newReportInput.onChange(e)}
                                             />
                                             <div className={'hints_html'}>
                                                 <div className={'hints_html_first'}>
@@ -597,7 +691,7 @@ const AddRoundTable:React.FC = () => {
                                         </div>
                                     </form>
                                     <div className={'reports_save_delete_buttons'}>
-                                        <Button
+                                        <Button variant={'outlined'}
                                             disabled={posting || dateNewInputError || (newReportInput.value === '' || newDateInput.value === '' || newHideReport === '')}
                                             onClick={createNewReport}>
                                             Создать

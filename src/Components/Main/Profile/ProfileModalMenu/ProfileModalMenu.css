@@ -13,6 +13,20 @@
     border-radius: 8px;
 }
 
+.profile_modal_root button {
+    background-color: var(--background-trans-color);
+    text-transform: unset;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: 0.2s border ease-in-out;
+    font-weight: bold;
+}
+
+.profile_modal_root button:hover {
+    border: 1px rgba(191, 168, 129, 0.6) solid;
+}
+
 .profile_modal_function > a {
     padding: 20px 10px;
     display: block;

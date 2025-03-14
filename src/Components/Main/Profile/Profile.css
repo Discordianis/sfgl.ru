@@ -21,6 +21,25 @@
     margin-right: 15px;
 }
 
+.profile_about_input button {
+    background-color: var(--background-trans-color);
+    text-transform: unset;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: 0.2s border ease-in-out;
+    font-weight: bold;
+}
+
+.profile_about_input button:hover {
+    border: 1px rgba(191, 168, 129, 0.6) solid;
+}
+
+.profile_about_input div {
+    display: flex;
+    gap: 5px;
+}
+
 .user_avatar > img {
     height: 200px;
     width: 200px;
@@ -47,7 +66,10 @@
     display: flex;
     align-items: center;
     padding: 5px;
-    width: fit-content;
+}
+
+.user_about > div > form {
+    width: 100%;
 }
 
 .user_about_empty {
@@ -86,29 +108,19 @@
 }
 
 .profile_about_input > form > textarea {
-    max-height: 100px;
-    max-width: 1000px;
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: fill-available;
+    max-height: 400px;
+    width: 100%;
     border-radius: 8px;
     padding: 15px;
     font-size: 16px;
     font-family: sans-serif;
+    resize: vertical;
 }
 
 .profile_audio_root {
     position: absolute;
     right: 20px;
     top: 0;
-}
-
-.profile_settings_optional > form > .filter_buttons {
-    position: relative;
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: fill-available;
-    max-width: 300px;
 }
 
 

@@ -4,10 +4,14 @@ import {useNotification} from "../../../../../hooks/useSuccess.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../../redux";
 import imageNF from '../../../../../../public/icons/imageNotFound.jpeg'
-import Button from "../../../../Button/Button.tsx";
 import HoldButton from "../../../../Button/HoldButton.tsx";
 import useInput from "../../../../../hooks/useInput.tsx";
 import Loading from "../../../../Loading/Loading.tsx";
+import {characterPlaceholders} from "../../../../../placeholders/characterPlaceholders.tsx";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
+import moment from "moment/moment";
 
 interface IAllCharactersInfo {
     age: string,
@@ -91,6 +95,14 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
     const [fileVoiceActorCoverUrl ,setFileVoiceActorCoverUrl] = useState('')
 
     const {showNotification, NotificationComponent} = useNotification()
+
+    const [placeholder, setPlaceholder] = useState("");
+
+    useEffect(() => {
+        const keys = Object.keys(characterPlaceholders);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        setPlaceholder(characterPlaceholders[randomKey]);
+    }, [currentCharacter, createNewCharacter]);
 
     useEffect(() => {
         const fetching = async () => {
@@ -493,7 +505,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                             </div>
                         }
                         {!createNewCharacter &&
-                            <Button onClick={() => setCreateNewCharacter(true)}>Создать персонажа</Button>
+                            <Button variant={'outlined'} onClick={() => setCreateNewCharacter(true)}>Создать персонажа</Button>
                         }
                     </div>
                     {(currentCharacter && !createNewCharacter) &&
@@ -505,35 +517,69 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 <div className={'add_character_bottom_common'}>
                                     <div className={'add_character_bottom_inputs'}>
                                         <div>
-                                            <label>Имя персонажа(рус.):
-                                                <input type={'text'} value={rusNameEdit.value}
-                                                       onChange={(e) => rusNameEdit.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Имя персонажа(рус.)'}
+                                                    type={'text'}
+                                                    value={rusNameEdit.value}
+                                                    error={rusNameEdit.emptyInput}
+                                                    onChange={(e) => rusNameEdit.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Имя персонажа(англ.):
-                                                <input type={'text'} value={engNameEdit.value}
-                                                       onChange={(e) => engNameEdit.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Имя персонажа(англ.)'}
+                                                    type={'text'}
+                                                    value={engNameEdit.value}
+                                                    error={engNameEdit.emptyInput}
+                                                    onChange={(e) => engNameEdit.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Прочие имена:
-                                                <input type={'text'} value={secondNameEdit.value}
-                                                       onChange={(e) => secondNameEdit.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Прочие имена'}
+                                                    type={'text'}
+                                                    value={secondNameEdit.value}
+                                                    error={secondNameEdit.emptyInput}
+                                                    onChange={(e) => secondNameEdit.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div className={'filter_buttons'}>
-                                            <span>Статус:</span>
-                                            <select value={statusEdit} onChange={(e) => setStatusEdit(e.target.value)}>
-                                                <option value={'lively'}>Жив(-а)</option>
-                                                <option value={'dead'}>Мертв(-а)</option>
-                                                <option value={'unknown'}>Неизвестно</option>
-                                            </select>
+                                            <div className={'filter_buttons_fill'}>
+                                                <FormControl variant="outlined">
+                                                    <InputLabel id="outlined-label">Статус</InputLabel>
+                                                    <Select
+                                                        labelId="outlined-label"
+                                                        variant={'outlined'}
+                                                        value={statusEdit}
+                                                        onChange={(e) => setStatusEdit(e.target.value)}
+                                                        label={"Статус"}
+                                                    >
+                                                        <MenuItem value={'lively'}>Жив(-а)</MenuItem>
+                                                        <MenuItem value={'dead'}>Мертв(-а)</MenuItem>
+                                                        <MenuItem value={'unknown'}>Неизвестно</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
                                         </div>
                                         <div>
-                                            <label>Дата рождения:
-                                                <input type={"date"} value={birthdayEdit.value}
-                                                       onChange={(e) => birthdayEdit.onChange(e)}/>
+                                            <label>
+                                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                    <DatePicker
+                                                        label={'Дата рождения'}
+                                                        value={moment(birthdayEdit.value)}
+                                                        onChange={(e) => birthdayEdit.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                        maxDate={moment()}
+                                                    />
+                                                </LocalizationProvider>
                                             </label>
                                         </div>
                                         <div>
@@ -549,7 +595,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Обложка (4:3):
+                                        <label>Обложка (4:3):
                                                 <input type={"file"} accept={'.jpg, .jpeg, .png, .webp'}
                                                        onChange={handleCharacterCoverChange} ref={characterCoverEdit}/>
                                             </label>
@@ -562,35 +608,80 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                                 <div className={'add_character_bottom_va'}>
                                     <div>
-                                        <label>Имя сэйю:
-                                            <input type={'text'} value={seyuNameEdit.value} onChange={(e) => seyuNameEdit.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Имя сэйю'}
+                                                type={'text'}
+                                                value={seyuNameEdit.value}
+                                                error={seyuNameEdit.emptyInput}
+                                                onChange={(e) => seyuNameEdit.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
                                         <label>Обложка сэйю (4:3):
                                             <input type={'file'} accept={'.jpg, .jpeg, .png, .webp'}
-                                            onChange={handleVoiceActorCoverChange} ref={seyuCoverEdit}/>
+                                                   onChange={handleVoiceActorCoverChange} ref={seyuCoverEdit}/>
                                         </label>
-                                        {fileVoiceActorCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceActorCoverError}</span>}
+                                        {fileVoiceActorCoverError && <span style={{
+                                            color: '#f75151',
+                                            fontSize: '13px'
+                                        }}>{fileVoiceActorCoverError}</span>}
                                     </div>
                                     <div>
-                                        <label>Имя персонажа озвучки:
-                                            <input type={'text'} value={characterVoiceNameEdit.value} onChange={(e) => characterVoiceNameEdit.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Имя персонажа озвучки'}
+                                                type={'text'}
+                                                value={characterVoiceNameEdit.value}
+                                                error={characterVoiceNameEdit.emptyInput}
+                                                onChange={(e) => characterVoiceNameEdit.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
                                         <label>Обложка персонажа озвучки (4:3):
                                             <input type={'file'} accept={'.jpg, .jpeg, .png, .webp'}
-                                            onChange={handleVoiceCharacterCoverChange} ref={characterVoiceCoverEdit}/>
+                                                   onChange={handleVoiceCharacterCoverChange}
+                                                   ref={characterVoiceCoverEdit}/>
                                         </label>
-                                        {fileVoiceCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceCharacterCoverError}</span>}
+                                        {fileVoiceCharacterCoverError && <span style={{
+                                            color: '#f75151',
+                                            fontSize: '13px'
+                                        }}>{fileVoiceCharacterCoverError}</span>}
                                     </div>
                                 </div>
                             </div>
                             <div className={'textarea_span'}>
-                                <label>Описание персонажа:
-                                    <textarea rows={10} value={descriptionEdit.value}
-                                              onChange={(e) => descriptionEdit.onChange(e)}/>
+                                <label>
+                                    <TextField
+                                        multiline
+                                        variant={'outlined'}
+                                        label={'Описание персонажа'}
+                                        placeholder={placeholder}
+                                        minRows={2}
+                                        sx={{
+                                            '&::before': {
+                                                border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                transform: 'scaleX(0)',
+                                                left: '2.5px',
+                                                right: '2.5px',
+                                                bottom: 0,
+                                                top: 'unset',
+                                                transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                borderRadius: 0,
+                                                borderBottomLeftRadius: '64px 20px',
+                                                borderBottomRightRadius: '64px 20px',
+                                            },
+                                            '&:focus-within::before': {
+                                                transform: 'scaleX(1)',
+                                            },
+                                        }}
+                                        value={descriptionEdit.value}
+                                        onChange={(e) => descriptionEdit.onChange(e)}
+                                    />
                                 </label>
                                 <div className={'hints_html'}>
                                     <div className={'hints_html_first'}>
@@ -641,16 +732,16 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                             <div className={'add_characters_buttons'}>
                                 <div className={'delete_buttons_root'}>
                                     {!nihility ?
-                                        <Button style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция Небытия...</Button>
+                                        <Button variant={'outlined'} style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция Небытия...</Button>
                                         :
                                         <>
-                                            <Button onClick={() => setNihility(false)}>Отмена</Button>
+                                            <Button variant={'outlined'} onClick={() => setNihility(false)}>Отмена</Button>
                                             <HoldButton onClick={() => deleteCharacter(currentCharacter?.id)}>Удалить персонажа</HoldButton>
                                         </>
                                     }
                                 </div>
                                 <div className={'add_save_button'}>
-                                    <Button
+                                    <Button variant={'outlined'}
                                         disabled={posting || fileCharacterCoverError.length > 0 || fileVoiceActorCoverError.length > 0 ||
                                             fileVoiceCharacterCoverError.length > 0 || (!rusNameEdit.value && !engNameEdit.value) || Number(ageEdit.value) < 0 ||
                                             Number(heigthEdit.value) < 0} onClick={uploadCharacter}>
@@ -669,35 +760,69 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 <div className={'add_character_bottom_common'}>
                                     <div className={'add_character_bottom_inputs'}>
                                         <div>
-                                            <label>Имя персонажа(рус.):
-                                                <input type={'text'} value={rusNameNew.value}
-                                                       onChange={(e) => rusNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Имя персонажа(рус.)'}
+                                                    type={'text'}
+                                                    value={rusNameNew.value}
+                                                    error={rusNameNew.emptyInput}
+                                                    onChange={(e) => rusNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Имя персонажа(англ.):
-                                                <input type={'text'} value={engNameNew.value}
-                                                       onChange={(e) => engNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Имя персонажа(англ.)'}
+                                                    type={'text'}
+                                                    value={engNameNew.value}
+                                                    error={engNameNew.emptyInput}
+                                                    onChange={(e) => engNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Прочие имена:
-                                                <input type={'text'} value={secondNameNew.value}
-                                                       onChange={(e) => secondNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Прочие имена'}
+                                                    type={'text'}
+                                                    value={secondNameNew.value}
+                                                    error={secondNameNew.emptyInput}
+                                                    onChange={(e) => secondNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div className={'filter_buttons'}>
-                                            <span>Статус:</span>
-                                            <select value={statusNew} onChange={(e) => setStatusNew(e.target.value)}>
-                                                <option value={'lively'}>Жив(-а)</option>
-                                                <option value={'dead'}>Мертв(-а)</option>
-                                                <option value={'unknown'}>Неизвестно</option>
-                                            </select>
+                                            <div className={'filter_buttons_fill'}>
+                                                <FormControl variant="outlined">
+                                                    <InputLabel id="outlined-label">Статус</InputLabel>
+                                                    <Select
+                                                        labelId="outlined-label"
+                                                        variant={'outlined'}
+                                                        value={statusNew}
+                                                        onChange={(e) => setStatusNew(e.target.value)}
+                                                        label={"Статус"}
+                                                    >
+                                                        <MenuItem value={'lively'}>Жив(-а)</MenuItem>
+                                                        <MenuItem value={'dead'}>Мертв(-а)</MenuItem>
+                                                        <MenuItem value={'unknown'}>Неизвестно</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
                                         </div>
                                         <div>
-                                            <label>Дата рождения:
-                                                <input type={"date"} value={birthdayNew.value}
-                                                       onChange={(e) => birthdayNew.onChange(e)}/>
+                                            <label>
+                                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                    <DatePicker
+                                                        label={'Дата рождения'}
+                                                        value={moment(birthdayNew.value)}
+                                                        onChange={(e) => birthdayNew.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                        maxDate={moment()}
+                                                    />
+                                                </LocalizationProvider>
                                             </label>
                                         </div>
                                         <div>
@@ -726,9 +851,15 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                                 <div className={'add_character_bottom_va'}>
                                     <div>
-                                        <label>Имя сэйю:
-                                            <input type={'text'} value={seyuNameNew.value}
-                                                   onChange={(e) => seyuNameNew.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Имя сэйю'}
+                                                type={'text'}
+                                                value={seyuNameNew.value}
+                                                error={seyuNameNew.emptyInput}
+                                                onChange={(e) => seyuNameNew.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
@@ -736,26 +867,64 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} accept={'.jpg, .jpeg, .png, .webp'}
                                                    onChange={handleVoiceActorCoverChange} ref={seyuCoverNew}/>
                                         </label>
-                                        {fileVoiceActorCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceActorCoverError}</span>}
+                                        {fileVoiceActorCoverError && <span style={{
+                                            color: '#f75151',
+                                            fontSize: '13px'
+                                        }}>{fileVoiceActorCoverError}</span>}
                                     </div>
                                     <div>
-                                        <label>Имя персонажа озвучки:
-                                            <input type={'text'} value={characterVoiceNameNew.value} onChange={(e) => characterVoiceNameNew.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Имя персонажа озвучки'}
+                                                type={'text'}
+                                                value={characterVoiceNameNew.value}
+                                                error={characterVoiceNameNew.emptyInput}
+                                                onChange={(e) => characterVoiceNameNew.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
                                         <label>Обложка персонажа озвучки (4:3):
                                             <input type={'file'} accept={'.jpg, .jpeg, .png, .webp'}
-                                                   onChange={handleVoiceCharacterCoverChange} ref={characterVoiceCoverNew}/>
+                                                   onChange={handleVoiceCharacterCoverChange}
+                                                   ref={characterVoiceCoverNew}/>
                                         </label>
-                                        {fileVoiceCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceCharacterCoverError}</span>}
+                                        {fileVoiceCharacterCoverError && <span style={{
+                                            color: '#f75151',
+                                            fontSize: '13px'
+                                        }}>{fileVoiceCharacterCoverError}</span>}
                                     </div>
                                 </div>
                             </div>
                             <div className={'textarea_span'}>
-                                <label>Описание персонажа:
-                                    <textarea rows={10} value={descriptionNew.value}
-                                              onChange={(e) => descriptionNew.onChange(e)}/>
+                                <label>
+                                    <TextField
+                                        multiline
+                                        variant={'outlined'}
+                                        label={'Описание персонажа'}
+                                        placeholder={placeholder}
+                                        minRows={2}
+                                        sx={{
+                                            '&::before': {
+                                                border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                transform: 'scaleX(0)',
+                                                left: '2.5px',
+                                                right: '2.5px',
+                                                bottom: 0,
+                                                top: 'unset',
+                                                transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                borderRadius: 0,
+                                                borderBottomLeftRadius: '64px 20px',
+                                                borderBottomRightRadius: '64px 20px',
+                                            },
+                                            '&:focus-within::before': {
+                                                transform: 'scaleX(1)',
+                                            },
+                                        }}
+                                        value={descriptionNew.value}
+                                        onChange={(e) => descriptionNew.onChange(e)}
+                                    />
                                 </label>
                                 <div className={'hints_html'}>
                                     <div className={'hints_html_first'}>
@@ -804,7 +973,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                             </div>
                             <div className={'add_save_button'}>
                                 <div>
-                                    <Button
+                                    <Button variant={'outlined'}
                                         disabled={posting || fileCharacterCoverError.length > 0 || fileVoiceActorCoverError.length > 0 ||
                                             fileVoiceCharacterCoverError.length > 0 || (!rusNameNew.value && !engNameNew.value) || Number(ageNew.value) < 0 ||
                                             Number(heigthNew.value) < 0} onClick={uploadCharacter}>
@@ -820,7 +989,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                     {!createNewCharacter ?
                         <div className={'add_first_character'}>
                             <span>Нет ни одного персонажа...</span>
-                            <Button onClick={() => setCreateNewCharacter(true)}>Создать первого персонажа</Button>
+                            <Button variant={'outlined'} onClick={() => setCreateNewCharacter(true)}>Создать первого персонажа</Button>
                         </div>
                         :
                         <div className={'add_character_bottom'}>
@@ -831,35 +1000,69 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 <div className={'add_character_bottom_common'}>
                                     <div className={'add_character_bottom_inputs'}>
                                         <div>
-                                            <label>Имя персонажа(рус.):
-                                                <input type={'text'} value={rusNameNew.value}
-                                                       onChange={(e) => rusNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Имя персонажа(рус.)'}
+                                                    type={'text'}
+                                                    value={rusNameNew.value}
+                                                    error={rusNameNew.emptyInput}
+                                                    onChange={(e) => rusNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Имя персонажа(англ.):
-                                                <input type={'text'} value={engNameNew.value}
-                                                       onChange={(e) => engNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Имя персонажа(англ.)'}
+                                                    type={'text'}
+                                                    value={engNameNew.value}
+                                                    error={engNameNew.emptyInput}
+                                                    onChange={(e) => engNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Прочие имена:
-                                                <input type={'text'} value={secondNameNew.value}
-                                                       onChange={(e) => secondNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Прочие имена'}
+                                                    type={'text'}
+                                                    value={secondNameNew.value}
+                                                    error={secondNameNew.emptyInput}
+                                                    onChange={(e) => secondNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div className={'filter_buttons'}>
-                                            <span>Статус:</span>
-                                            <select value={statusNew} onChange={(e) => setStatusNew(e.target.value)}>
-                                                <option value={'lively'}>Жив(-а)</option>
-                                                <option value={'dead'}>Мертв(-а)</option>
-                                                <option value={'unknown'}>Неизвестно</option>
-                                            </select>
+                                            <div className={'filter_buttons_fill'}>
+                                                <FormControl variant="outlined">
+                                                    <InputLabel id="outlined-label">Статус</InputLabel>
+                                                    <Select
+                                                        labelId="outlined-label"
+                                                        variant={'outlined'}
+                                                        value={statusNew}
+                                                        onChange={(e) => setStatusNew(e.target.value)}
+                                                        label={"Статус"}
+                                                    >
+                                                        <MenuItem value={'lively'}>Жив(-а)</MenuItem>
+                                                        <MenuItem value={'dead'}>Мертв(-а)</MenuItem>
+                                                        <MenuItem value={'unknown'}>Неизвестно</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
                                         </div>
                                         <div>
-                                            <label>Дата рождения:
-                                                <input type={"date"} value={birthdayNew.value}
-                                                       onChange={(e) => birthdayNew.onChange(e)}/>
+                                            <label>
+                                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                    <DatePicker
+                                                        label={'Дата рождения'}
+                                                        value={moment(birthdayNew.value)}
+                                                        onChange={(e) => birthdayNew.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                        maxDate={moment()}
+                                                    />
+                                                </LocalizationProvider>
                                             </label>
                                         </div>
                                         <div>
@@ -888,9 +1091,15 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 </div>
                                 <div className={'add_character_bottom_va'}>
                                     <div>
-                                        <label>Имя сэйю:
-                                            <input type={'text'} value={seyuNameNew.value}
-                                                   onChange={(e) => seyuNameNew.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Имя сэйю'}
+                                                type={'text'}
+                                                value={seyuNameNew.value}
+                                                error={seyuNameNew.emptyInput}
+                                                onChange={(e) => seyuNameNew.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
@@ -898,12 +1107,21 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                             <input type={'file'} accept={'.jpg, .jpeg, .png, .webp'}
                                                    onChange={handleVoiceActorCoverChange} ref={seyuCoverNew}/>
                                         </label>
-                                        {fileVoiceActorCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceActorCoverError}</span>}
+                                        {fileVoiceActorCoverError && <span style={{
+                                            color: '#f75151',
+                                            fontSize: '13px'
+                                        }}>{fileVoiceActorCoverError}</span>}
                                     </div>
                                     <div>
-                                        <label>Имя персонажа озвучки:
-                                            <input type={'text'} value={characterVoiceNameNew.value}
-                                                   onChange={(e) => characterVoiceNameNew.onChange(e)}/>
+                                        <label>
+                                            <TextField
+                                                variant={'outlined'}
+                                                label={'Имя персонажа озвучки'}
+                                                type={'text'}
+                                                value={characterVoiceNameNew.value}
+                                                error={characterVoiceNameNew.emptyInput}
+                                                onChange={(e) => characterVoiceNameNew.onChange(e)}
+                                            />
                                         </label>
                                     </div>
                                     <div>
@@ -912,14 +1130,41 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                                    onChange={handleVoiceCharacterCoverChange}
                                                    ref={characterVoiceCoverNew}/>
                                         </label>
-                                        {fileVoiceCharacterCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileVoiceCharacterCoverError}</span>}
+                                        {fileVoiceCharacterCoverError && <span style={{
+                                            color: '#f75151',
+                                            fontSize: '13px'
+                                        }}>{fileVoiceCharacterCoverError}</span>}
                                     </div>
                                 </div>
                             </div>
                             <div className={'textarea_span'}>
-                                <label>Описание персонажа:
-                                    <textarea rows={10} value={descriptionNew.value}
-                                              onChange={(e) => descriptionNew.onChange(e)}/>
+                                <label>
+                                    <TextField
+                                        multiline
+                                        variant={'outlined'}
+                                        label={'Описание персонажа'}
+                                        placeholder={placeholder}
+                                        minRows={2}
+                                        sx={{
+                                            '&::before': {
+                                                border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                transform: 'scaleX(0)',
+                                                left: '2.5px',
+                                                right: '2.5px',
+                                                bottom: 0,
+                                                top: 'unset',
+                                                transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                borderRadius: 0,
+                                                borderBottomLeftRadius: '64px 20px',
+                                                borderBottomRightRadius: '64px 20px',
+                                            },
+                                            '&:focus-within::before': {
+                                                transform: 'scaleX(1)',
+                                            },
+                                        }}
+                                        value={descriptionNew.value}
+                                        onChange={(e) => descriptionNew.onChange(e)}
+                                    />
                                 </label>
                                 <div className={'hints_html'}>
                                     <div className={'hints_html_first'}>
@@ -968,7 +1213,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                             </div>
                             <div className={'add_save_button'}>
                                 <div>
-                                    <Button
+                                    <Button variant={'outlined'}
                                         disabled={posting || fileCharacterCoverError.length > 0 || fileVoiceActorCoverError.length > 0 ||
                                             fileVoiceCharacterCoverError.length > 0 || (!rusNameNew.value && !engNameNew.value) || Number(ageNew.value) < 0 ||
                                             Number(heigthNew.value) < 0} onClick={uploadCharacter}>

@@ -28,8 +28,6 @@ const MainMenu: React.FC = () => {
     const server = useSelector((state: RootState) => state.server.server)
     const token = localStorage.getItem('token')
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(server, {

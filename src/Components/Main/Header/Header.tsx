@@ -3,12 +3,12 @@ import Logo from "./Logo.tsx";
 import Login from "./Login.tsx";
 import './Header.css'
 import HeaderTabs from "./HeaderTabs.tsx";
-import Button from "../../Button/Button.tsx";
 import {NavLink} from "react-router-dom";
 import Modal from "../../Modal/Modal.tsx";
 import menuButton from '../../../../public/icons/menuButton.png'
 import {useSelector} from "react-redux";
 import {RootState} from "../../../redux";
+import {Button} from "@mui/material";
 
 const Header: React.FC = () => {
 
@@ -59,7 +59,7 @@ const Header: React.FC = () => {
                             <div className={'header_modal'}>
                                 <div className={'header_modal_title'}>
                                     <h3>Навигация по сайту</h3>
-                                    <Button onClick={() => setOpenModal(false)}>X</Button>
+                                    <Button variant={'outlined'} onClick={() => setOpenModal(false)}>X</Button>
                                 </div>
                                 <div className={'header_modal_tabs'}>
                                     <NavLink to={'/archive'} onClick={() => setOpenModal(false)}>

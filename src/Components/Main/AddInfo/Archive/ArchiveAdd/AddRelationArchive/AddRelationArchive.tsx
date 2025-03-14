@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Loading from "../../../../../Loading/Loading.tsx";
 import addItem from '../../../../../../../public/icons/PlusAdd.png';
-import Button from "../../../../../Button/Button.tsx";
+
 import { useSelector } from "react-redux";
 import './AddRelationArchive.css';
 import useInput from "../../../../../../hooks/useInput.tsx";
 import {useNotification} from "../../../../../../hooks/useSuccess.tsx";
 import {RootState} from "../../../../../../redux";
 import moment from "moment";
+import {Button, TextField} from "@mui/material";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
 
 const AddRelationArchive: React.FC = () => {
     const server = useSelector((state: RootState) => state.server.server);
@@ -43,7 +46,7 @@ const AddRelationArchive: React.FC = () => {
             }
         };
 
-        fetchArchiveData();
+        fetchArchiveData().then();
     }, [server, token]);
 
     const updateArchiveData = (index, field, value) => {
@@ -230,43 +233,41 @@ const AddRelationArchive: React.FC = () => {
                         <div key={archiveItem.id} className="archive_item">
                             {index === localArchiveData.length - 1 && (
                                 !createNewData &&
-                                <Button onClick={() => deletePost(archiveItem.id)}>x</Button>
+                                <Button variant={'outlined'} onClick={() => deletePost(archiveItem.id)}>x</Button>
                             )}
                             <div className={'relation_archive_root'}>
                                 <form>
                                     <div className={'relation_archive'}>
-                                        <label>Имя бывшего партнёра:
-                                            <input
-                                                type={'text'}
-                                                value={archiveItem.name}
-                                                onChange={(e) => updateArchiveData(index, 'name', e.target.value)}
+                                        <TextField
+                                            variant={'outlined'}
+                                            label={'Имя бывшего партнёра'}
+                                            type={'text'}
+                                            value={archiveItem.name}
+                                            onChange={(e) => updateArchiveData(index, 'name', e.target.value)}
+                                        />
+                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                            <DatePicker
+                                                maxDate={moment()}
+                                                label="Начало отношений с бывшим партнёром"
+                                                value={moment(archiveItem.start_date)}
+                                                onChange={(e) => updateArchiveData(index, 'start_date', moment(e).format('YYYY-MM-DD'))}
                                             />
-                                        </label>
-                                        <label>Начало отношений с бывшим партнёром:
-                                            <input
-                                                type={'date'}
-                                                max={moment().format('YYYY-MM-DD')}
-                                                value={archiveItem.start_date}
-                                                className={(startDateError || updateAnyError) ? 'input error' : ''}
-                                                onChange={(e) => updateArchiveData(index, 'start_date', e.target.value)}
+                                        </LocalizationProvider>
+                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                            <DatePicker
+                                                maxDate={moment()}
+                                                label="Конец отношений с бывшим партнёром"
+                                                value={moment(archiveItem.end_date)}
+                                                onChange={(e) => updateArchiveData(index, 'end_date', moment(e).format('YYYY-MM-DD'))}
                                             />
-                                        </label>
-                                        <label>Конец отношений с бывшим партнёром:
-                                            <input
-                                                type={'date'}
-                                                max={moment().format('YYYY-MM-DD')}
-                                                value={archiveItem.end_date}
-                                                className={(endDateError || updateAnyError) ? 'input error' : ''}
-                                                onChange={(e) => updateArchiveData(index, 'end_date', e.target.value)}
-                                            />
-                                        </label>
-                                        <label>Дополнительная информация (опционально):
-                                            <input
-                                                type={'text'}
-                                                value={archiveItem.optional}
-                                                onChange={(e) => updateArchiveData(index, 'optional', e.target.value)}
-                                            />
-                                        </label>
+                                        </LocalizationProvider>
+                                        <TextField
+                                            variant={'outlined'}
+                                            label={'Дополнительная информация (опционально)'}
+                                            type={'text'}
+                                            value={archiveItem.optional}
+                                            onChange={(e) => updateArchiveData(index, 'optional', e.target.value)}
+                                        />
                                     </div>
                                 </form>
                             </div>
@@ -288,38 +289,36 @@ const AddRelationArchive: React.FC = () => {
                         <div className={'relation_archive_root'}>
                             <form>
                                 <div className={'relation_archive'}>
-                                    <label>Имя бывшего партнёра:
-                                        <input
-                                            type={'text'}
-                                            value={nameInput.value}
-                                            onChange={(e) => nameInput.onChange(e)}
+                                    <TextField
+                                        variant={'outlined'}
+                                        label={'Имя бывшего партнёра'}
+                                        type={'text'}
+                                        value={nameInput.value}
+                                        onChange={(e) => nameInput.onChange(e)}
+                                    />
+                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                        <DatePicker
+                                            maxDate={moment()}
+                                            label="Начало отношений с бывшим партнёром"
+                                            value={moment(startInput.value)}
+                                            onChange={(e) => startInput.setValue(moment(e).format('YYYY-MM-DD'))}
                                         />
-                                    </label>
-                                    <label>Начало отношений с бывшим партнёром:
-                                        <input
-                                            type={'date'}
-                                            max={moment().format('YYYY-MM-DD')}
-                                            value={startInput.value}
-                                            className={(startInput.value > moment().format('YYYY-MM-DD') || inputAnyError) ? 'input error' : ''}
-                                            onChange={(e) => startInput.onChange(e)}
+                                    </LocalizationProvider>
+                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                        <DatePicker
+                                            maxDate={moment()}
+                                            label="Конец отношений с бывшим партнёром"
+                                            value={moment(endInput.value)}
+                                            onChange={(e) => endInput.setValue(moment(e).format('YYYY-MM-DD'))}
                                         />
-                                    </label>
-                                    <label>Конец отношений с бывшим партнёром:
-                                        <input
-                                            type={'date'}
-                                            max={moment().format('YYYY-MM-DD')}
-                                            value={endInput.value}
-                                            className={(endInput.value > moment().format('YYYY-MM-DD') || inputAnyError) ? 'input error' : ''}
-                                            onChange={(e) => endInput.onChange(e)}
-                                        />
-                                    </label>
-                                    <label>Дополнительная информация (опционально):
-                                        <input
-                                            type={'text'}
-                                            value={optionalInput.value}
-                                            onChange={(e) => optionalInput.onChange(e)}
-                                        />
-                                    </label>
+                                    </LocalizationProvider>
+                                    <TextField
+                                        variant={'outlined'}
+                                        label={'Дополнительная информация (опционально)'}
+                                        type={'text'}
+                                        value={optionalInput.value}
+                                        onChange={(e) => optionalInput.onChange(e)}
+                                    />
                                 </div>
                             </form>
                         </div>

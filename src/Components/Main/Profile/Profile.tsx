@@ -6,7 +6,6 @@ import ProfileModalMenu from "./ProfileModalMenu/ProfileModalMenu.tsx";
 import loadingCrab from '../../../../public/icons/loading.gif'
 import useInput from "../../../hooks/useInput.tsx";
 import editIcon from '../../../../public/icons/edit.png'
-import Button from "../../Button/Button.tsx";
 import AudioPlayer from "../../AudioPlayer/AudioPlayer.tsx";
 import Loading from "../../Loading/Loading.tsx";
 import {useSelector} from "react-redux";
@@ -14,6 +13,8 @@ import {RootState} from "../../../redux";
 import NotFound from "../../NotFound/NotFound.tsx";
 import notFound from "../../../../public/background/pc-err-bg.dcfa27e.jpg";
 import moment from "moment-timezone";
+import {Button, TextField} from "@mui/material";
+import {AboutPlaceholders} from "../../../placeholders/aboutPlaceholders.tsx";
 
 const Profile: React.FC = () => {
 
@@ -22,14 +23,29 @@ const Profile: React.FC = () => {
     const [error, setError] = useState('')
     const [openInput, setOpenInput] = useState(false)
     const [musicExist, setMusicExist] = useState(false)
-
     const params = useParams()
     const token = localStorage.getItem('token')
     const server = useSelector((state: RootState) => state.server.server)
+    const [innerWidth, setInnerWidth] = useState(window.innerWidth)
 
     const myself = useSelector((state: RootState) => state.myData)
 
     const aboutInput = useInput('', {maxLengthError: 601})
+
+    const [placeholder, setPlaceholder] = useState("");
+
+    useEffect(() => {
+        const keys = Object.keys(AboutPlaceholders);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        setPlaceholder(AboutPlaceholders[randomKey]);
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => setInnerWidth(window.innerWidth);
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const fetching = async () => {
@@ -40,7 +56,7 @@ const Profile: React.FC = () => {
             const data = await userRes.json();
             setProfile(data)
         }
-        fetching()
+        fetching().then()
     }, [params.nickname, server, token]);
 
     useEffect(() => {
@@ -188,16 +204,10 @@ const Profile: React.FC = () => {
                     <div className={'profile_info'}>
                         <div className={'profile_left'}>
                             <div className={'user_avatar'}>
-                                <img src={`${profile?.info.avatar}`} alt={'user-avatar'}/>
-                                {profile?.info.nickname === myself.data?.info.nickname &&
-                                    <ProfileModalMenu/>
-                                }
-                            </div>
-                        </div>
-                        <div className={'profile_right'}>
-                            <div className={'user_nickname'}>
-                                <span><strong>{profile?.info.custom_nickname}</strong></span>
-                                <span className={'profile_user_online'}>
+                                {innerWidth < 1110 &&
+                                    <div className={'user_nickname'}>
+                                        <span><strong>{profile?.info.custom_nickname}</strong></span>
+                                        <span className={'profile_user_online'}>
                                     {checkOnline(profile?.info.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)
                                         ? '(в сети)'
                                         : profile?.info.orientation === 'woman'
@@ -205,9 +215,31 @@ const Profile: React.FC = () => {
                                             : profile?.info.orientation === 'man'
                                                 ? `(был в сети: ${formatDate(profile?.info.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`
                                                 : `(был(-а) в сети: ${formatDate(profile?.info.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`}
-                                </span>
+                                        </span>
 
+                                    </div>
+                                }
+                                <img src={`${profile?.info.avatar}`} alt={'user-avatar'}/>
+                                {profile?.info.nickname === myself.data?.info.nickname &&
+                                    <ProfileModalMenu/>
+                                }
                             </div>
+                        </div>
+                        <div className={'profile_right'}>
+                            {innerWidth > 1110 &&
+                                <div className={'user_nickname'}>
+                                    <span><strong>{profile?.info.custom_nickname}</strong></span>
+                                    <span className={'profile_user_online'}>
+                                    {checkOnline(profile?.info.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)
+                                        ? '(в сети)'
+                                        : profile?.info.orientation === 'woman'
+                                            ? `(была в сети: ${formatDate(profile?.info.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`
+                                            : profile?.info.orientation === 'man'
+                                                ? `(был в сети: ${formatDate(profile?.info.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`
+                                                : `(был(-а) в сети: ${formatDate(profile?.info.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`}
+                                    </span>
+                                </div>
+                            }
                             <div className={'user_about'}>
                                 {(aboutEmpty && !openInput) ?
                                     profile?.info.nickname === myself.data?.info.nickname &&
@@ -229,17 +261,40 @@ const Profile: React.FC = () => {
                                 {openInput &&
                                     <div className={'profile_about_input'}>
                                         <form onSubmit={updateAbout}>
-                                            <textarea
-                                                rows={3}
-                                                maxLength={600}
+                                            <TextField
+                                                multiline
+                                                inputProps={{ maxLength: 600 }}
+                                                variant={'outlined'}
+                                                label={'Обо мне'}
+                                                placeholder={placeholder}
+                                                minRows={2}
+                                                sx={{
+                                                    '&::before': {
+                                                        border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                        transform: 'scaleX(0)',
+                                                        left: '2.5px',
+                                                        right: '2.5px',
+                                                        bottom: 0,
+                                                        top: 'unset',
+                                                        transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                        borderRadius: 0,
+                                                        borderBottomLeftRadius: '64px 20px',
+                                                        borderBottomRightRadius: '64px 20px',
+                                                    },
+                                                    '&:focus-within::before': {
+                                                        transform: 'scaleX(1)',
+                                                    },
+                                                }}
                                                 value={aboutInput.value}
                                                 onChange={(e) => aboutInput.onChange(e)}
                                             />
-                                            <Button disabled={aboutInput.maxLengthError}>Сохранить</Button>
-                                            <Button onClick={() => {
-                                                setOpenInput(false);
-                                                aboutInput.setValue(`${profile?.info.about ? profile?.info.about : ''}`)
-                                            }}>Отмена</Button>
+                                            <div>
+                                                <Button variant={'contained'} disabled={aboutInput.maxLengthError}>Сохранить</Button>
+                                                <Button variant={'contained'} onClick={() => {
+                                                    setOpenInput(false);
+                                                    aboutInput.setValue(`${profile?.info.about ? profile?.info.about : ''}`)
+                                                }}>Отмена</Button>
+                                            </div>
                                         </form>
                                     </div>
                                 }

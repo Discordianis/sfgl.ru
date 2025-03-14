@@ -8,19 +8,29 @@ const HeaderTabs: React.FC = () => {
             <nav>
                 <>
                     <NavLink to={'/archive'}>
-                        <span>Профили и отношения</span>
+                        <div data-text="Профили и отношения">
+                            <span>Профили и отношения</span>
+                        </div>
                     </NavLink>
                     <NavLink to={'/wall'}>
-                        <span>Стена</span>
+                        <div data-text="Стена">
+                            <span>Стена</span>
+                        </div>
                     </NavLink>
                     <NavLink to={'/roundtable'}>
-                        <span>Итоги КС</span>
+                        <div data-text="Итоги КС">
+                            <span>Итоги КС</span>
+                        </div>
                     </NavLink>
                     <NavLink to={'/fridays'}>
-                        <span>Пятницы</span>
+                        <div data-text="Пятницы">
+                            <span>Пятницы</span>
+                        </div>
                     </NavLink>
                     <NavLink to={'/library'}>
-                        <span>ЛабЛиб</span>
+                        <div data-text="ЛабЛиб">
+                            <span>ЛабЛиб</span>
+                        </div>
                     </NavLink>
                 </>
             </nav>

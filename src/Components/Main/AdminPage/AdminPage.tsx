@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from "react";
 import AccessDenied from "../../AccessDenied/AccessDenied.tsx";
 import Loading from "../../Loading/Loading.tsx";
 import Cropper, {ReactCropperElement} from "react-cropper";
-import Button from "../../Button/Button.tsx";
 import defaultAvatar from "../../../../public/system/users/avatars/default.jpg";
 import useInput from "../../../hooks/useInput.tsx";
 import UTabs from "../../UTabs/UTabs.tsx";
@@ -11,6 +10,9 @@ import {useSelector} from "react-redux";
 import {useNotification} from "../../../hooks/useSuccess.tsx";
 import {RootState} from "../../../redux";
 import moment from "moment";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
 
 interface IArchiveInfo {
     cover: string,
@@ -399,13 +401,22 @@ const AdminPage: React.FC = () => {
                         <>
                             <h4>Список пользователей:</h4>
                             <div className={'filter_buttons'}>
-                                <select value={allUsersSelect} onChange={(e) => setUsersSelect(e.target.value)}>
-                                    <option value={''} hidden>Выберите пользователя...</option>
-                                    {Object.values(usersData?.info).map((users: IUsersInfo) =>
-                                        <option value={users.nickname}
-                                                key={users.id}>{users.custom_nickname} ({users.nickname})</option>
-                                    )}
-                                </select>
+                                <div className={'filter_buttons_fill'}>
+                                    <FormControl variant="outlined">
+                                        <InputLabel id="outlined-label">Список пользователей</InputLabel>
+                                        <Select
+                                            labelId="outlined-label"
+                                            variant={'outlined'}
+                                            value={allUsersSelect}
+                                            onChange={(e) => setUsersSelect(e.target.value)}
+                                            label={"Список пользователей"}
+                                        >
+                                            {Object.values(usersData?.info).map((users: IUsersInfo) =>
+                                                <MenuItem value={users.nickname} key={users.id}>{users.custom_nickname} ({users.nickname})</MenuItem>
+                                            )}
+                                        </Select>
+                                    </FormControl>
+                                </div>
                             </div>
                         </>
                     }
@@ -413,12 +424,9 @@ const AdminPage: React.FC = () => {
                         <div className={'admin_page_action'}>
                             <h4>Доступные действия:</h4>
                             <div className={'admin_page_utabs'}>
-                                <UTabs isActive={tab === 'achieveView'} onClick={() => setTab('achieveView')}>Просмотр
-                                    имеющихся Историй</UTabs>
-                                <UTabs isActive={tab === 'achieve'} onClick={() => setTab('achieve')}>Выдача
-                                    Историй</UTabs>
-                                <UTabs isActive={tab === 'edit'} onClick={() => setTab('edit')}>Перепись
-                                    Историй</UTabs>
+                                <UTabs isActive={tab === 'achieveView'} onClick={() => setTab('achieveView')}>Просмотр Сказаний</UTabs>
+                                <UTabs isActive={tab === 'achieve'} onClick={() => setTab('achieve')}>Выдача Сказаний</UTabs>
+                                <UTabs isActive={tab === 'edit'} onClick={() => setTab('edit')}>Перепись Сказаний</UTabs>
                             </div>
                             {tab === 'achieveView' &&
                                 <div className={'profile_ach_root'}>
@@ -437,7 +445,7 @@ const AdminPage: React.FC = () => {
                                                         {achieve?.date && <span>Дата получения: {reformDate(achieve.date)}</span>}
                                                     </div>
                                                     <div className={'achieve_delete_button'}>
-                                                        <Button onClick={() => deleteAchieve(achieve.id)}>X</Button>
+                                                        <Button variant={'outlined'} onClick={() => deleteAchieve(achieve.id)}>X</Button>
                                                     </div>
                                                 </div>
                                             )
@@ -467,19 +475,35 @@ const AdminPage: React.FC = () => {
                                                 </div>
                                             </div>
                                             <div className={'admin_achieve_input'}>
-                                                <label>Название Истории:
-                                                    <input type={"text"} value={achieveNameInput.value}
-                                                           onChange={(e) => achieveNameInput.onChange(e)}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Название Сказания'}
+                                                        type={'text'}
+                                                        value={achieveNameInput.value}
+                                                        error={achieveNameInput.emptyInput}
+                                                        onChange={(e) => achieveNameInput.onChange(e)}
+                                                    />
                                                 </label>
-                                                <label>Описание Истории:
-                                                    <input type={"text"} value={achieveDescriptionInput.value}
-                                                           onChange={(e) => achieveDescriptionInput.onChange(e)}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Описание Сказания'}
+                                                        type={'text'}
+                                                        value={achieveDescriptionInput.value}
+                                                        error={achieveDescriptionInput.emptyInput}
+                                                        onChange={(e) => achieveDescriptionInput.onChange(e)}
+                                                    />
                                                 </label>
-                                                <label>Дата получения Истории:
-                                                    <input type={"date"} value={achieveDateInput.value}
-                                                           style={{outline: achieveDateInput.value > moment().format('YYYY-MM-DD') ? '2px red solid' : ''}}
-                                                           max={moment().format('YYYY-MM-DD')}
-                                                           onChange={(e) => achieveDateInput.onChange(e)}/>
+                                                <label>
+                                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                        <DatePicker
+                                                            label={'Дата получения Сказания'}
+                                                            value={moment(achieveDateInput.value)}
+                                                            onChange={(e) => achieveDateInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                            maxDate={moment()}
+                                                        />
+                                                    </LocalizationProvider>
                                                 </label>
                                             </div>
                                         </form>
@@ -504,19 +528,19 @@ const AdminPage: React.FC = () => {
                                                         />
                                                     </div>
                                                     <div className="cropper-buttons">
-                                                        <Button onClick={handleCrop}>Сохранить</Button>
-                                                        <Button onClick={handleCancel}>Отмена</Button>
+                                                        <Button variant={'outlined'} onClick={handleCrop}>Сохранить</Button>
+                                                        <Button variant={'outlined'} onClick={handleCancel}>Отмена</Button>
                                                     </div>
                                                 </>
                                             )}
                                         </div>
                                         <div className={'admin_achieve_save'}>
-                                            <Button disabled={posting || croppedImage === null} onClick={() => {setCroppedImage(null); setIsEditing(false);
+                                            <Button variant={'outlined'} disabled={posting || croppedImage === null} onClick={() => {setCroppedImage(null); setIsEditing(false);
                                                 if (fileInputRef.current && "value" in fileInputRef.current) {
                                                     fileInputRef.current.value = ''
                                                 }
                                             }}>Удалить иконку</Button>
-                                            <Button disabled={inputError || posting || isEditing} onClick={postAchieve}>Выдать Историю</Button>
+                                            <Button variant={'outlined'} disabled={inputError || posting || isEditing} onClick={postAchieve}>Выдать Историю</Button>
                                         </div>
 
                                     </div>
@@ -563,19 +587,35 @@ const AdminPage: React.FC = () => {
                                                     </div>
                                                 </div>
                                                 <div className={'admin_achieve_input'}>
-                                                    <label>Название Истории:
-                                                        <input type={"text"} value={editAchieveNameInput.value}
-                                                               onChange={(e) => editAchieveNameInput.onChange(e)}/>
+                                                    <label>
+                                                        <TextField
+                                                            variant={'outlined'}
+                                                            label={'Название Сказания'}
+                                                            type={'text'}
+                                                            value={editAchieveNameInput.value}
+                                                            error={editAchieveNameInput.emptyInput}
+                                                            onChange={(e) => editAchieveNameInput.onChange(e)}
+                                                        />
                                                     </label>
-                                                    <label>Описание Истории:
-                                                        <input type={"text"} value={editAchieveDescriptionInput.value}
-                                                               onChange={(e) => editAchieveDescriptionInput.onChange(e)}/>
+                                                    <label>
+                                                        <TextField
+                                                            variant={'outlined'}
+                                                            label={'Описание Сказания'}
+                                                            type={'text'}
+                                                            value={editAchieveDescriptionInput.value}
+                                                            error={editAchieveDescriptionInput.emptyInput}
+                                                            onChange={(e) => editAchieveDescriptionInput.onChange(e)}
+                                                        />
                                                     </label>
-                                                    <label>Дата получения Истории:
-                                                        <input type={"date"} value={editAchieveDateInput.value}
-                                                               style={{outline: editAchieveDateInput.value > moment().format('YYYY-MM-DD') ? '2px red solid' : ''}}
-                                                               max={moment().format('YYYY-MM-DD')}
-                                                               onChange={(e) => editAchieveDateInput.onChange(e)}/>
+                                                    <label>
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DatePicker
+                                                                label={'Дата получения Сказания'}
+                                                                value={moment(editAchieveDateInput.value)}
+                                                                onChange={(e) => editAchieveDateInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                                maxDate={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                 </div>
                                             </form>
@@ -600,21 +640,21 @@ const AdminPage: React.FC = () => {
                                                             />
                                                         </div>
                                                         <div className="cropper-buttons">
-                                                            <Button onClick={handleEditCrop}>Сохранить</Button>
-                                                            <Button onClick={handleCancel}>Отмена</Button>
+                                                            <Button variant={'outlined'} onClick={handleEditCrop}>Сохранить</Button>
+                                                            <Button variant={'outlined'} onClick={handleCancel}>Отмена</Button>
                                                         </div>
                                                     </>
                                                 )}
                                             </div>
                                             <div className={'admin_achieve_save'}>
-                                                <Button disabled={posting || editCroppedImage === null} onClick={() => {
+                                                <Button variant={'outlined'} disabled={posting || editCroppedImage === null} onClick={() => {
                                                     setCroppedImage(null);
                                                     setIsEditing(false);
                                                     if (fileEditInputRef.current && "value" in fileEditInputRef.current) {
                                                         fileEditInputRef.current.value = ''
                                                     }
                                                 }}>Удалить иконку</Button>
-                                                <Button disabled={inputEditError || posting || isEditEditing} onClick={() =>
+                                                <Button variant={'outlined'} disabled={inputEditError || posting || isEditEditing} onClick={() =>
                                                     editAchieve(editingData?.id)}>Переписать Историю</Button>
                                             </div>
                                         </div>

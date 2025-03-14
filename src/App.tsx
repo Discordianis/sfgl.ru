@@ -1,4 +1,5 @@
 import './App.css';
+import './MUICustom.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Header from "./Components/Main/Header/Header.tsx";
 import MainMenu from './Components/Main/MainMenu/MainMenu.tsx';
@@ -29,6 +30,16 @@ import AddLibrary from "./Components/Main/AddInfo/AddLibrary/AddLibrary.tsx";
 import Wall from "./Components/Main/OtherPages/Wall/Wall.tsx";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+declare module "@mui/material/styles" {
+    interface Palette {
+        wheat: Palette["primary"];
+    }
+
+    interface PaletteOptions {
+        wheat?: PaletteOptions["primary"];
+    }
+}
+
 export default function App() {
     const token = localStorage.getItem('token');
     const dispatch: AppDispatch = useDispatch();
@@ -45,10 +56,16 @@ export default function App() {
                 contrastText: '#fff',
             },
             secondary: {
-                light: '#3468cf',
+                light: '#595993c9',
+                main: '#4b4b7dc9',
+                dark: '#3c3c63c9',
+                contrastText: '#000',
+            },
+            wheat: {
+                light: '#6b5b48',
                 main: '#3061c3',
                 dark: '#2850a1',
-                contrastText: '#000',
+                contrastText: '#ffffff',
             },
         },
     });

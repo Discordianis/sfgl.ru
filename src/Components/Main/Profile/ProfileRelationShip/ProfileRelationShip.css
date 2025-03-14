@@ -118,6 +118,7 @@
 
 .profile_ach > div:nth-child(2) {
     display: flex;
+    max-width: 270px;
     flex-direction: column;
     justify-content: space-between;
 }
@@ -149,7 +150,7 @@
     gap: 10px;
 }
 
-.profile_rs_info > div > .prs_bio_status_common {
+.profile_rs_info > div > .prs_bio_status_common, .prs_links {
     display: flex;
     width: 100%;
     gap: 5px;
@@ -159,6 +160,38 @@
     padding: 0;
     flex-wrap: wrap;
     align-items: stretch;
+}
+
+.prs_links_data {
+    flex: 1;
+    background: var(--background-dark-brown);
+    padding: 10px;
+    border-radius: 8px;
+    height: 100%;
+}
+
+.prs_links_data_content img {
+    width: 25px;
+    height: 25px;
+}
+
+.prs_links_data_content span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.prs_links_data_content a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+}
+
+.prs_links_data_content {
+    display: grid;
+    gap: 0 15px;
+    grid-template-columns: repeat(2, 2fr);
+    justify-items: center;
 }
 
 .prs_bio_status_common > div {
@@ -258,14 +291,6 @@
     justify-content: center;
 }
 
-.profile_rs_info .filter_buttons:after {
-    content: '▼';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-}
 
 .profile_rs_info .filter_buttons {
     max-width: 400px;
@@ -302,9 +327,51 @@
         max-width: none;
     }
 }
-@media screen and (max-width: 855px){
+
+@media screen and (max-width: 965px) {
+    .prs_links_data_content {
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width: 855px) {
+    .prs_links_data .prs_links_data_content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0 15px;
+        justify-content: unset;
+    }
     .profile_rs_info > div > .prs_bio_status_common {
         display: flex;
         flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .user_nickname strong {
+        font-size: 20px;
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 548px) {
+    .profile_utabs {
+        display: flex;
+        justify-content: flex-start;
+        background: var(--background-trans-color);
+        border-radius: 8px 8px 0 0;
+        overflow-x: scroll;
+        padding-bottom: 4px;
+    }
+    .profile_utabs::-webkit-scrollbar {
+        display: unset;
+        height: 3px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .prs_links_data_content {
+        justify-content: unset;
     }
 }

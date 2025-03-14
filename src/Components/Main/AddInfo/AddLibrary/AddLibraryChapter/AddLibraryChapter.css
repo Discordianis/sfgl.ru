@@ -25,6 +25,10 @@
     text-align: center;
 }
 
+.textarea_span > label {
+    max-width: unset !important;
+}
+
 .add_library_chapter_prop.active > div > button {
     outline: var(--border-wheat);
 }

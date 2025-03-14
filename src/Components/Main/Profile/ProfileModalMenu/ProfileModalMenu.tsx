@@ -1,10 +1,11 @@
 import React, {useState} from "react";
-import Button from "../../../Button/Button.tsx";
+
 import Modal from "../../../Modal/Modal.tsx";
 import {NavLink, useParams} from "react-router-dom";
 import './ProfileModalMenu.css'
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../redux";
+import {Button} from "@mui/material";
 
 const ProfileModalMenu: React.FC = () => {
 
@@ -33,8 +34,8 @@ const ProfileModalMenu: React.FC = () => {
     }
 
     return(
-        <>
-            <Button onClick={handleModal}>Открыть меню</Button>
+        <div className={"profile_modal_root"}>
+            <Button variant={'contained'} onClick={handleModal}>Открыть меню</Button>
             <div>
                 <Modal open={openModal} onKeyDown={handleCloseModal} onClose={handleClose}>
                     <div className={'profile_modal_title_button'}>
@@ -42,7 +43,7 @@ const ProfileModalMenu: React.FC = () => {
                             <h3>Меню профиля</h3>
                         </div>
                         <div>
-                            <Button onClick={() => setOpenModal(false)}>x</Button>
+                            <Button variant={'contained'} onClick={() => setOpenModal(false)}>x</Button>
                         </div>
                     </div>
                     <div className={'profile_modal_general'}>
@@ -97,7 +98,7 @@ const ProfileModalMenu: React.FC = () => {
                 </Modal>
             </div>
 
-        </>
+        </div>
     )
 }
 

@@ -3,13 +3,17 @@ import React, {useEffect, useRef, useState} from "react";
 import imageNG from '../../../../../../public/icons/imageNotFound.jpeg'
 import useInput from "../../../../../hooks/useInput.tsx";
 import moment from "moment";
-import Button from "../../../../Button/Button.tsx";
+
 import {useNotification} from "../../../../../hooks/useSuccess.tsx";
 import {NavLink} from "react-router-dom";
 import HoldButton from "../../../../Button/HoldButton.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../../../redux";
 import Loading from "../../../../Loading/Loading.tsx";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {storyPlaceholders} from "../../../../../placeholders/storyPlaceholders.tsx";
 
 interface IAllCharactersInfo {
     age: string,
@@ -172,6 +176,14 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
 
     const [filePosterError, setFilePosterError] = useState('')
     const [filePosterUrl, setFilePosterUrl] = useState<string | null>(null)
+
+    const [placeholder, setPlaceholder] = useState("");
+
+    useEffect(() => {
+        const keys = Object.keys(storyPlaceholders);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        setPlaceholder(storyPlaceholders[randomKey]);
+    }, [currentStory, createNewStory]);
 
     useEffect(() => {
         const fetching = async () => {
@@ -631,7 +643,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                             )}
                         </div>
                         {!createNewStory &&
-                            <Button onClick={() => setCreateNewStory(true)}>Создать историю</Button>
+                            <Button variant={'outlined'} onClick={() => setCreateNewStory(true)}>Создать историю</Button>
                         }
                     </div>
                     {(currentStory && !createNewStory) &&
@@ -644,44 +656,71 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     <div className={'add_library_story_comm_inputs'}>
                                         <div>
                                             <div>
-                                                <label>Название истории (рус.):
-                                                    <input type={"text"} value={storyRusNameEdit.value}
-                                                           style={{outline: storyRusNameEdit.emptyInput ? '#af4545 solid' : ''}}
-                                                           onChange={(e) => storyRusNameEdit.onChange(e)}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Название истории (рус.)'}
+                                                        type={'text'}
+                                                        value={storyRusNameEdit.value}
+                                                        error={storyRusNameEdit.emptyInput}
+                                                        onChange={(e) => storyRusNameEdit.onChange(e)}
+                                                    />
                                                 </label>
                                             </div>
                                             <div>
-                                                <label>Название истории (англ.):
-                                                    <input type={"text"} value={storyEngNameEdit.value}
-                                                           style={{outline: storyEngNameEdit.emptyInput ? '#af4545 solid' : ''}}
-                                                           onChange={(e) => storyEngNameEdit.onChange(e)}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Название истории (англ.)'}
+                                                        type={'text'}
+                                                        value={storyEngNameEdit.value}
+                                                        onChange={(e) => storyEngNameEdit.onChange(e)}
+                                                    />
                                                 </label>
                                             </div>
                                             <div className={'add_library_story_main_select filter_buttons'}>
-                                                <span>Статус истории:</span>
-                                                <select value={storyStatusEdit}
-                                                        onChange={(e) => setStoryStatusEdit(e.target.value)}>
-                                                    <option value={'announce'}>Анонс</option>
-                                                    <option value={'ongoing'}>Онгоинг</option>
-                                                    <option value={'ended'}>Завершено</option>
-                                                </select>
+                                                <div className={'filter_buttons_fill'}>
+                                                    <FormControl variant="outlined">
+                                                        <InputLabel id="outlined-label">Статус истории</InputLabel>
+                                                        <Select
+                                                            labelId="outlined-label"
+                                                            variant={'outlined'}
+                                                            value={storyStatusEdit}
+                                                            onChange={(e) => setStoryStatusEdit(e.target.value)}
+                                                            label={"Статус истории"}
+                                                        >
+                                                            <MenuItem value={'announce'}>Анонс</MenuItem>
+                                                            <MenuItem value={'ongoing'}>Онгоинг</MenuItem>
+                                                            <MenuItem value={'ended'}>Завершено</MenuItem>
+                                                        </Select>
+                                                    </FormControl>
+                                                </div>
                                             </div>
                                         </div>
                                         <div>
                                             <div>
-                                                <label>Дата начала:
-                                                    <input type={"date"} value={storyStartDateEdit.value}
-                                                           style={{outline: (storyStartDateEdit.emptyInput && storyStatusEdit !== 'announce') ? '#af4545 solid' : ''}}
-                                                           onChange={(e) => storyStartDateEdit.onChange(e)}/>
+                                                <label>
+                                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                        <DatePicker
+                                                            label={'Дата начала'}
+                                                            value={moment(storyStartDateEdit.value)}
+                                                            onChange={(e) => storyStartDateEdit.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                            maxDate={moment()}
+                                                        />
+                                                    </LocalizationProvider>
                                                 </label>
                                             </div>
                                             {storyStatusEdit === 'ended' &&
                                                 <div>
-                                                    <label>Дата конца:
-                                                        <input type={"date"} value={storyEndDateEdit.value}
-                                                               style={{outline: storyEndDateEdit.emptyInput ? '#af4545 solid' : ''}}
-                                                               max={moment().format('YYYY-MM-DD')}
-                                                               onChange={(e) => storyEndDateEdit.onChange(e)}/>
+                                                    <label>
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DatePicker
+                                                                label={'Дата конца'}
+                                                                value={moment(storyEndDateEdit.value)}
+                                                                onChange={(e) => storyEndDateEdit.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                                maxDate={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                 </div>
                                             }
@@ -692,7 +731,10 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                            style={{outline: coverEditError ? '#af4545 solid' : ''}}
                                                            accept={'.jpg, .jpeg, .png, .webp'}/>
                                                 </label>
-                                                {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
+                                                {fileCoverError && <span style={{
+                                                    color: '#f75151',
+                                                    fontSize: '13px'
+                                                }}>{fileCoverError}</span>}
                                             </div>
                                             <div>
                                                 <label>Постер (16:9):
@@ -707,9 +749,31 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     </div>
                                     <div>
                                         <div className={'textarea_span'}>
-                                            <span>Описание истории:</span>
-                                            <textarea value={storyDescriptionEdit.value}
-                                                      onChange={(e) => storyDescriptionEdit.onChange(e)} rows={10}
+                                            <TextField
+                                                multiline
+                                                variant={'outlined'}
+                                                label={'Описание истории'}
+                                                placeholder={placeholder}
+                                                minRows={2}
+                                                sx={{
+                                                    '&::before': {
+                                                        border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                        transform: 'scaleX(0)',
+                                                        left: '2.5px',
+                                                        right: '2.5px',
+                                                        bottom: 0,
+                                                        top: 'unset',
+                                                        transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                        borderRadius: 0,
+                                                        borderBottomLeftRadius: '64px 20px',
+                                                        borderBottomRightRadius: '64px 20px',
+                                                    },
+                                                    '&:focus-within::before': {
+                                                        transform: 'scaleX(1)',
+                                                    },
+                                                }}
+                                                value={storyDescriptionEdit.value}
+                                                onChange={(e) => storyDescriptionEdit.onChange(e)}
                                             />
                                             <div className={'hints_html'}>
                                                 <div className={'hints_html_first'}>
@@ -730,8 +794,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     </div>
                                     {!openCharacterList &&
                                         <div>
-                                            <Button onClick={() => setOpenCharacterList(true)}>Персонажи
-                                                истории</Button>
+                                            <Button variant={'outlined'} onClick={() => setOpenCharacterList(true)}>Персонажи истории</Button>
                                         </div>
                                     }
                                     {openCharacterList &&
@@ -761,8 +824,8 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                                         </div>
                                                                     </div>
                                                                     <div className={'story_accept_user_prop_buttons'}>
-                                                                        <Button>{character?.role === 'main' ? 'MC' : 'S'}</Button>
-                                                                        <Button onClick={() => deleteAcceptUser(character?.id)}>x</Button>
+                                                                        <Button variant={'outlined'}>{character?.role === 'main' ? 'MC' : 'S'}</Button>
+                                                                        <Button variant={'outlined'} onClick={() => deleteAcceptUser(character?.id)}>x</Button>
                                                                     </div>
                                                                 </div>
                                                             )}
@@ -794,8 +857,8 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                                         </div>
                                                                         <div
                                                                             className={'story_accept_user_prop_buttons'}>
-                                                                            <Button>{typeSelectedCharacters[accept?.id] === 'main' ? 'MC' : 'S'}</Button>
-                                                                            <Button onClick={() => deleteAcceptUser(accept?.id)}>x</Button>
+                                                                            <Button variant={'outlined'}>{typeSelectedCharacters[accept?.id] === 'main' ? 'MC' : 'S'}</Button>
+                                                                            <Button variant={'outlined'} onClick={() => deleteAcceptUser(accept?.id)}>x</Button>
                                                                         </div>
                                                                     </div>
                                                                 )}
@@ -840,9 +903,9 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                                     </div>
                                                                 </div>
                                                                 <div>
-                                                                    <Button
+                                                                    <Button variant={'outlined'}
                                                                         onClick={() => addAcceptCharacter(user?.id, 'main')}>MC</Button>
-                                                                    <Button
+                                                                    <Button variant={'outlined'}
                                                                         onClick={() => addAcceptCharacter(user?.id, 'second')}>S</Button>
                                                                 </div>
                                                             </div>
@@ -901,7 +964,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                     удаление собственных глав истории. Автор истории помечен особой рамкой.</span>
                                             </div>
                                             <div className={'story_accept_close_button'}>
-                                                <Button onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
+                                                <Button variant={'outlined'} onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
                                             </div>
                                         </div>
                                     }
@@ -924,16 +987,16 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                             <div className={'add_library_story_save_buttons'}>
                                 <div className={'delete_buttons_root'}>
                                     {!nihility ?
-                                        <Button style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция Небытия...</Button>
+                                        <Button variant={'outlined'} style={{color: '#b34949'}} onClick={() => setNihility(true)}>Функция Небытия...</Button>
                                         :
                                         <>
-                                            <Button onClick={() => setNihility(false)}>Отмена</Button>
+                                            <Button variant={'outlined'} onClick={() => setNihility(false)}>Отмена</Button>
                                             <HoldButton onClick={() => deleteStory(currentStory?.id)}>Удалить историю</HoldButton>
                                         </>
                                     }
                                 </div>
                                 <div className={'add_save_button'}>
-                                    <Button onClick={uploadStory}
+                                    <Button variant={'outlined'} onClick={uploadStory}
                                             disabled={inputsErrorEdit || posting || coverEditError ||
                                                 posterEditError || fileCoverError?.length > 0 || filePosterError?.length > 0}>
                                         Сохранить изменения
@@ -953,44 +1016,72 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     <div className={'add_library_story_comm_inputs'}>
                                         <div>
                                             <div>
-                                                <label>Название истории (рус.):
-                                                    <input type={"text"} value={storyRusNameNew.value}
-                                                           style={{outline: storyRusNameNew.emptyInput ? '#af4545 solid' : ''}}
-                                                           onChange={(e) => storyRusNameNew.onChange(e)}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Название истории (рус.)'}
+                                                        type={'text'}
+                                                        value={storyRusNameNew.value}
+                                                        error={storyRusNameNew.emptyInput}
+                                                        onChange={(e) => storyRusNameNew.onChange(e)}
+                                                    />
                                                 </label>
                                             </div>
                                             <div>
-                                                <label>Название истории (англ.):
-                                                    <input type={"text"} value={storyEngNameNew.value}
-                                                           style={{outline: storyEngNameNew.emptyInput ? '#af4545 solid' : ''}}
-                                                           onChange={(e) => storyEngNameNew.onChange(e)}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Название истории (англ.)'}
+                                                        type={'text'}
+                                                        value={storyEngNameNew.value}
+                                                        error={storyEngNameNew.emptyInput}
+                                                        onChange={(e) => storyEngNameNew.onChange(e)}
+                                                    />
                                                 </label>
                                             </div>
                                             <div className={'add_library_story_main_select filter_buttons'}>
-                                                <span>Статус истории:</span>
-                                                <select value={storyStatusNew}
-                                                        onChange={(e) => setStoryStatusNew(e.target.value)}>
-                                                    <option value={'announce'}>Анонс</option>
-                                                    <option value={'ongoing'}>Онгоинг</option>
-                                                    <option value={'ended'}>Завершено</option>
-                                                </select>
+                                                <div className={'filter_buttons_fill'}>
+                                                    <FormControl variant="outlined">
+                                                        <InputLabel id="outlined-label">Статус истории</InputLabel>
+                                                        <Select
+                                                            labelId="outlined-label"
+                                                            variant={'outlined'}
+                                                            value={storyStatusNew}
+                                                            onChange={(e) => setStoryStatusNew(e.target.value)}
+                                                            label={"Статус истории"}
+                                                        >
+                                                            <MenuItem value={'announce'}>Анонс</MenuItem>
+                                                            <MenuItem value={'ongoing'}>Онгоинг</MenuItem>
+                                                            <MenuItem value={'ended'}>Завершено</MenuItem>
+                                                        </Select>
+                                                    </FormControl>
+                                                </div>
                                             </div>
                                         </div>
                                         <div>
                                             <div>
-                                                <label>Дата начала:
-                                                    <input type={"date"} value={storyStartDateNew.value}
-                                                           style={{outline: (storyStartDateNew.emptyInput && storyStatusNew !== 'announce') ? '#af4545 solid' : ''}}
-                                                           onChange={(e) => storyStartDateNew.onChange(e)}/>
+                                                <label>
+                                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                        <DatePicker
+                                                            label={'Дата начала'}
+                                                            value={moment(storyStartDateNew.value)}
+                                                            onChange={(e) => storyStartDateNew.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                            maxDate={moment()}
+                                                        />
+                                                    </LocalizationProvider>
                                                 </label>
                                             </div>
                                             {storyStatusNew === 'ended' &&
                                                 <div>
-                                                    <label>Дата конца:
-                                                        <input type={"date"} value={storyEndDateNew.value}
-                                                               style={{outline: storyEndDateNew.emptyInput ? '#af4545 solid' : ''}}
-                                                               max={moment().format('YYYY-MM-DD')}
-                                                               onChange={(e) => storyEndDateNew.onChange(e)}/>
+                                                    <label>
+                                                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                            <DatePicker
+                                                                label={'Дата конца'}
+                                                                value={moment(storyEndDateNew.value)}
+                                                                onChange={(e) => storyEndDateNew.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                                maxDate={moment()}
+                                                            />
+                                                        </LocalizationProvider>
                                                     </label>
                                                 </div>
                                             }
@@ -1001,7 +1092,10 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                            style={{outline: coverNewError ? '#af4545 solid' : ''}}
                                                            accept={'.jpg, .jpeg, .png, .webp'}/>
                                                 </label>
-                                                {fileCoverError && <span style={{color:'#f75151', fontSize: '13px'}}>{fileCoverError}</span>}
+                                                {fileCoverError && <span style={{
+                                                    color: '#f75151',
+                                                    fontSize: '13px'
+                                                }}>{fileCoverError}</span>}
                                             </div>
                                             <div>
                                                 <label>Постер (16:9):
@@ -1015,9 +1109,31 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                         </div>
                                     </div>
                                     <div className={'textarea_span'}>
-                                        <span>Описание истории:</span>
-                                        <textarea value={storyDescriptionNew.value}
-                                                  onChange={(e) => storyDescriptionNew.onChange(e)} rows={10}
+                                        <TextField
+                                            multiline
+                                            variant={'outlined'}
+                                            label={'Описание истории'}
+                                            placeholder={placeholder}
+                                            minRows={2}
+                                            sx={{
+                                                '&::before': {
+                                                    border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                    transform: 'scaleX(0)',
+                                                    left: '2.5px',
+                                                    right: '2.5px',
+                                                    bottom: 0,
+                                                    top: 'unset',
+                                                    transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                    borderRadius: 0,
+                                                    borderBottomLeftRadius: '64px 20px',
+                                                    borderBottomRightRadius: '64px 20px',
+                                                },
+                                                '&:focus-within::before': {
+                                                    transform: 'scaleX(1)',
+                                                },
+                                            }}
+                                            value={storyDescriptionNew.value}
+                                            onChange={(e) => storyDescriptionNew.onChange(e)}
                                         />
                                         <div className={'hints_html'}>
                                             <div className={'hints_html_first'}>
@@ -1037,7 +1153,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     </div>
                                     {!openCharacterList &&
                                         <div>
-                                            <Button onClick={() => setOpenCharacterList(true)}>Персонажи истории</Button>
+                                            <Button variant={'outlined'} onClick={() => setOpenCharacterList(true)}>Персонажи истории</Button>
                                         </div>
                                     }
                                     {(openCharacterList && allCharacters) ?
@@ -1071,8 +1187,8 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                                         </div>
                                                                         <div
                                                                             className={'story_accept_user_prop_buttons'}>
-                                                                            <Button>{typeSelectedCharacters[accept?.id] === 'main' ? 'MC' : 'S'}</Button>
-                                                                            <Button
+                                                                            <Button variant={'outlined'}>{typeSelectedCharacters[accept?.id] === 'main' ? 'MC' : 'S'}</Button>
+                                                                            <Button variant={'outlined'}
                                                                                 onClick={() => deleteAcceptUser(accept?.id)}>x</Button>
                                                                         </div>
                                                                     </div>
@@ -1123,9 +1239,9 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                                     </div>
                                                                 </div>
                                                                 <div>
-                                                                    <Button
+                                                                    <Button variant={'outlined'}
                                                                         onClick={() => addAcceptCharacter(user?.id, 'main')}>MC</Button>
-                                                                    <Button
+                                                                    <Button variant={'outlined'}
                                                                         onClick={() => addAcceptCharacter(user?.id, 'second')}>S</Button>
                                                                 </div>
                                                             </div>
@@ -1134,14 +1250,14 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                 </div>
                                             </div>
                                             <div className={'story_accept_close_button'}>
-                                                <Button onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
+                                                <Button variant={'outlined'} onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
                                             </div>
                                         </div>
                                         : openCharacterList &&
                                         <div className={'no_characters'}>
                                             <span>Нет ни одного персонажа...</span>
                                             <div className={'story_accept_close_button'}>
-                                                <Button onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
+                                                <Button variant={'outlined'} onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
                                             </div>
                                         </div>
                                     }
@@ -1169,7 +1285,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                             </div>
                             <div className={'add_save_button'}>
                                 <div>
-                                    <Button onClick={uploadStory}
+                                    <Button variant={'outlined'} onClick={uploadStory}
                                             disabled={inputsErrorNew || posting || coverNewError || posterNewError ||
                                                 fileCoverError?.length > 0 || filePosterError?.length > 0}>Создать историю</Button>
                                 </div>
@@ -1182,7 +1298,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                     {!createNewStory ?
                         <div className={'add_first_story'}>
                             <span>Нет ни одной истории...</span>
-                            <Button onClick={() => setCreateNewStory(true)}>Создать первую историю</Button>
+                            <Button variant={'outlined'} onClick={() => setCreateNewStory(true)}>Создать первую историю</Button>
                         </div>
                         :
                         <div className={'add_library_story_main'}>
@@ -1193,44 +1309,72 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                 <div className={'add_library_story_main_inputs'}>
                                     <div className={'add_library_story_comm_inputs'}>
                                         <div>
-                                            <label>Название истории (рус.):
-                                                <input type={"text"} value={storyRusNameNew.value}
-                                                       style={{outline: storyRusNameNew.emptyInput ? '#af4545 solid' : ''}}
-                                                       onChange={(e) => storyRusNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Название истории (рус.)'}
+                                                    type={'text'}
+                                                    value={storyRusNameNew.value}
+                                                    error={storyRusNameNew.emptyInput}
+                                                    onChange={(e) => storyRusNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div>
-                                            <label>Название истории (англ.):
-                                                <input type={"text"} value={storyEngNameNew.value}
-                                                       style={{outline: storyEngNameNew.emptyInput ? '#af4545 solid' : ''}}
-                                                       onChange={(e) => storyEngNameNew.onChange(e)}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Название истории (англ.)'}
+                                                    type={'text'}
+                                                    value={storyEngNameNew.value}
+                                                    error={storyEngNameNew.emptyInput}
+                                                    onChange={(e) => storyEngNameNew.onChange(e)}
+                                                />
                                             </label>
                                         </div>
                                         <div className={'add_library_story_main_select filter_buttons'}>
-                                            <span>Статус истории:</span>
-                                            <select value={storyStatusNew}
-                                                    onChange={(e) => setStoryStatusNew(e.target.value)}>
-                                                <option value={'announce'}>Анонс</option>
-                                                <option value={'ongoing'}>Онгоинг</option>
-                                                <option value={'ended'}>Завершено</option>
-                                            </select>
+                                            <div className={'filter_buttons_fill'}>
+                                                <FormControl variant="outlined">
+                                                    <InputLabel id="outlined-label">Статус истории</InputLabel>
+                                                    <Select
+                                                        labelId="outlined-label"
+                                                        variant={'outlined'}
+                                                        value={storyStatusNew}
+                                                        onChange={(e) => setStoryStatusNew(e.target.value)}
+                                                        label={"Статус истории"}
+                                                    >
+                                                        <MenuItem value={'announce'}>Анонс</MenuItem>
+                                                        <MenuItem value={'ongoing'}>Онгоинг</MenuItem>
+                                                        <MenuItem value={'ended'}>Завершено</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
                                         </div>
                                     </div>
                                     <div>
                                         <div>
-                                            <label>Дата начала:
-                                                <input type={"date"} value={storyStartDateNew.value}
-                                                       style={{outline: (storyStartDateNew.emptyInput && storyStatusNew !== 'announce') ? '#af4545 solid' : ''}}
-                                                       onChange={(e) => storyStartDateNew.onChange(e)}/>
+                                            <label>
+                                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                    <DatePicker
+                                                        label={'Дата начала'}
+                                                        value={moment(storyStartDateNew.value)}
+                                                        onChange={(e) => storyStartDateNew.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                        maxDate={moment()}
+                                                    />
+                                                </LocalizationProvider>
                                             </label>
                                         </div>
                                         {storyStatusNew === 'ended' &&
                                             <div>
-                                                <label>Дата конца:
-                                                    <input type={"date"} value={storyEndDateNew.value}
-                                                           style={{outline: storyEndDateNew.emptyInput ? '#af4545 solid' : ''}}
-                                                           max={moment().format('YYYY-MM-DD')}
-                                                           onChange={(e) => storyEndDateNew.onChange(e)}/>
+                                                <label>
+                                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                        <DatePicker
+                                                            label={'Дата конца'}
+                                                            value={moment(storyEndDateNew.value)}
+                                                            onChange={(e) => storyEndDateNew.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                            maxDate={moment()}
+                                                        />
+                                                    </LocalizationProvider>
                                                 </label>
                                             </div>
                                         }
@@ -1255,8 +1399,31 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                 <div>
                                     <div className={'textarea_span'}>
                                         <span>Описание истории:</span>
-                                        <textarea value={storyDescriptionNew.value}
-                                                  onChange={(e) => storyDescriptionNew.onChange(e)} rows={10}
+                                        <TextField
+                                            multiline
+                                            variant={'outlined'}
+                                            label={'Описание истории'}
+                                            placeholder={placeholder}
+                                            minRows={2}
+                                            sx={{
+                                                '&::before': {
+                                                    border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                    transform: 'scaleX(0)',
+                                                    left: '2.5px',
+                                                    right: '2.5px',
+                                                    bottom: 0,
+                                                    top: 'unset',
+                                                    transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                    borderRadius: 0,
+                                                    borderBottomLeftRadius: '64px 20px',
+                                                    borderBottomRightRadius: '64px 20px',
+                                                },
+                                                '&:focus-within::before': {
+                                                    transform: 'scaleX(1)',
+                                                },
+                                            }}
+                                            value={storyDescriptionNew.value}
+                                            onChange={(e) => storyDescriptionNew.onChange(e)}
                                         />
                                         <div className={'hints_html'}>
                                             <div className={'hints_html_first'}>
@@ -1276,7 +1443,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     </div>
                                     {!openCharacterList &&
                                         <div>
-                                            <Button onClick={() => setOpenCharacterList(true)}>Персонажи истории</Button>
+                                            <Button variant={'outlined'} onClick={() => setOpenCharacterList(true)}>Персонажи истории</Button>
                                         </div>
                                     }
                                     {(openCharacterList && allCharacters) ?
@@ -1310,8 +1477,8 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                                         </div>
                                                                         <div
                                                                             className={'story_accept_user_prop_buttons'}>
-                                                                            <Button>{typeSelectedCharacters[accept?.id] === 'main' ? 'MC' : 'S'}</Button>
-                                                                            <Button
+                                                                            <Button variant={'outlined'}>{typeSelectedCharacters[accept?.id] === 'main' ? 'MC' : 'S'}</Button>
+                                                                            <Button variant={'outlined'}
                                                                                 onClick={() => deleteAcceptUser(accept?.id)}>x</Button>
                                                                         </div>
                                                                     </div>
@@ -1362,8 +1529,8 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                                     </div>
                                                                 </div>
                                                                 <div>
-                                                                    <Button onClick={() => addAcceptCharacter(user?.id, 'main')}>MC</Button>
-                                                                    <Button onClick={() => addAcceptCharacter(user?.id, 'second')}>S</Button>
+                                                                    <Button variant={'outlined'} onClick={() => addAcceptCharacter(user?.id, 'main')}>MC</Button>
+                                                                    <Button variant={'outlined'} onClick={() => addAcceptCharacter(user?.id, 'second')}>S</Button>
                                                                 </div>
                                                             </div>
                                                         )
@@ -1371,14 +1538,14 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                                 </div>
                                             </div>
                                             <div className={'story_accept_close_button'}>
-                                                <Button onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
+                                                <Button variant={'outlined'} onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
                                             </div>
                                         </div>
                                         : openCharacterList &&
                                         <div className={'no_characters'}>
                                             <span>Нет ни одного персонажа...</span>
                                             <div className={'story_accept_close_button'}>
-                                                <Button onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
+                                                <Button variant={'outlined'} onClick={() => setOpenCharacterList(false)}>Закрыть</Button>
                                             </div>
                                         </div>
                                     }
@@ -1406,7 +1573,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                             </div>
                             <div className={'add_save_button'}>
                                 <div>
-                                    <Button onClick={uploadStory}
+                                    <Button variant={'outlined'} onClick={uploadStory}
                                             disabled={inputsErrorNew || posting || coverNewError || posterNewError ||
                                                 fileCoverError?.length > 0 || filePosterError?.length > 0}>Создать историю</Button>
                                 </div>

@@ -55,15 +55,6 @@
     margin: 15px 0;
 }
 
-.rt_root .filter_buttons:after {
-    content: '▼';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-}
-
 .no_roundtables {
     padding: 20px;
     background: var(--background-dark-brown);

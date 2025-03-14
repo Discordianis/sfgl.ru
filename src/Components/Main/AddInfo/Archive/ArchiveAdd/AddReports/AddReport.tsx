@@ -1,12 +1,15 @@
 import React, {useEffect, useRef, useState} from "react";
 import './AddReport.css'
-import Button from "../../../../../Button/Button.tsx";
 import useInput from "../../../../../../hooks/useInput.tsx";
 import Loading from "../../../../../Loading/Loading.tsx";
 import {useSelector} from "react-redux";
 import {useNotification} from "../../../../../../hooks/useSuccess.tsx";
 import {RootState} from "../../../../../../redux";
 import moment from "moment";
+import {Button, MenuItem, Select, TextField} from "@mui/material";
+import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
+import {reportPlaceholder} from "../../../../../../placeholders/reportPlaceholders.tsx";
 
 interface IReportInfo {
     created_date: string,
@@ -76,6 +79,13 @@ const AddReport: React.FC = () => {
     const imageRef = useRef<HTMLInputElement | null>(null)
     const [fileUrl, setFileUrl] = useState('')
     const [fileError, setFileError] = useState('')
+    const [placeholder, setPlaceholder] = useState("");
+
+    useEffect(() => {
+        const keys = Object.keys(reportPlaceholder);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        setPlaceholder(reportPlaceholder[randomKey]);
+    }, [currentArchiveData, createdNew]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -405,7 +415,7 @@ const AddReport: React.FC = () => {
                     </div>
                 </div>
             }
-            {warningMessageOpened && <Button onClick={() => setWarningMessageOpened(false)}>Подтвердить</Button>}
+            {warningMessageOpened && <Button variant={'outlined'} onClick={() => setWarningMessageOpened(false)}>Подтвердить</Button>}
             {!warningMessageOpened &&
                 <div>
                     <div className={'reports_filters'}>
@@ -413,25 +423,25 @@ const AddReport: React.FC = () => {
                         {(!loading && !currentArchiveData && archiveData?.info.length === 0 && !createdNew) &&
                             <div className={'create_first_report'}>
                                 <span>Вы не написали ни одного отчёта. Желаете создать своё первое творение?</span>
-                                <Button onClick={() => setCreatedNew(true)}>Создать</Button>
+                                <Button variant={'outlined'} onClick={() => setCreatedNew(true)}>Создать</Button>
                             </div>
                         }
                         {(!loading && archiveData?.info) &&
                             <div className={'reports_add_list'}>
                                 {Object.values(archiveData.info).map((report: IReportInfo, index: number) => (
-                                    <div
+                                    <Button variant={'outlined'} sx={{margin: '0 3px', padding: '5px', minWidth: '160px'}}
                                         className={isActivs === `${report.id}` ? 'reports_list active' : 'reports_list'}
                                         key={report.id || index}
                                         onClick={() => getReportById(report.id, report.id.toString())}>
                                         <span>Отчёт от {reformDate(report?.report_date)}</span>
-                                    </div>
+                                    </Button>
                                 ))}
                                 {(createdNew) ?
-                                    <div className={'reports_list active'} onClick={getNewReport}>
+                                    <Button variant={'outlined'} sx={{margin: '0 3px', padding: '5px', minWidth: '160px'}} className={'reports_list active'} onClick={getNewReport}>
                                         <span>Новый отчёт</span>
-                                    </div>
+                                    </Button>
                                     : (currentArchiveData || archiveData.info.length !== 0) &&
-                                    <Button onClick={() => setCreatedNew(true)} disabled={disabledCreateReport}>
+                                    <Button variant={'outlined'} onClick={() => setCreatedNew(true)} disabled={disabledCreateReport}>
                                         <span>+</span>
                                     </Button>
                                 }
@@ -445,29 +455,40 @@ const AddReport: React.FC = () => {
                                     <div>
                                         <div
                                             className={dateInputError ? 'report_date_input error' : 'report_date_input'}>
-                                            <label>Дата отчёта:
-                                                <input type={'datetime-local'} max={moment().format('YYYY-MM-DD HH:mm')}
-                                                       value={dateInput.value} onChange={(e) => dateInput.onChange(e)}/>
+                                            <label>Дата отчёта
+                                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                    <DateTimePicker
+                                                        viewRenderers={{
+                                                            hours: null,
+                                                            minutes: null,
+                                                            seconds: null,
+                                                        }}
+                                                        value={moment(dateInput.value)}
+                                                        onChange={(e) => dateInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                        maxDateTime={moment()}
+                                                    />
+                                                </LocalizationProvider>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Изображение для отчёта (опционально):
-                                                <input type={'file'} onChange={handleFileChange}
+                                                <input type={'file'} onChange={handleFileChange} className={'input_file'}
                                                        accept={'.png, .jpg, .jpeg, .gif, .webp'} ref={imageRef}/>
                                             </label>
                                             {fileError && <span>{fileError}</span>}
                                         </div>
                                         {(currentArchiveData?.image || fileUrl) &&
                                             <div>
-                                                <Button onClick={deleteImage}>Удалить изображение</Button>
+                                                <Button variant={'outlined'} onClick={deleteImage}>Удалить изображение</Button>
                                             </div>
                                         }
                                         <span>Конфиденциальность:</span>
-                                        <div className={'filter_buttons'}>
-                                            <select value={hideReport} onChange={(e) => setHideReport(e.target.value)}>
-                                                <option value={'0'}>Не скрывать отчёт</option>
-                                                <option value={'1'}>Скрыть отчёт</option>
-                                            </select>
+                                        <div className={'filter_buttons_fill'}>
+                                            <Select variant={'filled'} value={hideReport}
+                                                    onChange={(e) => setHideReport(e.target.value)}>
+                                                <MenuItem value={'0'}>Не скрывать отчёт</MenuItem>
+                                                <MenuItem value={'1'}>Скрыть отчёт</MenuItem>
+                                            </Select>
                                         </div>
                                         <div>
                                             <span>Включить форматирование?</span>
@@ -490,8 +511,31 @@ const AddReport: React.FC = () => {
                                     }
                                 </div>
                                 <div className={'reports_textarea'}>
-                                    <textarea rows={30} value={reportInput.value}
-                                              onChange={(e) => reportInput.onChange(e)}
+                                    <TextField
+                                        multiline
+                                        variant={'outlined'}
+                                        label={'Текст отчёта'}
+                                        placeholder={placeholder}
+                                        minRows={2}
+                                        sx={{
+                                            '&::before': {
+                                                border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                transform: 'scaleX(0)',
+                                                left: '2.5px',
+                                                right: '2.5px',
+                                                bottom: 0,
+                                                top: 'unset',
+                                                transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                borderRadius: 0,
+                                                borderBottomLeftRadius: '64px 20px',
+                                                borderBottomRightRadius: '64px 20px',
+                                            },
+                                            '&:focus-within::before': {
+                                                transform: 'scaleX(1)',
+                                            },
+                                        }}
+                                        value={reportInput.value}
+                                        onChange={(e) => reportInput.onChange(e)}
                                     />
                                     <div className={'hints_html'}>
                                         <div className={'hints_html_first'}>
@@ -512,15 +556,15 @@ const AddReport: React.FC = () => {
                                 {confirmDelete ?
                                     <>
                                         <p>Вы уверены, что хотите удалить этот отчёт?</p>
-                                        <Button onClick={() => setConfirmDelete(false)}>Нет</Button>
-                                        <Button onClick={() => deleteReport(currentArchiveData.id)}
+                                        <Button variant={'outlined'} onClick={() => setConfirmDelete(false)}>Нет</Button>
+                                        <Button variant={'outlined'} onClick={() => deleteReport(currentArchiveData.id)}
                                                 disabled={disabledDelete}>Да</Button>
                                     </>
                                     :
                                     <>
-                                        <Button disabled={posting || (!currentArchiveData?.text)}
+                                        <Button variant={'outlined'} disabled={posting || (!currentArchiveData?.text)}
                                                 onClick={() => setConfirmDelete(true)}>Удалить</Button>
-                                        <Button
+                                        <Button variant={'outlined'}
                                             disabled={posting}
                                             onClick={createNewReport}>
                                             Сохранить
@@ -537,26 +581,35 @@ const AddReport: React.FC = () => {
                                     <div>
                                         <div
                                             className={dateNewInputError ? 'report_date_input error' : 'report_date_input'}>
-                                            <label>Дата отчёта:
-                                                <input type={'datetime-local'} max={moment().format('YYYY-MM-DD HH:mm')}
-                                                       value={newDateInput.value}
-                                                       onChange={(e) => newDateInput.onChange(e)}/>
+                                            <label>Дата отчёта
+                                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                    <DateTimePicker
+                                                        viewRenderers={{
+                                                            hours: null,
+                                                            minutes: null,
+                                                            seconds: null,
+                                                        }}
+                                                        value={moment(newDateInput.value)}
+                                                        onChange={(e) => newDateInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                        maxDateTime={moment()}
+                                                    />
+                                                </LocalizationProvider>
                                             </label>
                                         </div>
                                         <div>
                                             <label>Изображение для отчёта (опционально):
-                                                <input type={'file'} onChange={handleFileChange}
+                                                <input type={'file'} onChange={handleFileChange} className={'input_file'}
                                                        accept={'.png, .jpg, .jpeg, .gif, .webp'} ref={imageRef}/>
                                             </label>
                                             {fileError && <span>{fileError}</span>}
                                         </div>
                                         <span>Конфиденциальность:</span>
-                                        <div className={'filter_buttons'}>
-                                            <select value={newHideReport}
+                                        <div className={'filter_buttons_fill'}>
+                                            <Select variant={'filled'} value={newHideReport}
                                                     onChange={(e) => setNewHideReport(e.target.value)}>
-                                                <option value={'0'}>Не скрывать отчёт</option>
-                                                <option value={'1'}>Скрыть отчёт</option>
-                                            </select>
+                                                <MenuItem value={'0'}>Не скрывать отчёт</MenuItem>
+                                                <MenuItem value={'1'}>Скрыть отчёт</MenuItem>
+                                            </Select>
                                         </div>
                                         <div>
                                             <span>Включить форматирование?</span>
@@ -575,8 +628,31 @@ const AddReport: React.FC = () => {
                                     }
                                 </div>
                                 <div className={'reports_textarea'}>
-                                    <textarea rows={30} value={newReportInput.value}
-                                              onChange={(e) => newReportInput.onChange(e)}
+                                    <TextField
+                                        multiline
+                                        variant={'outlined'}
+                                        minRows={2}
+                                        value={newReportInput.value}
+                                        onChange={(e) => newReportInput.onChange(e)}
+                                        placeholder={placeholder}
+                                        label={'Текст отчёта'}
+                                        sx={{
+                                            '&::before': {
+                                                border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                transform: 'scaleX(0)',
+                                                left: '2.5px',
+                                                right: '2.5px',
+                                                bottom: 0,
+                                                top: 'unset',
+                                                transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                borderRadius: 0,
+                                                borderBottomLeftRadius: '64px 20px',
+                                                borderBottomRightRadius: '64px 20px',
+                                            },
+                                            '&:focus-within::before': {
+                                                transform: 'scaleX(1)',
+                                            },
+                                        }}
                                     />
                                     <div className={'hints_html'}>
                                         <div className={'hints_html_first'}>
@@ -594,7 +670,7 @@ const AddReport: React.FC = () => {
                                 </div>
                             </form>
                             <div className={'reports_save_delete_buttons'}>
-                                <Button
+                                <Button variant={'outlined'}
                                     disabled={!fileUrl && (posting || dateNewInputError || (newReportInput.value === '' || newDateInput.value === '' || newHideReport === ''))}
                                     onClick={createNewReport}>
                                     Создать

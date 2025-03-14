@@ -127,7 +127,8 @@
 }
 
 .add_character_bottom_common, .add_character_bottom_va {
-    width: 40%;
+    max-width: 320px;
+    width: 100%;
 }
 
 .add_character_bottom_commonva input, .add_character_bottom_inputs .filter_buttons > select {

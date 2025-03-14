@@ -2,7 +2,6 @@ import './ProfileSettings.css'
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import useInput from "../../../../hooks/useInput.tsx";
-import Button from "../../../Button/Button.tsx";
 import CryptoJS from "crypto-js";
 import success from "../../../../../public/icons/checkMarkSuccess.png";
 import AccessDenied from "../../../AccessDenied/AccessDenied.tsx";
@@ -18,6 +17,9 @@ import { tags as t } from '@lezer/highlight';
 import { javascript } from '@codemirror/lang-javascript';
 import UTabs from "../../../UTabs/UTabs.tsx";
 import moment from "moment";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
 
 const ProfileSettings: React.FC = () => {
 
@@ -28,6 +30,8 @@ const ProfileSettings: React.FC = () => {
     const repeatNewPasswordInput = useInput('', {emptyInput: true, repeatPasswordError: newPasswordInput.value})
     const birthdayInput = useInput('', {})
     const backgroundInput = useInput('', {})
+    const [links, setLinks] = useState<{ [key: number]: { name: string; link: string; img: string } }>({});
+    const [linksPrev, setLinksPrev] = useState<{ [key: number]: { name: string; link: string; img: string } }>({});
     const [orient, setOrient] = useState('')
     const [tokenExist, setTokenExist] = useState(false)
     const [extend, setExtend] = useState(false);
@@ -67,6 +71,20 @@ const ProfileSettings: React.FC = () => {
 
     const [tab, setTab] = useState('standard')
 
+    const addLink = () => {
+        const newKey = Object.keys(links).length + 1;
+        setLinks(prev => ({
+            ...prev,
+            [newKey]: { name: "", link: "", img: "" }
+        }));
+    };
+    const updateField = (key: number, field: "name" | "link" | "img", value: string) => {
+        setLinks(prev => ({
+            ...prev,
+            [key]: { ...prev[key], [field]: value }
+        }));
+    };
+
     useEffect(() => {
         const fetching = async () => {
             const userRes = await fetch(`${server}`, {
@@ -79,9 +97,14 @@ const ProfileSettings: React.FC = () => {
             }
             else {
                 setJsonData(data)
+                const parsedData = JSON.parse(data?.info?.links);
+                if (typeof parsedData === "object" && parsedData !== null) {
+                    setLinks(parsedData);
+                    setLinksPrev(parsedData)
+                }
             }
         }
-        fetching()
+        fetching().then()
     }, [params.nickname, server, token]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,8 +140,11 @@ const ProfileSettings: React.FC = () => {
         setUploadingData(true)
         const res = await fetch(server, {
             method: 'POST',
-            body: JSON.stringify({token: token, action: 'updateMyself', data:
-                    {custom_nickname: nicknameInput.value}, conditions: {nickname: params.nickname}})
+            body: JSON.stringify({token: token, action: 'updateMyself',
+                data: {
+                custom_nickname: nicknameInput.value,
+                },
+                conditions: {nickname: params.nickname}})
         })
         const data = await res.json()
         if (!data?.status) {
@@ -198,7 +224,7 @@ const ProfileSettings: React.FC = () => {
         if (musicInput && musicInputRef.current?.files && musicInputRef.current?.files[0]) {
             form.append('music', musicInputRef.current?.files[0]);
         }
-
+        const lnk = JSON.stringify(links)
         const post = {
             token: token,
             action: 'updateMyself',
@@ -208,7 +234,8 @@ const ProfileSettings: React.FC = () => {
                 age: old,
                 background: backgroundInput.value ? backgroundInput.value : '',
                 avatar: croppedImage ? croppedImage : alterAvatar.value ? alterAvatar.value : jsonData.info.avatar,
-                styles: cssInput !== jsonData?.info?.styles ? cssInput : jsonData?.info?.styles
+                styles: cssInput !== jsonData?.info?.styles ? cssInput : jsonData?.info?.styles,
+                links: lnk
             },
             conditions: { nickname: params.nickname }
         };
@@ -241,7 +268,7 @@ const ProfileSettings: React.FC = () => {
                     setJsonData(data)
                     showNotification('Данные обновлены', 'success')
                     setUploadingData(false);
-                    if (croppedImage || alterAvatar) {
+                    if (croppedImage || alterAvatar.value) {
                         window.location.reload()
                     }
                 }
@@ -394,6 +421,7 @@ const ProfileSettings: React.FC = () => {
         setCroppedImage(null)
         setDisabledAlter(false)
         setCssInput(`${myData?.data?.info?.styles}`)
+        setLinks(linksPrev)
         if (fileInputRef.current) {
             fileInputRef.current.value = ''
         }
@@ -448,52 +476,71 @@ const ProfileSettings: React.FC = () => {
                                     <div>
                                         <form onSubmit={postNickname}>
                                             <div className={'ps_current_nickname'}>
-                                                <label>Имя учётной записи:
-                                                    <input type={"text"} value={jsonData?.info.nickname || ''} disabled
-                                                           style={{cursor: 'not-allowed'}}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Имя учётной записи'}
+                                                        type={'text'}
+                                                        value={jsonData?.info.nickname || ''}
+                                                        disabled
+                                                        style={{cursor: 'not-allowed'}}
+                                                    />
                                                 </label>
                                                 <span>(У вас нет прав изменять имя учётной записи)</span>
                                             </div>
                                             <div className={'ps_custom_nickname'}>
-                                                <label>Отображаемый никнейм:
-                                                    <input type={"text"} value={nicknameInput.value || ''}
-                                                           onChange={(e) => nicknameInput.onChange(e)}
-                                                           autoComplete={'name'}/>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Отображаемый никнейм'}
+                                                        type={'text'}
+                                                        value={nicknameInput.value || ''}
+                                                        onChange={(e) => nicknameInput.onChange(e)}
+                                                    />
                                                 </label>
                                             </div>
                                             {(nicknameInput.value.length !== 0 && nicknameInput.value !== jsonData?.info.custom_nickname) &&
-                                                <Button
-                                                    disabled={(uploadingData || nicknameInput.anyError)}>Сохранить</Button>
+                                                <Button variant={'outlined'} disabled={(uploadingData || nicknameInput.anyError)}>Сохранить</Button>
                                             }
                                         </form>
                                         <form onSubmit={postPassword}>
                                             <div className={'ps_password'}>
                                                 {!extend ?
                                                     <div>
-                                                        <Button disabled={uploadingData}
-                                                                onClick={() => setExtend(true)}>Сменить пароль</Button>
+                                                        <Button variant={'outlined'} disabled={uploadingData} onClick={() => setExtend(true)}>Сменить пароль</Button>
                                                     </div>
                                                     :
                                                     <>
                                                         <div>
-                                                            <label>Ваш текущий пароль:
-                                                                <input type={'password'}
-                                                                       value={currentPasswordInput.value || ''}
-                                                                       onChange={(e) => currentPasswordInput.onChange(e)}
-                                                                       autoComplete={''}
-                                                                       style={{outline: passwordCurrNewError ? '1px red solid' : 'none'}}/>
+                                                            <label>
+                                                                <TextField
+                                                                    variant={'outlined'}
+                                                                    label={'Ваш текущий пароль'}
+                                                                    type={'password'}
+                                                                    value={currentPasswordInput.value || ''}
+                                                                    onChange={(e) => currentPasswordInput.onChange(e)}
+                                                                    autoComplete={''}
+                                                                />
                                                             </label>
-                                                            <label>Введите новый пароль:
-                                                                <input type={'password'}
-                                                                       value={newPasswordInput.value || ''}
-                                                                       onChange={(e) => newPasswordInput.onChange(e)}
-                                                                       autoComplete={'new-password'}/>
+                                                            <label>
+                                                                <TextField
+                                                                    variant={'outlined'}
+                                                                    label={'Введите новый пароль'}
+                                                                    type={'password'}
+                                                                    value={newPasswordInput.value || ''}
+                                                                    onChange={(e) => newPasswordInput.onChange(e)}
+                                                                    autoComplete={'new-password'}
+                                                                />
                                                             </label>
-                                                            <label>Повторите новый пароль:
-                                                                <input type={'password'}
-                                                                       value={repeatNewPasswordInput.value || ''}
-                                                                       onChange={(e) => repeatNewPasswordInput.onChange(e)}
-                                                                       autoComplete={''}/>
+                                                            <label>
+                                                                <TextField
+                                                                    variant={'outlined'}
+                                                                    label={'Повторите новый пароль'}
+                                                                    type={'password'}
+                                                                    value={repeatNewPasswordInput.value || ''}
+                                                                    onChange={(e) => repeatNewPasswordInput.onChange(e)}
+                                                                    autoComplete={''}
+                                                                />
                                                             </label>
                                                         </div>
                                                         {passwordCurrNewError &&
@@ -540,9 +587,9 @@ const ProfileSettings: React.FC = () => {
                                                     </span>
                                                             </div>
                                                         </div>
-                                                        <Button
+                                                        <Button variant={'outlined'}
                                                             disabled={uploadingData || newPasswordInput.anyError || repeatNewPasswordInput.anyError}>Сохранить</Button>
-                                                        <Button disabled={uploadingData}
+                                                        <Button variant={'outlined'} disabled={uploadingData}
                                                                 onClick={() => setExtend(false)}>Закрыть</Button>
                                                     </>
                                                 }
@@ -553,31 +600,89 @@ const ProfileSettings: React.FC = () => {
                                         <h3>Необязательные настройки профиля</h3>
                                         <form>
                                             <div className={'filter_buttons'}>
-                                                <select value={orient} onChange={(e) => setOrient(e.target.value)}>Ваш
-                                                    биологический пол:
-                                                    <option value={''} hidden>Ваш пол...</option>
-                                                    <option value={'man'}>Мужчина</option>
-                                                    <option value={'woman'}>Женщина</option>
-                                                </select>
+                                                <div className={'filter_buttons_fill'}>
+                                                    <FormControl variant="outlined">
+                                                        <InputLabel id="outlined-label">Ваш биологический пол</InputLabel>
+                                                        <Select
+                                                            labelId="outlined-label"
+                                                            variant={'outlined'}
+                                                            value={orient}
+                                                            onChange={(e) => setOrient(e.target.value)}
+                                                            label={"Ваш биологический пол"}
+                                                        >
+                                                            <MenuItem value={''} hidden>Ваш пол...</MenuItem>
+                                                            <MenuItem value={'man'}>Мужчина</MenuItem>
+                                                            <MenuItem value={'woman'}>Женщина</MenuItem>
+                                                        </Select>
+                                                    </FormControl>
+                                                </div>
                                             </div>
                                             <div>
-                                                <label>Ваша дата рождения:
-                                                    <input type={'date'} value={birthdayInput.value || ''}
-                                                           max={moment().format('YYYY-MM-DD')}
-                                                           onChange={(e) => birthdayInput.onChange(e)}
-                                                           className={dateInputError ? 'input error' : ''}/>
+                                                <label>
+                                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                        <DatePicker
+                                                            label={'Ваша дата рождения'}
+                                                            value={moment(birthdayInput.value)}
+                                                            onChange={(e) => birthdayInput.setValue(moment(e).format('YYYY-MM-DD HH:mm'))}
+                                                            maxDate={moment()}
+                                                            className={dateInputError ? 'input error' : ''}
+                                                        />
+                                                    </LocalizationProvider>
                                                 </label>
                                             </div>
                                         </form>
+                                        <div>
+                                            <h3>Ссылки</h3>
+                                            {Object.entries(links).map(([key, linkData]) => (
+                                                <div key={key} className="mb-2 flex flex-col gap-1">
+                                                    <label>
+                                                        <TextField
+                                                            variant={'outlined'}
+                                                            label={'Название'}
+                                                            type={'text'}
+                                                            value={linkData.name}
+                                                            onChange={e => updateField(Number(key), "name", e.target.value)}
+                                                        />
+                                                    </label>
+                                                    <label>
+                                                        <TextField
+                                                            variant={'outlined'}
+                                                            label={'Ссылка'}
+                                                            type={'text'}
+                                                            value={linkData.link}
+                                                            onChange={e => updateField(Number(key), "link", e.target.value)}
+                                                        />
+                                                    </label>
+                                                    <label>
+                                                        <TextField
+                                                            variant={'outlined'}
+                                                            label={'Ссылка на иконку'}
+                                                            type={'text'}
+                                                            value={linkData.img}
+                                                            onChange={e => updateField(Number(key), "img", e.target.value)}
+                                                        />
+                                                    </label>
+                                                </div>
+                                            ))}
+                                            <Button variant={'outlined'} onClick={addLink}>
+                                                {Object.keys(links).length > 0 ? "Добавить дополнительные ссылки" : "Добавить ссылки"}
+                                            </Button>
+                                        </div>
                                     </div>
                                     <div className={'profile_settings_background'}>
                                         <h3>Стилизация профиля</h3>
                                         <form>
-                                            <div>
-                                                <label>Задний фон профиля<br/>
-                                                    (вставьте ссылку в формате .gif, .png, .jpg, .jpeg):
-                                                    <input type={'text'} value={backgroundInput.value || ''}
-                                                           onChange={(e) => backgroundInput.onChange(e)}/>
+                                        <div>
+                                                <label>
+                                                    <TextField
+                                                        variant={'outlined'}
+                                                        label={'Задний фон профиля'}
+                                                        placeholder={'.gif, .png, .jpg, .jpeg'}
+                                                        type={'text'}
+                                                        value={backgroundInput.value}
+                                                        error={backgroundInput.emptyInput}
+                                                        onChange={(e) => backgroundInput.onChange(e)}
+                                                    />
                                                 </label>
                                             </div>
                                             <div>
@@ -604,15 +709,22 @@ const ProfileSettings: React.FC = () => {
                                         <div className={'profile_settings_right_file'}>
                                             <input type="file" ref={fileInputRef} onChange={handleInputFileOnChange}/>
                                             <h4>Или...</h4>
-                                            <label>Загрузить из стороннего источника
-                                                <input type="text" value={alterAvatar.value}
-                                                       onChange={(e) => alterAvatar.onChange(e)} disabled={disabledAlter} style={{cursor: disabledAlter ? 'not-allowed' : 'text'}}/>
+                                            <label>
+                                                <TextField
+                                                    variant={'outlined'}
+                                                    label={'Загрузить из стороннего источника'}
+                                                    type={'text'}
+                                                    value={alterAvatar.value}
+                                                    error={alterAvatar.emptyInput}
+                                                    onChange={(e) => alterAvatar.onChange(e)}
+                                                    style={{cursor: disabledAlter ? 'not-allowed' : 'text'}}
+                                                />
                                             </label>
                                         </div>
                                         {isEditing && (
                                             <>
-                                            <div className="cropper-container">
-                                                <Cropper
+                                                <div className="cropper-container">
+                                                    <Cropper
                                                         src={imagePreview || ""}
                                                         style={{width: "100%", height: "300px"}}
                                                         initialAspectRatio={1}
@@ -629,8 +741,8 @@ const ProfileSettings: React.FC = () => {
                                                     />
                                                 </div>
                                                 <div className="cropper-buttons">
-                                                    <Button onClick={handleCrop}>Сохранить обрезку</Button>
-                                                    <Button onClick={handleCancel}>Отмена</Button>
+                                                    <Button variant={'outlined'} onClick={handleCrop}>Сохранить обрезку</Button>
+                                                    <Button variant={'outlined'} onClick={handleCancel}>Отмена</Button>
                                                 </div>
                                             </>
                                         )}
@@ -655,8 +767,8 @@ const ProfileSettings: React.FC = () => {
                     {((birthdayInput.value || orient || backgroundInput.value !== jsonData?.customBackground
                             || !musicError || croppedImage) || (!cssError) && (!existArchiveError)) &&
                         <div className={'ps_save_button_optional'}>
-                            <Button onClick={postOptional} disabled={dateInputError || uploadingData}>Сохранить изменения</Button>
-                            <Button onClick={handleAllCancel}>Отменить</Button>
+                            <Button variant={'outlined'} onClick={handleAllCancel}>Отменить</Button>
+                            <Button variant={'outlined'} onClick={postOptional} disabled={dateInputError || uploadingData}>Сохранить изменения</Button>
                         </div>
                     }
                 </>

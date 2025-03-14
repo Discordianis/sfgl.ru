@@ -75,16 +75,12 @@
 .char_info_right {
     max-width: calc(100% - 204px);
     display: flex;
+    gap: 15px;
     flex: 1;
 }
 
 .char_info_right > div {
     flex: 1;
-}
-
-.char_info_right {
-    display: flex;
-    gap: 15px;
 }
 
 .char_right_author img {

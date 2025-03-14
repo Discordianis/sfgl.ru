@@ -213,17 +213,8 @@
 }
 
 .add_library_story_main_select.filter_buttons {
-    max-width: 300px;
+    max-width: 320px;
     width: 100%;
-}
-
-.add_library_story_main_select.filter_buttons:after {
-    content: '▼';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: none;
-    pointer-events: none;
 }
 
 .story_accept_root_now_root {
@@ -281,7 +272,7 @@
 
 .add_library_story_main_inputs label {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
 }
 
 .story_accept_root_current > div:nth-child(2) {

@@ -8,6 +8,7 @@ import moment from "moment";
 import 'moment/dist/locale/ru.js';
 import parse from "html-react-parser";
 import TextOverflowOld from "../../../TextOverflowOld/TextOverflowOld.tsx";
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
 interface IReportsInfo {
     created_date?: string
@@ -188,12 +189,22 @@ const Wall: React.FC = () => {
                         {Object.values(reportsData?.info).length > 1 &&
                             <div className={'filter_but_head'}>
                                 <div className="filter_buttons">
-                                    <select
-                                        onChange={(e) => setFilter(e.target.value as 'reportDate' | 'createdDate' | 'modifyDate')}>
-                                        <option value="reportDate">Сортировка по дате отчёта</option>
-                                        <option value="createdDate">Сортировка по дате создания отчёта</option>
-                                        <option value="modifyDate">Сортировка по дате редактирования отчёта</option>
-                                    </select>
+                                    <div className={'filter_buttons_fill'}>
+                                        <FormControl variant="outlined">
+                                            <InputLabel id="outlined-label">Тип сортировки</InputLabel>
+                                            <Select
+                                                labelId="outlined-label"
+                                                variant={'outlined'}
+                                                value={filter}
+                                                onChange={(e) => setFilter(e.target.value as 'reportDate' | 'createdDate' | 'modifyDate')}
+                                                label={"Тип сортировки"}
+                                            >
+                                                <MenuItem value="reportDate">Сортировка по дате отчёта</MenuItem>
+                                                <MenuItem value="createdDate">Сортировка по дате создания отчёта</MenuItem>
+                                                <MenuItem value="modifyDate">Сортировка по дате редактирования отчёта</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </div>
                                 </div>
                                 <div className={'create_report_href'}>
                                     <NavLink to={`/users/${myData?.nickname}/createInfo/archive`}>

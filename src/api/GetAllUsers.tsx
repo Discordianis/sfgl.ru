@@ -13,7 +13,9 @@ interface IUserInfo {
     id: string;
     token: string;
     online: number;
-    last_online_date: string | Date
+    last_online_date: string
+    orientation: string,
+    about: string,
 }
 
 interface User {
@@ -31,16 +33,18 @@ const GetAllUsers: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(server, {
-                method: 'POST',
-                body: JSON.stringify({token: token, action: 'getAllUsers'})
-            })
-            const data = await response.json()
-            if (data) {
-                setDataJson(data);
+            if (!dataJson) {
+                const response = await fetch(server, {
+                    method: 'POST',
+                    body: JSON.stringify({token: token, action: 'getAllUsers'})
+                })
+                const data = await response.json()
+                if (data) {
+                    setDataJson(data);
+                }
             }
         };
-        fetchData();
+        fetchData().then();
     }, [server]);
 
     function convertUTCToLocal(dateString, originalTimezone, timeZone) {
@@ -67,6 +71,16 @@ const GetAllUsers: React.FC = () => {
                 return -1;
             }
 
+            const isOnlineA = offlineTimeA < 2 * 60 * 1000;
+            const isOnlineB = offlineTimeB < 2 * 60 * 1000;
+
+            if (isOnlineA && !isOnlineB) return -1;
+            if (!isOnlineA && isOnlineB) return 1;
+
+            if (!isOnlineA && !isOnlineB) {
+                return dateB.diff(dateA);
+            }
+
             const isRussianA = /^[а-яА-ЯёЁ]/.test(a.custom_nickname);
             const isRussianB = /^[а-яА-ЯёЁ]/.test(b.custom_nickname);
 
@@ -78,13 +92,31 @@ const GetAllUsers: React.FC = () => {
         : [];
 
 
-    const checkOnline = (lastOnlineDate: Date | string) => {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const originalTimezone = 'Europe/Moscow';
-        const date = convertUTCToLocal(lastOnlineDate, originalTimezone, tz);
+    const checkOnline = (lastOnlineDate: Date | string, originalTimezone: string, timeZone: string) => {
+        const utcDate = moment.tz(lastOnlineDate, originalTimezone);
+        const lastOnline = utcDate.tz(timeZone).valueOf();
+
         const fiveMin = new Date().getTime() - 2 * 60 * 1000;
-        const lastOnline = date.toDate().getTime();
         return lastOnline >= fiveMin;
+    }
+
+    function formatDate(dateString: string, originalTimezone: string, timeZone: string): string {
+        const utcDate = moment.tz(dateString, originalTimezone);
+        const localDate = utcDate.tz(timeZone);
+
+        const months = [
+            "января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря"
+        ];
+
+        const day = localDate.date().toString().padStart(2, '0');
+        const month = months[localDate.month()];
+        const year = localDate.year();
+        const hours = String(localDate.hours()).padStart(2, '0');
+        const minutes = String(localDate.minutes()).padStart(2, '0');
+        const seconds = String(localDate.seconds()).padStart(2, '0');
+
+        return `${day} ${month} ${year}г., ${hours}:${minutes}:${seconds}`;
     }
 
     if (!dataJson) return <Loading />
@@ -94,23 +126,48 @@ const GetAllUsers: React.FC = () => {
             {sortedUsers.map((nick: IUserInfo, index: number) => (
                 <NavLink to={`/users/${nick.nickname}`} key={index}>
                     <>
-                        {!checkOnline(nick?.last_online_date) ? (
-                            <div className={'avatar_offline'}>
-                                {(nick?.avatar.length !== 0 && dataJson) && (
-                                    <>
-                                        <img src={`${deadAvatar}`} alt={'dead'} className={'dead_tape'}/>
-                                        <img src={nick?.avatar} alt={'user-avatar'} className={'profile_avatar'}/>
-                                    </>
+                        <div className={'user_profile_block'}>
+                            <div className={'user_profile_block_left'}>
+                                {!checkOnline(nick?.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone) ? (
+                                    <div className={'avatar_offline'}>
+                                        {(nick?.avatar.length !== 0 && dataJson) && (
+                                            <>
+                                                <img src={`${deadAvatar}`} alt={'dead'} className={'dead_tape'}/>
+                                                <img src={nick?.avatar} alt={'user-avatar'} className={'profile_avatar'}/>
+                                            </>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className={'avatar_online'}>
+                                        <img src={nick?.avatar} alt={'user-avatar'}
+                                             className={checkOnline(nick?.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone) ? 'profile_avatar online' : 'profile_avatar'} />
+                                    </div>
                                 )}
                             </div>
-                        ) : (
-                            <div className={'avatar_online'}>
-                                <img src={nick?.avatar} alt={'user-avatar'}
-                                     className={checkOnline(nick?.last_online_date) ? 'profile_avatar online' : 'profile_avatar'} />
+                            <div className={'user_profile_block_middle'}>
+                                <div className={'user_profile_block_middle_top'}>
+                                    <span className={'profile_user_nick'}>{nick?.custom_nickname}</span>
+                                    <span className={'profile_user_online_mainmenu'}>
+                                        {checkOnline(nick.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)
+                                        ? '(в сети)'
+                                        : nick.orientation === 'woman'
+                                        ? `(была в сети: ${formatDate(nick.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`
+                                        : nick.orientation === 'man'
+                                        ? `(был в сети: ${formatDate(nick.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`
+                                        : `(был(-а) в сети: ${formatDate(nick.last_online_date, 'Europe/Moscow', Intl.DateTimeFormat().resolvedOptions().timeZone)})`}
+                                    </span>
+                                </div>
+                                <div className={'user_profile_block_middle_down'}>
+                                    <span>
+                                        {nick?.about && nick?.about}
+                                    </span>
+                                </div>
                             </div>
-                        )}
+                            <div className={'user_profile_block_right'}>
+
+                            </div>
+                        </div>
                     </>
-                    <span>{nick.custom_nickname}</span>
                 </NavLink>
             ))}
         </div>

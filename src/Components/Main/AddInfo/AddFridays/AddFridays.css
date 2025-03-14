@@ -79,7 +79,8 @@
 .form_block {
     display: flex;
     align-items: flex-start;
-    width: -webkit-fill-available;
+    width: 100%;
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -147,5 +148,5 @@
 }
 
 .reports_form label {
-    max-width: 300px;
+    max-width: 320px;
 }

@@ -32,7 +32,7 @@
 
 .archive_add_inputs input, .archive_add_inputs select {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
 }
 
 .add_custom_user_span > input {
@@ -42,6 +42,19 @@
 
 .add_custom_user_input > label > input {
     max-width: 500px;
+}
+
+.archive_add_inputs.archive_add_common .filter_buttons_fill {
+    max-width: unset;
+}
+
+.reports_save_delete_buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.input_file {
+    width: 100% !important;
 }
 
 .archive_add_inputs > form {
@@ -131,7 +144,14 @@
     max-width: none;
 }
 
-.pp_status_input > .exist_users_select > .filter_buttons_fill > select {
+.pp_status_input > .exist_users_select > .filter_buttons_fill > div {
     width: 100%;
     max-width: none;
+}
+
+.filter_buttons_fill > div {
+    background-color: var(--input-background);
+    width: 100%;
+    color: white;
+    border-radius: 8px;
 }

@@ -25,7 +25,8 @@
     display: flex;
     position: sticky;
     top: 65px;
-    background: #181818;
+    background: #121212d4;
+    backdrop-filter: blur(5px);
     padding-top: 10px;
     transition: transform 0.5s ease-in-out;
     z-index: 1;

@@ -185,7 +185,7 @@ const LabLibCharacterPage: React.FC = () => {
                                         </Modal>
                                     </div>
                                 </div>
-                                <div className={'char_info_right'}>
+                                <div className={'.char_info_right'}>
                                     <div>
                                         <div className={'story_right_commons'}>
                                             <div>
@@ -224,7 +224,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             </div>
                                             <div>
                                                 <div className={'char_right_author'}>
-                                                <div>
+                                                    <div>
                                                         <h4>Автор:</h4>
                                                     </div>
                                                     <div>

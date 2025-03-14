@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import './ProfileRelationShip.css'
 import UTabs from "../../../UTabs/UTabs.tsx";
-import Button from "../../../Button/Button.tsx";
+
 import Loading from "../../../Loading/Loading.tsx";
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {RootState} from "../../../../redux";
 import parse from "html-react-parser";
+import {Button, MenuItem, Select} from "@mui/material";
 
 interface IAchieve {
     cover: string,
@@ -85,6 +86,16 @@ interface IAllArchive {
     }
 }
 
+interface ILinksInfo {
+    name: string,
+    link: string,
+    img: string,
+}
+
+interface ILinks {
+    [key: number]: ILinksInfo
+}
+
 interface IProfile {
     status: boolean,
     info: {
@@ -98,7 +109,8 @@ interface IProfile {
         music: string,
         nickname: string,
         online: string,
-        orientation: string
+        orientation: string,
+        links: string,
     }
 }
 
@@ -114,6 +126,7 @@ const ProfileRelationShip: React.FC = () => {
     const [filter, setFilter] = useState<'newest' | 'date'>('newest');
     const [sortedReportsList, setSortedReportsList] = useState(null);
     const [loading, setLoading] = useState(true)
+    const [links, setLinks] = useState<ILinks>()
 
     const token = localStorage.getItem('token')
     const server = useSelector((state: RootState) => state.server.server)
@@ -232,6 +245,13 @@ const ProfileRelationShip: React.FC = () => {
         }
     }, [filter, archiveData?.info]);
 
+    useEffect(() => {
+        if (profileData?.info?.links) {
+            setLinks(JSON.parse(profileData?.info?.links))
+            console.log(JSON.parse(profileData?.info?.links))
+        }
+    }, [profileData?.info?.links]);
+
     if (loading) {
         return <Loading />
     }
@@ -240,6 +260,7 @@ const ProfileRelationShip: React.FC = () => {
         <>
             <div className={'profile_utabs'}>
                 <UTabs isActive={tab === 'general'} onClick={() => setTab('general')}>Основная информация</UTabs>
+                <UTabs isActive={tab === 'relations'} onClick={() => setTab('relations')}>Отношения</UTabs>
                 <UTabs isActive={tab === 'reports'} onClick={() => setTab('reports')}>Отчёты</UTabs>
                 <UTabs isActive={tab === 'achievement'} onClick={() => setTab('achievement')}>Достижения</UTabs>
             </div>
@@ -260,6 +281,21 @@ const ProfileRelationShip: React.FC = () => {
                                             }
                                         </div>
                                     }
+                                    {(profileData?.info?.links && links) &&
+                                    <div className={'prs_links'}>
+                                            <div className={'prs_links_data'}>
+                                                <h4>Ссылки</h4>
+                                                <div className={'prs_links_data_content'}>
+                                                    {Object.values(links).map((lnk: ILinksInfo) =>
+                                                        <a href={lnk.link}>
+                                                            <img src={lnk.img} alt={'lng_image'}/>
+                                                            <span>{lnk.name}</span>
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </div>
+                                    </div>
+                                    }
                                     <div className={'prs_current_status_main'}>
                                         <div className={'prs_current_status'}>
                                             <h4>Текущий статус</h4>
@@ -267,86 +303,90 @@ const ProfileRelationShip: React.FC = () => {
                                                 <span>{archiveData?.info.love?.status}</span>
                                                 :
                                                 <span>Пользователь не заполнил данные</span>
+                                                }
+                                            </div>
+                                            {(archiveData?.info && archiveData?.info.love && archiveData?.info.love?.partner_name && archiveData?.info.love?.user_nickname && (archiveData.info.love?.partner_confirmed || archiveData.info.love?.partner_type === 'nolab')) ?
+                                                <div className={'prs_pp_status'}>
+                                                    <h4>Текущие отношения</h4>
+                                                    <span>{archiveData?.info.love?.custom_nickname} + {archiveData?.info.love?.partner_custom_nickname ||
+                                                        archiveData?.info.love?.partner_name} [{formatDate(calculateDaysBetweenDates(archiveData?.info.love?.start_date))}]</span>
+                                                    {(archiveData?.info.love?.start_date) &&
+                                                        <span>Начало отношений: {reformDate(archiveData?.info.love?.start_date)}</span>
+                                                    }
+                                                    {archiveData?.info.love?.start_description &&
+                                                        <span>{archiveData?.info.love?.start_description}</span>
+                                                    }
+                                                </div>
+                                                :
+                                                null
+                                            }
+                                            {(archiveData?.info.love?.partner_confirmed === false || (archiveData?.info.love?.partner_name === '' && archiveData?.info.love?.partner_type === 'nolab')) &&
+                                                <div className={'prs_pp_no_status'}>
+                                                    <h4>Текущие отношения</h4>
+                                                    <span style={{color: '#e13f3f'}}>Без любви не увидеть...</span>
+                                                </div>
                                             }
                                         </div>
-                                        {(archiveData?.info && archiveData?.info.love && archiveData?.info.love?.partner_name && archiveData?.info.love?.user_nickname && (archiveData.info.love?.partner_confirmed || archiveData.info.love?.partner_type === 'nolab')) ?
-                                            <div className={'prs_pp_status'}>
-                                                <h4>Текущие отношения</h4>
-                                                <span>{archiveData?.info.love?.custom_nickname} + {archiveData?.info.love?.partner_custom_nickname ||
-                                                        archiveData?.info.love?.partner_name} [{formatDate(calculateDaysBetweenDates(archiveData?.info.love?.start_date))}]</span>
-                                                {(archiveData?.info.love?.start_date) &&
-                                                    <span>Начало отношений: {reformDate(archiveData?.info.love?.start_date)}</span>
-                                                }
-                                                {archiveData?.info.love?.start_description &&
-                                                    <span>{archiveData?.info.love?.start_description}</span>
-                                                }
-                                            </div>
-                                            :
-                                            null
-                                        }
-                                        {(archiveData?.info.love?.partner_confirmed === false || (archiveData?.info.love?.partner_name === '' && archiveData?.info.love?.partner_type === 'nolab')) &&
-                                            <div className={'prs_pp_no_status'}>
-                                                <h4>Текущие отношения</h4>
-                                                <span style={{color: '#e13f3f'}}>Без любви не увидеть...</span>
-                                            </div>
-                                        }
                                     </div>
-                                    {archiveData?.info && archiveData?.info.love && (archiveData?.info.love?.experience || archiveData?.info.love?.tries ||
-                                        archiveData?.info.love?.fails || archiveData?.info.love.additional) ? (
-                                        <div className={'prs_common_statistic'}>
-                                            <div>
-                                                <h4>Общая статистика</h4>
-                                                {archiveData?.info.love?.experience && (
-                                                    <span>Опыт отношений: {archiveData?.info.love?.experience} раз(-а)</span>
-                                                )}
-                                                {archiveData?.info.love?.fails && (
-                                                    <div className={'prs_common_fails'}>
-                                                        <span>Опыт отказов: {archiveData?.info.love?.fails} раз(-а)</span>
-                                                    </div>
-                                                )}
-                                                {(archiveData?.info.love?.tries) && (
-                                                    <div className={'prs_common_fails'}>
-                                                        <span>Опыт провальных попыток начать отношения: {archiveData?.info.love?.tries} раз(-а)</span>
-                                                    </div>
-                                                )}
-                                                {archiveData?.info.love?.additional && (
-                                                    <span>{archiveData?.info.love?.additional}</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ) : null}
                                 </div>
-                                {archiveData?.info.relations &&
-                                    Array.isArray(archiveData?.info.relations) && archiveData?.info.relations.length > 0 &&
-                                    archiveData?.info.relations[0].name !== '' && archiveData?.info.relations[0].summary_date !== '' &&
-                                    <>
-                                        <div className={'prs_relation_archive_title'}>
-                                            <h4>Архив прошедших отношений</h4>
-                                        </div>
-                                        <div className={'prs_relation_archive'}>
-                                            {Object.values(archiveData?.info.relations)
-                                                .filter(archive => archive.name || archive.summary_date)
-                                                .map((archive, index) =>
-                                                    <div key={index}>
-                                                        <span>#{index + 1}</span>
-                                                        <div>
-                                                            <span>Имя бывшего партнёра: {archive.name}</span>
-                                                            <span>Период отношений: {reformDate(archive.start_date)} – {reformDate(archive.end_date)} [{formatDate(Number(archive.summary_date))}]</span>
-                                                            {archive.optional && archive.optional.length > 0 &&
-                                                                <span>Дополнительно: {archive.optional}</span>}
-                                                        </div>
-                                                    </div>
-                                                )}
-                                        </div>
-                                    </>
-                                }
-                            </div>
-                            :
+                                :
                             <div>
                                 <span>{dataNot}</span>
                             </div>
                         }
                     </>
+                }
+                {tab === 'relations' &&
+                    <div>
+                        {archiveData?.info && archiveData?.info.love && (archiveData?.info.love?.experience || archiveData?.info.love?.tries ||
+                            archiveData?.info.love?.fails || archiveData?.info.love.additional) ? (
+                            <div className={'prs_common_statistic'}>
+                                <div>
+                                    <h4>Общая статистика</h4>
+                                    {archiveData?.info.love?.experience && (
+                                        <span>Опыт отношений: {archiveData?.info.love?.experience} раз(-а)</span>
+                                    )}
+                                    {archiveData?.info.love?.fails && (
+                                        <div className={'prs_common_fails'}>
+                                            <span>Опыт отказов: {archiveData?.info.love?.fails} раз(-а)</span>
+                                        </div>
+                                    )}
+                                    {(archiveData?.info.love?.tries) && (
+                                        <div className={'prs_common_fails'}>
+                                            <span>Опыт провальных попыток начать отношения: {archiveData?.info.love?.tries} раз(-а)</span>
+                                        </div>
+                                    )}
+                                    {archiveData?.info.love?.additional && (
+                                        <span>{archiveData?.info.love?.additional}</span>
+                                    )}
+                                </div>
+                            </div>
+                        ) : null}
+                        {archiveData?.info.relations &&
+                            Array.isArray(archiveData?.info.relations) && archiveData?.info.relations.length > 0 &&
+                            archiveData?.info.relations[0].name !== '' && archiveData?.info.relations[0].summary_date !== '' &&
+                            <>
+                                <div className={'prs_relation_archive_title'}>
+                                    <h4>Архив прошедших отношений</h4>
+                                </div>
+                                <div className={'prs_relation_archive'}>
+                                    {Object.values(archiveData?.info.relations)
+                                        .filter(archive => archive.name || archive.summary_date)
+                                        .map((archive, index) =>
+                                            <div key={index}>
+                                                <span>#{index + 1}</span>
+                                                <div>
+                                                    <span>Имя бывшего партнёра: {archive.name}</span>
+                                                    <span>Период отношений: {reformDate(archive.start_date)} – {reformDate(archive.end_date)} [{formatDate(Number(archive.summary_date))}]</span>
+                                                    {archive.optional && archive.optional.length > 0 &&
+                                                        <span>Дополнительно: {archive.optional}</span>}
+                                                </div>
+                                            </div>
+                                        )}
+                                </div>
+                            </>
+                        }
+                    </div>
                 }
                 {tab === 'reports' &&
                     <>
@@ -354,21 +394,24 @@ const ProfileRelationShip: React.FC = () => {
                             <div>
                                 {archiveData?.info?.reports && Object.values(archiveData?.info.reports).length > 0 ? (
                                     <>
-                                        {Object.values(archiveData?.info.reports).length > 1 &&
-                                            <div className="filter_buttons">
-                                                <select
-                                                    onChange={(e) => setFilter(e.target.value as 'newest' | 'date')}>
-                                                    <option value="newest">Сортировка по хронологии</option>
-                                                    <option value="date">Сортировка по хронологии (обратный порядок)
-                                                    </option>
-                                                </select>
+                                    {Object.values(archiveData?.info.reports).length > 1 &&
+                                        <>
+                                            <div className={'filter_buttons_fill'}
+                                            style={{marginTop: '5px', maxWidth: '400px', width: '100%'}}>
+                                                <Select variant={'filled'} value={filter}
+                                                        onChange={(e) => setFilter(e.target.value as 'newest' | 'date')}>
+                                                    <MenuItem value="newest">Сортировка по хронологии</MenuItem>
+                                                    <MenuItem value="date">Сортировка по хронологии (обратный порядок)</MenuItem>
+                                                </Select>
                                             </div>
-                                        }
+                                        </>
+                                    }
                                         <div className={'profile_rs_report_main'}>
                                             {Object.values(archiveData?.info.reports).length >= 1 && (
                                                 sortedReportsList.slice(0, 1).map((report: IReports, index: number) => (
                                                     (report.hidden != 1 || archiveData?.info.love?.user_nickname === myData.data?.info.nickname) &&
-                                                    <div className={'profile_rs_report'} key={index} style={{background: report.hidden == 1 ? '#451b1b4f' : ''}}>
+                                                    <div className={'profile_rs_report'} key={index}
+                                                         style={{background: report.hidden == 1 ? '#451b1b4f' : ''}}>
                                                         <div>
                                                             <span>Отчёт от {reformDate(report.report_date as string)}</span>
                                                             {report?.no_format === '0' ?
@@ -431,7 +474,7 @@ const ProfileRelationShip: React.FC = () => {
                                                             </div>
                                                         ))
                                                     ) : null}
-                                                    <Button onClick={() => setShowAllReports(!showAllReports)}>
+                                                    <Button variant={'outlined'} onClick={() => setShowAllReports(!showAllReports)}>
                                                         {showAllReports ? 'Скрыть отчёты' : 'Показать остальные отчёты'}
                                                     </Button>
                                                 </>

@@ -53,7 +53,7 @@
 
 .add_relation_archive {
     display: grid;
-    grid-template-columns: repeat(2, 410px);
+    grid-template-columns: repeat(2, 450px);
     justify-items: center;
     justify-content: center;
 }

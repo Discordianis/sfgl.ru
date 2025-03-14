@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import './AddFridays.css'
-import Button from "../../../Button/Button.tsx";
 import useInput from "../../../../hooks/useInput.tsx";
 import Loading from "../../../Loading/Loading.tsx";
 import {useSelector} from "react-redux";
@@ -8,6 +7,10 @@ import {useNotification} from "../../../../hooks/useSuccess.tsx";
 import {RootState} from "../../../../redux";
 import Modal from "../../../Modal/Modal.tsx";
 import moment from "moment";
+import {Button, MenuItem, Select, TextField} from "@mui/material";
+import {AdapterMoment} from "@mui/x-date-pickers/AdapterMoment";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {fridayPlaceholders} from "../../../../placeholders/fridayPlaceholders.tsx";
 
 interface ITableInfo {
     author: string,
@@ -72,6 +75,14 @@ const AddFridays:React.FC = () => {
     const [fileError, setFileError] = useState('');
     const maxAudioSize = 15 * 1024 * 1024; // 15 MB
     const maxVideoSize = 30 * 1024 * 1024; // 30 MB
+
+    const [placeholder, setPlaceholder] = useState("");
+
+    useEffect(() => {
+        const keys = Object.keys(fridayPlaceholders);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        setPlaceholder(fridayPlaceholders[randomKey]);
+    }, [currentArchiveData, createdNew]);
 
     useEffect(() => {
         if (createdNew) {
@@ -500,23 +511,23 @@ const AddFridays:React.FC = () => {
                                 {(!loading && !currentArchiveData && archiveData?.info.length === 0 && !createdNew) &&
                                     <div className={'create_first_report'}>
                                         <span>Не написано ни одного итога. Желаете создать своё первое творение?</span>
-                                        <Button onClick={() => setCreatedNew(true)}>Создать</Button>
+                                        <Button variant={'outlined'} onClick={() => setCreatedNew(true)}>Создать</Button>
                                     </div>
                                 }
                                 {(!loading && archiveData?.info) &&
                                     <div className={'reports_add_list'}>
                                         {Object.values(archiveData.info).sort((a: ITableInfo, b: ITableInfo) => a.number - b.number).map((report: ITableInfo, index: number) => (
-                                            <div className={isActive === `${report.number}` ? 'reports_list active' : 'reports_list'} key={report.number || index}
+                                            <Button variant={'outlined'} sx={{margin: '0 3px', padding: '5px', minWidth: '160px'}} className={isActive === `${report.number}` ? 'reports_list active' : 'reports_list'} key={report.number || index}
                                                  onClick={() => getReportById(report.id, report.number.toString())}>
                                                 <span>Пятница #{report?.number}</span>
-                                            </div>
+                                            </Button>
                                         ))}
                                         {(createdNew) ?
-                                            <div className={'reports_list active'} onClick={getNewReport}>
+                                            <Button variant={'outlined'} sx={{margin: '0 3px', padding: '5px', minWidth: '160px'}} className={'reports_list active'} onClick={getNewReport}>
                                                 <span>Новая Пятница</span>
-                                            </div>
+                                            </Button>
                                             : (currentArchiveData || archiveData.info.length !== 0) &&
-                                            <Button onClick={() => setCreatedNew(true)}
+                                            <Button variant={'outlined'} onClick={() => setCreatedNew(true)}
                                                     disabled={disabledCreateReport}>
                                                 <span>+</span>
                                             </Button>
@@ -528,14 +539,15 @@ const AddFridays:React.FC = () => {
                                 <div className={'reports_form'}>
                                     <div className={'form_block'} style={{alignItems: typeContent === 'music' && 'center'}}>
                                         <form>
-                                            <div className={'filter_buttons'}>
-                                                <select value={typeContent}
+                                            <div className={'filter_buttons_fill'}>
+                                                <span>Тип пятницы:</span>
+                                                <Select variant={'filled'} value={typeContent}
                                                         onChange={(e) => setTypeContent(e.target.value)}>
-                                                    <option value={''} hidden>Выберите тип пятницы...</option>
-                                                    <option value={'image'}>Изображение</option>
-                                                    <option value={'video'}>Видео</option>
-                                                    <option value={'music'}>Аудио</option>
-                                                </select>
+                                                    <MenuItem value={''} disabled hidden>Выберите тип пятницы...</MenuItem>
+                                                    <MenuItem value={'image'}>Изображение</MenuItem>
+                                                    <MenuItem value={'video'}>Видео</MenuItem>
+                                                    <MenuItem value={'music'}>Аудио</MenuItem>
+                                                </Select>
                                             </div>
                                             <div>
                                                 <label>Номер пятницы:
@@ -568,27 +580,56 @@ const AddFridays:React.FC = () => {
                                             <div
                                                 className={dateInputError ? 'report_date_input error' : 'report_date_input'}>
                                                 <label>Дата Пятницы:
-                                                    <input type={'date'} max={moment().format('YYYY-MM-DD')}
-                                                           value={dateInput.value}
-                                                           onChange={(e) => dateInput.onChange(e)}/>
+                                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                        <DatePicker
+                                                            value={moment(dateInput.value)}
+                                                            onChange={(e) => dateInput.setValue(moment(e).format('YYYY-MM-DD'))}
+                                                            maxDate={moment()}
+                                                        />
+                                                    </LocalizationProvider>
                                                 </label>
                                             </div>
-                                            <div>
-                                                <span>Введите текст (при необходимости):</span>
-                                                <textarea value={textInput.value} onChange={(e) => textInput.onChange(e)} rows={2}/>
+                                            <div className={'textfield_multi'}>
+                                                <TextField
+                                                    multiline
+                                                    variant={'outlined'}
+                                                    label={'Текст Пятницы (при необходимости)'}
+                                                    placeholder={placeholder}
+                                                    minRows={2}
+                                                    sx={{
+                                                        '&::before': {
+                                                            border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                            transform: 'scaleX(0)',
+                                                            left: '2.5px',
+                                                            right: '2.5px',
+                                                            bottom: 0,
+                                                            top: 'unset',
+                                                            transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                            borderRadius: 0,
+                                                            borderBottomLeftRadius: '64px 20px',
+                                                            borderBottomRightRadius: '64px 20px',
+                                                        },
+                                                        '&:focus-within::before': {
+                                                            transform: 'scaleX(1)',
+                                                        },
+                                                    }}
+                                                    value={textInput.value}
+                                                    onChange={(e) => textInput.onChange(e)}
+                                                />
                                             </div>
                                         </form>
                                         <div className={'file_preview'}>
                                             {(currentArchiveData?.music && typeContent === 'music' && !fileUrl) &&
                                                 <div>
-                                                    <audio controls src={`${currentArchiveData?.music}`} autoPlay={false}/>
+                                                    <audio controls src={`${currentArchiveData?.music}`}
+                                                           autoPlay={false}/>
                                                 </div>
                                             }
                                             {(currentArchiveData?.image && typeContent === 'image' && !fileUrl) &&
                                                 <div>
                                                     <img src={`${currentArchiveData?.image}`} alt={'friday_image'} onClick={handleOpenModal} style={{cursor: 'pointer'}}/>
                                                     <Modal open={modalIsOpen} onClose={handleCloseModal} onKeyDown={handleCloseEscape}>
-                                                        <Button onClick={handleCloseModal}>x</Button>
+                                                        <Button variant={'outlined'} onClick={handleCloseModal}>x</Button>
                                                         <img src={`${currentArchiveData?.image}`} alt={'friday_image'}/>
                                                     </Modal>
                                                 </div>
@@ -607,7 +648,7 @@ const AddFridays:React.FC = () => {
                                                 <div>
                                                     <img src={fileUrl} alt={'friday_image'} onClick={handleOpenModal} style={{cursor: 'pointer'}}/>
                                                     <Modal open={modalIsOpen} onClose={handleCloseModal} onKeyDown={handleCloseEscape}>
-                                                        <Button onClick={handleCloseModal}>x</Button>
+                                                        <Button variant={'outlined'} onClick={handleCloseModal}>x</Button>
                                                         <img src={fileUrl} alt={'friday_image'}/>
                                                     </Modal>
                                                 </div>
@@ -623,15 +664,15 @@ const AddFridays:React.FC = () => {
                                         {confirmDelete ?
                                             <>
                                                 <p>Вы уверены, что хотите удалить эту пятницу?</p>
-                                                <Button onClick={() => setConfirmDelete(false)}>Нет</Button>
-                                                <Button onClick={() => deleteReport(currentArchiveData.id)}
+                                                <Button variant={'outlined'} onClick={() => setConfirmDelete(false)}>Нет</Button>
+                                                <Button variant={'outlined'} onClick={() => deleteReport(currentArchiveData.id)}
                                                         disabled={disabledDelete}>Да</Button>
                                             </>
                                             :
                                             <>
-                                                <Button disabled={posting}
+                                                <Button variant={'outlined'} disabled={posting}
                                                         onClick={() => setConfirmDelete(true)}>Удалить</Button>
-                                                <Button
+                                                <Button variant={'outlined'}
                                                     disabled={posting || dateInputError || dateInput.value === '' || (dateInput.value === currentArchiveData?.report_date)}
                                                     onClick={createNewReport}>
                                                     Сохранить
@@ -645,14 +686,15 @@ const AddFridays:React.FC = () => {
                                 <div className={'reports_form'}>
                                     <div className={'form_block'} style={{alignItems: typeContent === 'music' && 'center'}}>
                                         <form>
-                                            <div className={'filter_buttons'}>
-                                                <select value={typeContent}
+                                            <div className={'filter_buttons_fill'}>
+                                                <span>Тип пятницы:</span>
+                                                <Select variant={'filled'} value={typeContent} label={'Выберите тип пятницы'}
                                                         onChange={(e) => setTypeContent(e.target.value)}>
-                                                    <option value={''} hidden>Выберите тип пятницы...</option>
-                                                    <option value={'image'}>Изображение</option>
-                                                    <option value={'video'}>Видео</option>
-                                                    <option value={'music'}>Аудио</option>
-                                                </select>
+                                                    <MenuItem value={''} hidden disabled>Выберите тип пятницы...</MenuItem>
+                                                    <MenuItem value={'image'}>Изображение</MenuItem>
+                                                    <MenuItem value={'video'}>Видео</MenuItem>
+                                                    <MenuItem value={'music'}>Аудио</MenuItem>
+                                                </Select>
                                             </div>
                                             <div className={'add_fridays_input'}>
                                                 <label>Номер пятницы:
@@ -685,15 +727,42 @@ const AddFridays:React.FC = () => {
                                             <div
                                                 className={dateNewInputError ? 'report_date_input error' : 'report_date_input'}>
                                                 <label>Дата пятницы:
-                                                    <input type={'date'} max={moment().format('YYYY-MM-DD')}
-                                                           value={newDateInput.value}
-                                                           onChange={(e) => newDateInput.onChange(e)}/>
+                                                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                                                        <DatePicker
+                                                            value={moment(newDateInput.value)}
+                                                            onChange={(e) => newDateInput.setValue(moment(e).format('YYYY-MM-DD'))}
+                                                            maxDate={moment()}
+                                                        />
+                                                    </LocalizationProvider>
                                                 </label>
                                             </div>
-                                            <div>
-                                                <span>Введите текст (при необходимости):</span>
-                                                <textarea value={newTextInput.value}
-                                                          onChange={(e) => newTextInput.onChange(e)} rows={2}/>
+                                            <div className={'textfield_multi'}>
+                                                <TextField
+                                                    multiline
+                                                    variant={'outlined'}
+                                                    label={'Текст Пятницы (при необходимости)'}
+                                                    placeholder={placeholder}
+                                                    minRows={2}
+                                                    sx={{
+                                                        '&::before': {
+                                                            border: '1.5px solid var(--Textarea-focusedHighlight)',
+                                                            transform: 'scaleX(0)',
+                                                            left: '2.5px',
+                                                            right: '2.5px',
+                                                            bottom: 0,
+                                                            top: 'unset',
+                                                            transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
+                                                            borderRadius: 0,
+                                                            borderBottomLeftRadius: '64px 20px',
+                                                            borderBottomRightRadius: '64px 20px',
+                                                        },
+                                                        '&:focus-within::before': {
+                                                            transform: 'scaleX(1)',
+                                                        },
+                                                    }}
+                                                    value={newTextInput.value}
+                                                    onChange={(e) => newTextInput.onChange(e)}
+                                                />
                                             </div>
                                         </form>
                                         <div className={'file_preview'}>
@@ -704,9 +773,12 @@ const AddFridays:React.FC = () => {
                                             }
                                             {(fileUrl && typeContent === 'image') &&
                                                 <div>
-                                                    <img src={fileUrl} alt={'friday_image'} onClick={handleOpenModal} style={{cursor: 'pointer'}}/>
-                                                    <Modal open={modalIsOpen} onClose={handleCloseModal} onKeyDown={handleCloseEscape}>
-                                                        <Button onClick={handleCloseModal}>x</Button>
+                                                    <img src={fileUrl} alt={'friday_image'} onClick={handleOpenModal}
+                                                         style={{cursor: 'pointer'}}/>
+                                                    <Modal open={modalIsOpen} onClose={handleCloseModal}
+                                                           onKeyDown={handleCloseEscape}>
+                                                        <Button variant={'outlined'}
+                                                                onClick={handleCloseModal}>x</Button>
                                                         <img src={fileUrl} alt={'friday_image'}/>
                                                     </Modal>
                                                 </div>
@@ -719,9 +791,9 @@ const AddFridays:React.FC = () => {
                                         </div>
                                     </div>
                                     <div className={'reports_save_delete_buttons'}>
-                                        <Button
-                                            disabled={posting || dateNewInputError || newDateInput.value === ''}
-                                            onClick={createNewReport}>
+                                        <Button variant={'outlined'}
+                                                disabled={posting || dateNewInputError || newDateInput.value === ''}
+                                                onClick={createNewReport}>
                                             Создать
                                         </Button>
                                     </div>

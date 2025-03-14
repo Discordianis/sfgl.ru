@@ -28,6 +28,10 @@
     margin: 0 auto;
 }
 
+.ps_save_button_optional > .MuiButtonBase-root.MuiButton-root, .ps_password > .MuiButtonBase-root.MuiButton-root {
+    margin: 5px !important;
+}
+
 .profile_settings_left {
     padding: 30px;
 }
@@ -59,8 +63,13 @@
     align-items: center;
 }
 
-.profile_settings_right_file label {
-    margin-top: unset;
+.profile_settings_right_file .MuiFormControl-root.MuiTextField-root {
+    margin-top: unset !important;
+}
+
+.profile_settings_left > div > form > div {
+    width: 100%;
+    max-width: 320px;
 }
 
 .profile_settings_right {
@@ -90,6 +99,16 @@
 
 .profile_settings_optional > form > .filter_buttons:after {
     right: 10px;
+}
+
+.profile_settings_optional > form > .filter_buttons {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+}
+
+.profile_settings_optional label {
+    max-width: 320px;
 }
 
 .profile_settings_root .utabs {

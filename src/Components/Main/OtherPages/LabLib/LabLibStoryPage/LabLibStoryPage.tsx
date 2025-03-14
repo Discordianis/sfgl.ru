@@ -12,6 +12,7 @@ import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
 import imageNF from '../../../../../../public/icons/imageNotFound.jpeg'
 import Modal from "../../../../Modal/Modal.tsx";
 import UTabs from "../../../../UTabs/UTabs.tsx";
+import CustomTooltip from "../../../../CustomTooltip/CustomTooltip.tsx";
 
 interface IStoriesInfo {
     id: string,
@@ -41,6 +42,7 @@ interface ICharactersInfo {
     life_status: string,
     name_eng: string,
     name_rus: string,
+    names: string,
     role: string,
     va_avatar: string,
     va_char_avatar: string,
@@ -357,7 +359,7 @@ const LabLibStoryPage: React.FC = () => {
                                                 </div>
                                                 <div>
                                                     {story?.description ?
-                                                        <TextOverflow maxHeight={600} text={story?.description} />
+                                                        <CustomTooltip maxHeight={600} text={story?.description} tooltipData={characters}/>
                                                         :
                                                         <span>Описание отсутствует...</span>
                                                     }

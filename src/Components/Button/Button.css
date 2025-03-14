@@ -6,7 +6,7 @@
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #00000075;
+    background-color: #4b4b7d;
     cursor: pointer;
     transition: border-color 0.25s;
 }
@@ -26,6 +26,8 @@
 
 .hold_button > button {
     margin-bottom: unset;
+    margin: 6px;
+    padding: 0.3em 0.6em;
 }
 
 .hold_button > span {

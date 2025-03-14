@@ -7,9 +7,35 @@
     border-radius: 8px;
 }
 
+.report_date_input {
+    width: 320px;
+}
+
 .reports_rules > div > div > span, .reports_rules > div > div > h3 {
     text-align: center;
     padding: 5px;
+}
+
+.create_report_href {
+    display: flex;
+    width: fit-content;
+    margin: 10px;
+}
+
+.create_report_href a {
+    display: flex;
+    white-space: nowrap;
+    padding: 7px;
+    background: #4b4b7dc9;
+    border-radius: 8px;
+    outline: transparent 1px solid;
+    transition: all 0.3s ease-in-out;
+    font-size: 16px;
+    align-items: center;
+}
+
+.create_report_href a:hover {
+    outline: var(--border-wheat);
 }
 
 .add_reports_root {
@@ -103,15 +129,6 @@
 .reports_form > form .filter_buttons {
     max-width: 300px;
     width: 100%;
-}
-
-.reports_form > form > .filter_buttons:after {
-    content: '▼';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
 }
 
 .reports_list.active {

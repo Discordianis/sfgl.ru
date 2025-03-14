@@ -4,6 +4,7 @@ import Loading from "../../../Loading/Loading.tsx";
 import './RoundTable.css'
 import {RootState} from "../../../../redux";
 import {NavLink} from "react-router-dom";
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
 interface IInfo {
     author: string,
@@ -161,12 +162,22 @@ const RoundTable:React.FC = () => {
             {jsonData && jsonData.info && Object.keys(jsonData.info).length > 0 ?
                 <div className={'filter_but_head'}>
                     <div className={'filter_buttons'}>
-                        <select value={selectedTable} onChange={(e) => setSelectedTable(e.target.value)}>
-                            <option value={''} hidden>Выберите Круглый Стол...</option>
-                            {Object.values(jsonData.info).sort((a: IInfo, b: IInfo) => b.number - a.number).map(num =>
-                                <option value={num.number} key={num.id}>Круглый Стол #{num.number}</option>
-                            )}
-                        </select>
+                        <div className={'filter_buttons_fill'}>
+                            <FormControl variant="outlined">
+                                <InputLabel id="outlined-label">Номер Круглого Стола</InputLabel>
+                                <Select
+                                    labelId="outlined-label"
+                                    variant={'outlined'}
+                                    value={selectedTable}
+                                    onChange={(e) => setSelectedTable(e.target.value)}
+                                    label={"Номер Круглого Стола"}
+                                >
+                                    {Object.values(jsonData.info).sort((a: IInfo, b: IInfo) => b.number - a.number).map(num =>
+                                        <MenuItem value={num.number} key={num.id}>Круглый Стол #{num.number}</MenuItem>
+                                    )}
+                                </Select>
+                            </FormControl>
+                        </div>
                     </div>
                     <div className={'create_report_href'}>
                         <NavLink to={`/users/${myData?.nickname}/createInfo/roundTable`}>
@@ -181,16 +192,16 @@ const RoundTable:React.FC = () => {
             }
             {selectedData &&
                 <div className={'rt_window'}>
-                <div className={'rt_window_title'}>
+                    <div className={'rt_window_title'}>
                         <span>Итоги Круглого стола #{selectedData?.number} ({reformDate(selectedData?.date)})</span>
                     </div>
                     <div className={'rt_window_time'}>
                         {selectedData?.date_start && selectedData?.date_end ?
                             <span>Продолжительность: {formatDateRange(selectedData?.date_start, selectedData?.date_end)}</span>
-                        : selectedData?.date_start ?
-                        <span>Начало: {formatDateRange(selectedData?.date_start, selectedData?.date_end)}</span>
-                        : selectedData?.date_end ?
-                        <span>Конец: {formatDateRange(selectedData?.date_start, selectedData?.date_end)}</span>
+                            : selectedData?.date_start ?
+                                <span>Начало: {formatDateRange(selectedData?.date_start, selectedData?.date_end)}</span>
+                                : selectedData?.date_end ?
+                                    <span>Конец: {formatDateRange(selectedData?.date_start, selectedData?.date_end)}</span>
                         :
                         <span>Время проведения неизвестно</span>
                         }
