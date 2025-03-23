@@ -6,7 +6,7 @@ import Loading from "../../../Loading/Loading.tsx";
 import {NavLink} from "react-router-dom";
 import imageNF from '../../../../../public/icons/imageNotFoundLong.jpeg'
 import witches from '../../../../../public/background/witches.jpg'
-import TextOverflow from "../../../TextOverflow/TextOverflow.tsx";
+import CustomTooltip from "../../../CustomTooltip/CustomTooltip.tsx";
 
 interface IStoriesInfo {
     id: string,
@@ -24,6 +24,34 @@ interface IStoriesInfo {
     length: number
 }
 
+interface ICharactersInfo {
+    age: string,
+    author: string,
+    birthday: string,
+    cover: string,
+    date_created: string,
+    date_modified: string,
+    description: string,
+    id: string,
+    life_status: string,
+    name_eng: string,
+    name_rus: string,
+    names: string,
+    role: string,
+    va_avatar: string,
+    va_char_avatar: string,
+    va_char_name: string,
+    va_name: string,
+}
+
+interface ICharacters {
+    status: boolean,
+    info: {
+        length: number,
+        [key: number]: ICharactersInfo
+    }
+}
+
 const LabLibMenu: React.FC = () => {
 
     const body = document.body
@@ -35,6 +63,19 @@ const LabLibMenu: React.FC = () => {
     const [selectedStory, setSelectedStory] = useState<IStoriesInfo | null>(null)
     const [loading, setLoading] = useState(true)
     const [isActive, setIsActive] = useState('')
+    const [characters, setCharacters] = useState<ICharacters | null>(null)
+
+    useEffect(() => {
+        const fetching = async() => {
+            const resCharacter = await fetch(server, {
+                method: 'POST',
+                body: JSON.stringify({token: token, action: 'getCharacters'})
+            })
+            const dataCharacter = await resCharacter.json()
+            setCharacters(dataCharacter)
+        }
+        fetching().then()
+    }, [server, token]);
 
     useEffect(() => {
         const fetching = async() => {
@@ -145,7 +186,7 @@ const LabLibMenu: React.FC = () => {
                     {selectedStory &&
                         <div className={'lablib_menu_description'}>
                             {selectedStory?.description ?
-                                <TextOverflow text={selectedStory?.description} maxHeight={9999} />
+                                <CustomTooltip text={selectedStory?.description} maxHeight={9999} tooltipData={characters} />
                                 :
                                 <span>Описание отсутствует...</span>
                             }

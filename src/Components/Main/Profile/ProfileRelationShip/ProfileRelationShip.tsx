@@ -395,16 +395,16 @@ const ProfileRelationShip: React.FC = () => {
                                 {archiveData?.info?.reports && Object.values(archiveData?.info.reports).length > 0 ? (
                                     <>
                                     {Object.values(archiveData?.info.reports).length > 1 &&
-                                        <>
+                                        <div className={'filter_buttons'}>
                                             <div className={'filter_buttons_fill'}
-                                            style={{marginTop: '5px', maxWidth: '400px', width: '100%'}}>
+                                                 style={{marginTop: '5px', maxWidth: '400px', width: '100%'}}>
                                                 <Select variant={'filled'} value={filter}
                                                         onChange={(e) => setFilter(e.target.value as 'newest' | 'date')}>
                                                     <MenuItem value="newest">Сортировка по хронологии</MenuItem>
                                                     <MenuItem value="date">Сортировка по хронологии (обратный порядок)</MenuItem>
                                                 </Select>
                                             </div>
-                                        </>
+                                        </div>
                                     }
                                         <div className={'profile_rs_report_main'}>
                                             {Object.values(archiveData?.info.reports).length >= 1 && (

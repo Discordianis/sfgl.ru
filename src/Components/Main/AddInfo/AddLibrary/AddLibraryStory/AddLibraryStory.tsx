@@ -751,6 +751,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                         <div className={'textarea_span'}>
                                             <TextField
                                                 multiline
+                                                className={'multiText'}
                                                 variant={'outlined'}
                                                 label={'Описание истории'}
                                                 placeholder={placeholder}
@@ -1111,6 +1112,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                     <div className={'textarea_span'}>
                                         <TextField
                                             multiline
+                                            className={'multiText'}
                                             variant={'outlined'}
                                             label={'Описание истории'}
                                             placeholder={placeholder}
@@ -1401,6 +1403,7 @@ const AddLibraryStory: React.FC<ICallback> = ({allUsers, server, token}) => {
                                         <span>Описание истории:</span>
                                         <TextField
                                             multiline
+                                            className={'multiText'}
                                             variant={'outlined'}
                                             label={'Описание истории'}
                                             placeholder={placeholder}

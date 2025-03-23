@@ -29,6 +29,10 @@
     max-width: unset !important;
 }
 
+.create_button_chapter {
+    margin-top: 10px;
+}
+
 .add_library_chapter_prop.active > div > button {
     outline: var(--border-wheat);
 }
@@ -76,6 +80,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .add_library_chapter_inputs label:not(.switch) {

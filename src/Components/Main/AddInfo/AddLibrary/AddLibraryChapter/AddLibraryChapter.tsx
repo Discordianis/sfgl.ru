@@ -552,7 +552,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         </div>
                                         <span>Главы, которые вы можете только просматривать, помечены серым цветом.</span>
                                     </div>
-                                    <div>
+                                    <div className={'create_button_chapter'}>
                                         {(!createNewChapter && currentStory?.chapters) &&
                                             <Button variant={'outlined'} onClick={() => setCreateNewChapter(true)}>Создать главу</Button>}
                                     </div>
@@ -577,7 +577,6 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                                 label={'Название главы'}
                                                 type={'text'}
                                                 value={nameEdit.value}
-                                                error={nameEdit.emptyInput}
                                                 onChange={(e) => nameEdit.onChange(e)}
                                             />
                                         </label>
@@ -611,6 +610,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <label>
                                             <TextField
                                                 multiline
+                                                className={'multiText'}
                                                 variant={'outlined'}
                                                 label={'Текст главы'}
                                                 placeholder={placeholder}
@@ -643,6 +643,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                             <div className={'hints_html_second'}>
                                                 <span>Спойлер - [spoiler]текст[/spoiler]</span>
                                                 <span>Блок - [div style="..."]элемент[/div]</span>
+                                                <span>Инфа - [info info="текст инфы"]текст[/info]</span>
                                                 <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
                                                 <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
                                                 <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
@@ -654,7 +655,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     </div>
                                     {(coverUrl) &&
                                         <div className={'add_library_chapter_image'}>
-                                            <div>
+                                        <div>
                                                 <h4>Изображение для главы</h4>
                                                 <img
                                                     src={coverUrl}
@@ -703,8 +704,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                                 label={'Название главы'}
                                                 type={'text'}
                                                 value={nameNew.value}
-                                                error={nameNew.emptyInput}
-                                                onChange={(e) => nameEdit.onChange(e)}
+                                                onChange={(e) => nameNew.onChange(e)}
                                             />
                                         </label>
                                     </div>
@@ -737,6 +737,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <label>
                                             <TextField
                                                 multiline
+                                                className={'multiText'}
                                                 variant={'outlined'}
                                                 label={'Текст главы'}
                                                 placeholder={placeholder}
@@ -767,6 +768,9 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                                 <span>Подсказки:</span>
                                             </div>
                                             <div className={'hints_html_second'}>
+                                                <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                                <span>Блок - [div style="..."]элемент[/div]</span>
+                                                <span>Инфа - [info info="текст инфы"]текст[/info]</span>
                                                 <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
                                                 <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
                                                 <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
@@ -778,7 +782,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     </div>
                                     {(coverUrl) &&
                                         <div className={'add_library_chapter_image'}>
-                                            <div>
+                                        <div>
                                                 <h4>Изображение для главы</h4>
                                                 <img
                                                     src={coverUrl}
@@ -820,7 +824,6 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                             label={'Название главы'}
                                             type={'text'}
                                             value={nameNew.value}
-                                            error={nameNew.emptyInput}
                                             onChange={(e) => nameNew.onChange(e)}
                                         />
                                     </label>
@@ -855,6 +858,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                     <label>
                                         <TextField
                                             multiline
+                                            className={'multiText'}
                                             variant={'outlined'}
                                             label={'Текст главы'}
                                             placeholder={placeholder}
@@ -886,8 +890,12 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                         <span>Подсказки:</span>
                                     </div>
                                     <div className={'hints_html_second'}>
+                                        <span>Спойлер - [spoiler]текст[/spoiler]</span>
+                                        <span>Блок - [div style="..."]элемент[/div]</span>
+                                        <span>Инфа - [info info="текст инфы"]текст[/info]</span>
                                         <span>Жирность - &lt;b&gt;текст&lt;/b&gt;</span>
                                         <span>Курсив - &lt;i&gt;текст&lt;/i&gt;</span>
+                                        <span>Ссылка - &lt;a href="ссылка"&gt;текст&lt;/a&gt;</span>
                                         <span>Нижнее подчёркивание - &lt;u&gt;текст&lt;/u&gt;</span>
                                         <span>Зачёркивание - &lt;s&gt;текст&lt;/s&gt;</span>
                                         <span>Цвет текста - &lt;font color="red или #00FF00 или rgb(0,0,255)"&gt;текст&lt;/font&gt;</span>
@@ -897,7 +905,7 @@ const AddLibraryChapter: React.FC<ICallback> = ({server, token}) => {
                                 {(coverUrl) &&
                                     <div className={'add_library_chapter_image'}>
                                         <div>
-                                            <h4>Изображение для главы</h4>
+                                        <h4>Изображение для главы</h4>
                                             <img
                                                 src={coverUrl}
                                                 alt={'chapter_image'}

@@ -111,6 +111,11 @@
     max-width: 320px;
 }
 
+.profile_settings_optional > div > div {
+    display: flex;
+    gap: 10px;
+}
+
 .profile_settings_root .utabs {
     flex: 1;
     margin: 20px 10px;

@@ -529,6 +529,7 @@ const AddRoundTable:React.FC = () => {
                                         <div className={'reports_textarea'}>
                                             <TextField
                                                 multiline
+                                                className={'multiText'}
                                                 variant={'outlined'}
                                                 label={'Итоги Круглого Стола'}
                                                 placeholder={placeholder}
@@ -656,6 +657,7 @@ const AddRoundTable:React.FC = () => {
                                         <div className={'reports_textarea'}>
                                             <TextField
                                                 multiline
+                                                className={'multiText'}
                                                 variant={'outlined'}
                                                 label={'Итоги Круглого Стола'}
                                                 placeholder={placeholder}

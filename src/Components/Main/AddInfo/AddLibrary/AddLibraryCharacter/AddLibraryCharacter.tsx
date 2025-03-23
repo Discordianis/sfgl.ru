@@ -658,6 +658,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 <label>
                                     <TextField
                                         multiline
+                                        className={'multiText'}
                                         variant={'outlined'}
                                         label={'Описание персонажа'}
                                         placeholder={placeholder}
@@ -901,6 +902,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 <label>
                                     <TextField
                                         multiline
+                                        className={'multiText'}
                                         variant={'outlined'}
                                         label={'Описание персонажа'}
                                         placeholder={placeholder}
@@ -1141,6 +1143,7 @@ const AddLibraryCharacter: React.FC<ICallback> = ({server, token}) => {
                                 <label>
                                     <TextField
                                         multiline
+                                        className={'multiText'}
                                         variant={'outlined'}
                                         label={'Описание персонажа'}
                                         placeholder={placeholder}

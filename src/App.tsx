@@ -59,7 +59,7 @@ export default function App() {
                 light: '#595993c9',
                 main: '#4b4b7dc9',
                 dark: '#3c3c63c9',
-                contrastText: '#000',
+                contrastText: '#fff',
             },
             wheat: {
                 light: '#6b5b48',

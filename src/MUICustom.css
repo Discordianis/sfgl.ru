@@ -1,19 +1,23 @@
-.MuiButtonBase-root.MuiButton-root {
+.MuiButtonBase-root.MuiButton-root:not(.lablib_read_root *) {
     background-color: #4b4b7d;
     text-transform: unset;
-    margin-top: 5px;
+    margin: 3px;
     color: white;
     border-radius: 8px;
     border: 1px solid transparent;
     transition: 0.2s border ease-in-out, 0.2s background-color ease-in-out;
     font-weight: bold;
 }
+.add_save_button .MuiButtonBase-root.MuiButton-root {
+    background-color: #243e24 !important;
+}
+
 
 .MuiButtonBase-root.MuiButton-root:hover {
     background-color: #5b5b98;
 }
 
-.filter_buttons_fill > div:hover, .css-y6nu4x-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root.Mui-focused {
+.filter_buttons_fill > div:hover, .MuiInputBase-root.MuiFilledInput-root.Mui-focused {
     background-color: var(--input-background) !important;
 }
 
@@ -38,7 +42,7 @@ body {
     background-color: #7c6a53 !important;
 }
 
-.css-1r6ga1-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input {
+.MuiSelect-select.MuiSelect-filled.MuiInputBase-input.MuiFilledInput-input {
     padding: 7px !important;
 }
 
@@ -84,8 +88,12 @@ body {
     border-radius: 8px;
 }
 
-.MuiFormControl-root.MuiTextField-root.css-c1r68q-MuiFormControl-root-MuiTextField-root:after {
+.multiText.MuiFormControl-root.MuiTextField-root:after {
     background-color: #2f2a25bf !important;
+}
+
+.profile_modal_root {
+    margin: 5px;
 }
 
 .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium {

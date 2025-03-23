@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import parse from 'html-react-parser';
 import Tooltip from '@mui/material/Tooltip';
 import '../TextOverflow/TextOverflow.css';
 import './CustomTooltip.css'
 import imageNF from "../../../public/icons/imageNotFound.jpeg";
 import moment from "moment/moment";
-import TextOverflow from "../TextOverflow/TextOverflow.tsx";
 import Modal from "../Modal/Modal.tsx";
 import Button from "../Button/Button.tsx";
+import TextOverflowV19 from "../TextOverflowOld/TextOverflowV1.9.tsx";
 
 
 interface ICharactersInfo {
@@ -44,7 +44,7 @@ interface ITextBlockProps {
     tooltipData: ICharacters
 }
 
-const CustomTooltip: React.FC<ITextBlockProps> = ({ text, maxHeight, tooltipData }) => {
+const CustomTooltip: React.FC<ITextBlockProps> = ({text, maxHeight, tooltipData}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isShortText, setIsShortText] = useState(false);
     const [visibleSpoilers, setVisibleSpoilers] = useState<Set<string>>(new Set());
@@ -79,7 +79,7 @@ const CustomTooltip: React.FC<ITextBlockProps> = ({ text, maxHeight, tooltipData
     }
 
     const handleCloseModal = (e: React.KeyboardEvent<HTMLDialogElement>) => {
-        if (e.key === 'Escape'){
+        if (e.key === 'Escape') {
             setOpenModal(false)
         }
     }
@@ -112,7 +112,7 @@ const CustomTooltip: React.FC<ITextBlockProps> = ({ text, maxHeight, tooltipData
                     .filter((line) => line.trim())
                     .map((line, idx) => (
                         <div key={`line-${match.index}-${idx}`}>
-                            {line[0] !== '<' && <span style={{ marginLeft: '1em' }}>&emsp;</span>}
+                            {line[0] !== '<' && <span style={{marginLeft: '1em'}}>&emsp;</span>}
                             {parse(line, {
                                 replace: (domNode) => {
 
@@ -150,99 +150,130 @@ const CustomTooltip: React.FC<ITextBlockProps> = ({ text, maxHeight, tooltipData
 
                                         return (
                                             <Tooltip
-                                                open={true}
                                                 key={`tooltip-${matchIndex}-${idx || 'unknown'}`}
                                                 title={
-                                                    <div className={'char_info_right'}>
-                                                        <div>
-                                                            <div className={'story_right_commons'}>
-                                                                <div>
-                                                                    {characters?.names &&
-                                                                        <div>
-                                                                            <span><strong>Прочие имена:</strong> {characters?.names}</span>
-                                                                        </div>
-                                                                    }
-                                                                    <div>
-                                                                        <span><strong>Дата рождения: </strong>{characters?.birthday ? moment(characters?.birthday).format('D MMM YYYY [г.]') : 'Неизвестно'}</span>
+                                                    <div className={'tooltip_character_root'}>
+                                                        <div className={'story_right_title'}>
+                                                            <h6>{characters?.name_rus}
+                                                                {characters?.name_eng &&
+                                                                    <span style={{color: 'gray'}}> / </span>}
+                                                                {characters?.name_eng}
+                                                            </h6>
+                                                        </div>
+                                                        <div className={'story_info_left'}>
+                                                            <div>
+                                                                <div onClick={handleModal} className={'char_info_cover'}>
+                                                                    <div className={'div_image_big'}
+                                                                         style={{backgroundImage: 'url(' + `${characters?.cover ? characters?.cover : imageNF}` + ')'}}>
                                                                     </div>
+                                                                </div>
+                                                                <Modal open={openModal} onClose={handleClose}
+                                                                       onKeyDown={handleCloseModal}>
                                                                     <div>
-                                                                        <span><strong>Возраст в годах: </strong>{characters?.age ? characters?.age : 'Неизвестно'}</span>
+                                                                        <Button onClick={handleClose}>x</Button>
                                                                     </div>
-                                                                    <div className={'character_right_status'}>
+                                                                    <div style={{marginTop: '50px'}}>
+                                                                        <img
+                                                                            src={`${characters?.cover ? characters?.cover : imageNF}`}
+                                                                            alt={'story_img'}/>
+                                                                    </div>
+                                                                </Modal>
+                                                            </div>
+                                                        </div>
+                                                        <div className={'char_info_right_tltp'}>
+                                                            <div>
+                                                                <div className={'story_right_commons'}>
+                                                                    <div>
+                                                                        {characters?.names &&
+                                                                            <div>
+                                                                                <span><strong>Прочие имена:</strong> {characters?.names}</span>
+                                                                            </div>
+                                                                        }
                                                                         <div>
-                                                                            <span><strong>Статус: </strong></span>
+                                                                            <span><strong>Дата рождения: </strong>{characters?.birthday ? moment(characters?.birthday).format('D MMM YYYY [г.]') : 'Неизвестно'}</span>
                                                                         </div>
-                                                                        <div className={'char_right_status'}>
-                                                                            <div
-                                                                                className={(characters?.life_status === 'lively') ? 'char_right_status_lively' : characters?.life_status === 'dead' ? 'char_right_status_dead' : 'char_right_status_unknown'}>
-                                                                                <span>{(characters?.life_status === 'lively') ? 'Жив(-а)' : characters?.life_status === 'dead' ? 'Мертв(-а)' : 'Неизвестно'}</span>
+                                                                        <div>
+                                                                            <span><strong>Возраст в годах: </strong>{characters?.age ? characters?.age : 'Неизвестно'}</span>
+                                                                        </div>
+                                                                        <div className={'character_right_status'}>
+                                                                            <div>
+                                                                                <span><strong>Статус: </strong></span>
+                                                                            </div>
+                                                                            <div className={'char_right_status'}>
+                                                                                <div
+                                                                                    className={(characters?.life_status === 'lively') ? 'char_right_status_lively' : characters?.life_status === 'dead' ? 'char_right_status_dead' : 'char_right_status_unknown'}>
+                                                                                    <span>{(characters?.life_status === 'lively') ? 'Жив(-а)' : characters?.life_status === 'dead' ? 'Мертв(-а)' : 'Неизвестно'}</span>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div>
-                                                                    </div>
-                                                                    <div>
+                                                                        <div>
+                                                                        </div>
+                                                                        <div>
                                                     <span><strong>Дата добавления: </strong>
                                                         {characters?.date_created
                                                             ?
                                                             `${moment(characters?.date_created).format('D MMM YYYY [г.]')}`
                                                             :
                                                             'Неизвестно'}</span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className={'char_page_va_root'}>
-                                                                {characters?.va_char_name &&
-                                                                    <div>
-                                                                        <div className={'char_page_va_char'}>
-                                                                            <div className={'char_page_va_char_title'}>
-                                                                                <h4>Персонаж озвучки:</h4>
-                                                                            </div>
-                                                                            <div className={'char_page_va_char_info'}>
-                                                                                <div>
-                                                                                    <img
-                                                                                        src={`${characters?.va_char_avatar ? characters?.va_char_avatar : imageNF}`}
-                                                                                        alt={'char_va_avatar'}/>
+                                                                <div className={'char_page_va_root'}>
+                                                                    {characters?.va_char_name &&
+                                                                        <div>
+                                                                            <div className={'char_page_va_char'}>
+                                                                                <div className={'char_page_va_char_title'}>
+                                                                                    <h4>Персонаж озвучки:</h4>
                                                                                 </div>
-                                                                                <div>
-                                                                                    <h4>{characters?.va_char_name}</h4>
+                                                                                <div className={'char_page_va_char_info'}>
+                                                                                    <div>
+                                                                                        <img
+                                                                                            src={`${characters?.va_char_avatar ? characters?.va_char_avatar : imageNF}`}
+                                                                                            alt={'char_va_avatar'}/>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h4>{characters?.va_char_name}</h4>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                }
-                                                                {characters?.va_name &&
-                                                                    <div>
-                                                                        <div className={'char_page_va_seiyuu'}>
-                                                                            <div
-                                                                                className={'char_page_va_seiyuu_title'}>
-                                                                                <h4>Сэйю:</h4>
-                                                                            </div>
-                                                                            <div className={'char_page_va_info'}>
-                                                                                <div>
-                                                                                    <img
-                                                                                        src={`${characters?.va_avatar ? characters?.va_avatar : imageNF}`}
-                                                                                        alt={'char_va_avatar'}/>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h4>{characters?.va_name}</h4>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                }
-                                                            </div>
-                                                            <div className={'story_right_description'}>
-                                                                <div className={'story_right_description_title'}>
-                                                                    <span><strong>Описание</strong></span>
-                                                                </div>
-                                                                <div>
-                                                                    {characters?.description ?
-                                                                        <span><TextOverflow maxHeight={600}
-                                                                                            text={characters?.description}/></span>
-                                                                        :
-                                                                        <span>Описание отсутствует...</span>
                                                                     }
+                                                                    {characters?.va_name &&
+                                                                        <div>
+                                                                            <div className={'char_page_va_seiyuu'}>
+                                                                                <div
+                                                                                    className={'char_page_va_seiyuu_title'}>
+                                                                                    <h4>Сэйю:</h4>
+                                                                                </div>
+                                                                                <div className={'char_page_va_info'}>
+                                                                                    <div>
+                                                                                        <img
+                                                                                            src={`${characters?.va_avatar ? characters?.va_avatar : imageNF}`}
+                                                                                            alt={'char_va_avatar'}/>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h4>{characters?.va_name}</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                                <div className={'story_right_description'}>
+                                                                    <div className={'story_right_description_title'}>
+                                                                        <span><strong>Описание</strong></span>
+                                                                    </div>
+                                                                    <div className={'char_desc_tltp'}>
+                                                                        {characters?.description ?
+                                                                            <span>
+                                                                            <TextOverflowV19 maxHeight={400}
+                                                                                          text={characters?.description}
+                                                                            />
+                                                                        </span>
+                                                                            :
+                                                                            <span>Описание отсутствует...</span>
+                                                                        }
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -358,7 +389,7 @@ const CustomTooltip: React.FC<ITextBlockProps> = ({ text, maxHeight, tooltipData
                                                     <div className={'story_right_title'}>
                                                         <h6>{characters?.name_rus}
                                                             {characters?.name_eng &&
-                                                            <span style={{color: 'gray'}}> / </span>}
+                                                                <span style={{color: 'gray'}}> / </span>}
                                                             {characters?.name_eng}
                                                         </h6>
                                                     </div>
@@ -382,7 +413,7 @@ const CustomTooltip: React.FC<ITextBlockProps> = ({ text, maxHeight, tooltipData
                                                             </Modal>
                                                         </div>
                                                     </div>
-                                                    <div className={'.char_info_right_tltp'}>
+                                                    <div className={'char_info_right_tltp'}>
                                                         <div>
                                                             <div className={'story_right_commons'}>
                                                                 <div>
@@ -468,9 +499,8 @@ const CustomTooltip: React.FC<ITextBlockProps> = ({ text, maxHeight, tooltipData
                                                                 <div className={'char_desc_tltp'}>
                                                                     {characters?.description ?
                                                                         <span>
-                                                                            <TextOverflow maxHeight={120}
+                                                                            <TextOverflowV19 maxHeight={400}
                                                                                           text={characters?.description}
-                                                                                          open={true}
                                                                             />
                                                                         </span>
                                                                         :

@@ -592,6 +592,7 @@ const AddFridays:React.FC = () => {
                                             <div className={'textfield_multi'}>
                                                 <TextField
                                                     multiline
+                                                    className={'multiText'}
                                                     variant={'outlined'}
                                                     label={'Текст Пятницы (при необходимости)'}
                                                     placeholder={placeholder}
@@ -739,6 +740,7 @@ const AddFridays:React.FC = () => {
                                             <div className={'textfield_multi'}>
                                                 <TextField
                                                     multiline
+                                                    className={'multiText'}
                                                     variant={'outlined'}
                                                     label={'Текст Пятницы (при необходимости)'}
                                                     placeholder={placeholder}

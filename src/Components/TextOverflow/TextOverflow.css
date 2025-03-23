@@ -119,3 +119,37 @@
     max-width: 500px;
     width: 100%;
 }
+
+/* Все span элементы внутри .inline_fck_text по умолчанию будут block */
+.inline_fck_text > span {
+    display: flex;
+    position: relative;
+    margin: 10px 0;
+}
+.inline_fck_text > .anotherDisplayForA {
+    display: inline;
+}
+
+/* span перед <a> будет отображаться inline */
+.inline_fck_text > span.inline-before-a {
+    display: inline;
+}
+
+
+/* span после <a> будет отображаться inline */
+.inline_fck_text > span.inline-after-a {
+    display: inline;
+}
+
+/* a элемент сохраняет свой стиль */
+.inline_fck_text > a {
+    display: inline;
+}
+
+.style_no_space:has(style) {
+    display: none;
+}
+
+.style_no_space > div {
+    flex: 1;
+}

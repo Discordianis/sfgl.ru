@@ -281,3 +281,11 @@
     text-align: start;
 }
 
+@media screen and (max-width: 650px) {
+    .user_profiles {
+        flex-direction: column;
+    }
+    .user_profiles > a {
+        max-width: 100%;
+    }
+}

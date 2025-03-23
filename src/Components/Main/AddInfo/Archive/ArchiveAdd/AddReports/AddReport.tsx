@@ -513,6 +513,7 @@ const AddReport: React.FC = () => {
                                 <div className={'reports_textarea'}>
                                     <TextField
                                         multiline
+                                        className={'multiText'}
                                         variant={'outlined'}
                                         label={'Текст отчёта'}
                                         placeholder={placeholder}
@@ -630,6 +631,7 @@ const AddReport: React.FC = () => {
                                 <div className={'reports_textarea'}>
                                     <TextField
                                         multiline
+                                        className={'multiText'}
                                         variant={'outlined'}
                                         minRows={2}
                                         value={newReportInput.value}

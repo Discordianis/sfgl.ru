@@ -8,10 +8,10 @@ import moment from "moment";
 import "moment/dist/locale/ru";
 import Loading from "../../../../Loading/Loading.tsx";
 import imageNF from "../../../../../../public/icons/imageNotFound.jpeg";
-import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
 import Button from "../../../../Button/Button.tsx";
 import Modal from "../../../../Modal/Modal.tsx";
 import NotFound from "../../../../NotFound/NotFound.tsx";
+import CustomTooltip from "../../../../CustomTooltip/CustomTooltip.tsx";
 
 interface IStoriesInfo {
     id: string,
@@ -36,7 +36,7 @@ interface IStories {
     }
 }
 
-interface ICharacters {
+interface Icharacter {
     age: string,
     author: string,
     birthday: string | Date,
@@ -74,21 +74,62 @@ interface User {
     }
 }
 
+interface ICharactersInfo {
+    age: string,
+    author: string,
+    birthday: string,
+    cover: string,
+    date_created: string,
+    date_modified: string,
+    description: string,
+    id: string,
+    life_status: string,
+    name_eng: string,
+    name_rus: string,
+    names: string,
+    role: string,
+    va_avatar: string,
+    va_char_avatar: string,
+    va_char_name: string,
+    va_name: string,
+}
+
+interface ICharacters {
+    status: boolean,
+    info: {
+        length: number,
+        [key: number]: ICharactersInfo
+    }
+}
+
 const LabLibCharacterPage: React.FC = () => {
 
     const server = useSelector((state: RootState) => state.server.server)
     const token = localStorage.getItem('token')
     const params = useParams()
+    const [characters, setCharacters] = useState<ICharacters | null>(null)
 
     const {showNotification, NotificationComponent} = useNotification()
 
     const [story, setStory] = useState<IStories | null>(null)
-    const [characters, setCharacters] = useState<ICharacters | null>(null)
+    const [character, setCharacter] = useState<Icharacter | null>(null)
     const [authorInfo, setAuthorInfo] = useState<IUserInfo>(null)
     const [usersData, setUsersData] = useState<User | null>(null);
     const [loading, setLoading] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     moment().locale('ru')
+
+    useEffect(() => {
+        const fetching = async() => {
+            const resCharacter = await fetch(server, {
+                method: 'POST',
+                body: JSON.stringify({token: token, action: 'getCharacters'})
+            })
+            const dataCharacter = await resCharacter.json()
+            setCharacters(dataCharacter)
+        }
+        fetching().then()
+    }, [server, token]);
 
     const handleModal = () => {
         setOpenModal(true)
@@ -106,10 +147,10 @@ const LabLibCharacterPage: React.FC = () => {
 
     useEffect(() => {
         if (usersData) {
-            const author = Object.values(usersData?.info).find((user: IUserInfo) => user?.nickname === characters?.author);
+            const author = Object.values(usersData?.info).find((user: IUserInfo) => user?.nickname === character?.author);
             setAuthorInfo(author)
         }
-    }, [characters?.author, usersData]);
+    }, [character?.author, usersData]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -142,7 +183,7 @@ const LabLibCharacterPage: React.FC = () => {
                 showNotification('Упс, что-то пошло не так...', 'error')
             }
             else {
-                setCharacters(data?.info)
+                setCharacter(data?.info)
                 setStory(dataStories?.info)
                 setLoading(false)
             }
@@ -154,7 +195,7 @@ const LabLibCharacterPage: React.FC = () => {
         return <Loading />
     }
 
-    if (typeof characters === 'object' && Object.keys(characters).length <= 0) {
+    if (typeof character === 'object' && Object.keys(character).length <= 0) {
         return <NotFound />
     }
 
@@ -165,14 +206,14 @@ const LabLibCharacterPage: React.FC = () => {
                     <div>
                         <div className={'story_info_top'}>
                             <div className={'story_right_title'}>
-                                <h4>{characters?.name_rus} {characters?.name_eng && <span style={{color: 'gray'}}>/</span>} {characters?.name_eng}</h4>
+                                <h4>{character?.name_rus} {character?.name_eng && <span style={{color: 'gray'}}>/</span>} {character?.name_eng}</h4>
                             </div>
                             <div className={'story_info_right_left'}>
                                 <div className={'story_info_left'}>
                                     <div>
                                         <div onClick={handleModal} className={'char_info_cover'}>
                                             <div className={'div_image_big'}
-                                                 style={{backgroundImage: 'url(' + `${characters?.cover ? characters?.cover : imageNF}` + ')'}}>
+                                                 style={{backgroundImage: 'url(' + `${character?.cover ? character?.cover : imageNF}` + ')'}}>
                                             </div>
                                         </div>
                                         <Modal open={openModal} onClose={handleClose} onKeyDown={handleCloseModal}>
@@ -180,25 +221,25 @@ const LabLibCharacterPage: React.FC = () => {
                                                 <Button onClick={handleClose}>x</Button>
                                             </div>
                                             <div style={{marginTop: '50px'}}>
-                                                <img src={`${characters?.cover ? characters?.cover : imageNF}`} alt={'story_img'}/>
+                                                <img src={`${character?.cover ? character?.cover : imageNF}`} alt={'story_img'}/>
                                             </div>
                                         </Modal>
                                     </div>
                                 </div>
-                                <div className={'.char_info_right'}>
+                                <div className={'char_info_right'}>
                                     <div>
                                         <div className={'story_right_commons'}>
                                             <div>
-                                                {characters?.names &&
+                                                {character?.names &&
                                                     <div>
-                                                        <span><strong>Прочие имена:</strong> {characters?.names}</span>
+                                                        <span><strong>Прочие имена:</strong> {character?.names}</span>
                                                     </div>
                                                 }
                                                 <div>
-                                                    <span><strong>Дата рождения: </strong>{characters?.birthday ? moment(characters?.birthday).format('D MMM YYYY [г.]') : 'Неизвестно'}</span>
+                                                    <span><strong>Дата рождения: </strong>{character?.birthday ? moment(character?.birthday).format('D MMM YYYY [г.]') : 'Неизвестно'}</span>
                                                 </div>
                                                 <div>
-                                                    <span><strong>Возраст в годах: </strong>{characters?.age ? characters?.age : 'Неизвестно'}</span>
+                                                    <span><strong>Возраст в годах: </strong>{character?.age ? character?.age : 'Неизвестно'}</span>
                                                 </div>
                                                 <div className={'character_right_status'}>
                                                     <div>
@@ -206,8 +247,8 @@ const LabLibCharacterPage: React.FC = () => {
                                                     </div>
                                                     <div className={'char_right_status'}>
                                                         <div
-                                                            className={(characters?.life_status === 'lively') ? 'char_right_status_lively' : characters?.life_status === 'dead' ? 'char_right_status_dead' : 'char_right_status_unknown'}>
-                                                            <span>{(characters?.life_status === 'lively') ? 'Жив(-а)' : characters?.life_status === 'dead' ? 'Мертв(-а)' : 'Неизвестно'}</span>
+                                                            className={(character?.life_status === 'lively') ? 'char_right_status_lively' : character?.life_status === 'dead' ? 'char_right_status_dead' : 'char_right_status_unknown'}>
+                                                            <span>{(character?.life_status === 'lively') ? 'Жив(-а)' : character?.life_status === 'dead' ? 'Мертв(-а)' : 'Неизвестно'}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -215,9 +256,9 @@ const LabLibCharacterPage: React.FC = () => {
                                                 </div>
                                                 <div>
                                                     <span><strong>Дата добавления: </strong>
-                                                        {characters?.date_created
+                                                        {character?.date_created
                                                             ?
-                                                            `${moment(characters?.date_created).format('D MMM YYYY [г.]')}`
+                                                            `${moment(character?.date_created).format('D MMM YYYY [г.]')}`
                                                             :
                                                             'Неизвестно'}</span>
                                                 </div>
@@ -245,7 +286,7 @@ const LabLibCharacterPage: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className={'char_page_va_root'}>
-                                            {characters?.va_char_name &&
+                                            {character?.va_char_name &&
                                                 <div>
                                                     <div className={'char_page_va_char'}>
                                                         <div className={'char_page_va_char_title'}>
@@ -253,16 +294,18 @@ const LabLibCharacterPage: React.FC = () => {
                                                         </div>
                                                         <div className={'char_page_va_char_info'}>
                                                             <div>
-                                                                <img src={`${characters?.va_char_avatar ? characters?.va_char_avatar : imageNF}`} alt={'char_va_avatar'}/>
+                                                                <img
+                                                                    src={`${character?.va_char_avatar ? character?.va_char_avatar : imageNF}`}
+                                                                    alt={'char_va_avatar'}/>
                                                             </div>
                                                             <div>
-                                                                <h4>{characters?.va_char_name}</h4>
+                                                                <h4>{character?.va_char_name}</h4>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             }
-                                            {characters?.va_name &&
+                                            {character?.va_name &&
                                                 <div>
                                                     <div className={'char_page_va_seiyuu'}>
                                                         <div className={'char_page_va_seiyuu_title'}>
@@ -271,11 +314,11 @@ const LabLibCharacterPage: React.FC = () => {
                                                         <div className={'char_page_va_info'}>
                                                             <div>
                                                                 <img
-                                                                    src={`${characters?.va_avatar ? characters?.va_avatar : imageNF}`}
+                                                                    src={`${character?.va_avatar ? character?.va_avatar : imageNF}`}
                                                                     alt={'char_va_avatar'}/>
                                                             </div>
                                                             <div>
-                                                                <h4>{characters?.va_name}</h4>
+                                                                <h4>{character?.va_name}</h4>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -287,8 +330,8 @@ const LabLibCharacterPage: React.FC = () => {
                                                 <span><strong>Описание</strong></span>
                                             </div>
                                             <div>
-                                                {characters?.description ?
-                                                    <span><TextOverflow maxHeight={600} text={characters?.description}/></span>
+                                                {character?.description ?
+                                                    <CustomTooltip maxHeight={600} text={character?.description} tooltipData={characters}/>
                                                     :
                                                     <span>Описание отсутствует...</span>
                                                 }
@@ -307,10 +350,10 @@ const LabLibCharacterPage: React.FC = () => {
                                     </div>
                                 </a>
                                 <div>
-                                    {typeof characters === 'object' && Object.keys(characters).length > 0 ?
+                                    {typeof character === 'object' && Object.keys(character).length > 0 ?
                                         Object.values(story).map((stories: IStoriesInfo) =>
                                             <NavLink to={`/library/story/${stories.id}-${stories.name_eng}`}>
-                                                <div className={'story_info_char'} key={stories?.id}>
+                                            <div className={'story_info_char'} key={stories?.id}>
                                                     <div>
                                                         <img src={stories?.cover ? stories?.cover : imageNF} alt={'story_img'}/>
                                                     </div>

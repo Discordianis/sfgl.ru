@@ -8,11 +8,11 @@ import {NavLink, useParams} from "react-router-dom";
 import Button from "../../../../Button/Button.tsx";
 import moment from "moment";
 import 'moment/dist/locale/ru';
-import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
 import imageNF from '../../../../../../public/icons/imageNotFound.jpeg'
 import Modal from "../../../../Modal/Modal.tsx";
 import UTabs from "../../../../UTabs/UTabs.tsx";
 import CustomTooltip from "../../../../CustomTooltip/CustomTooltip.tsx";
+import TextOverflowOld from "../../../../TextOverflowOld/TextOverflowOld.tsx";
 
 interface IStoriesInfo {
     id: string,
@@ -370,7 +370,7 @@ const LabLibStoryPage: React.FC = () => {
                                     {tab === 'chapters' &&
                                         <div className={'story_page_chapter_list'}>
                                             {(Array.isArray(chapters?.info) && chapters?.info.length > 0) ?
-                                                <TextOverflow maxHeight={600} text={
+                                                <TextOverflowOld maxHeight={600} text={
                                                     Object.values(chapters?.info).map((chap: IAllChaptersInfo, index) =>
                                                         <div key={index}>
                                                             <NavLink to={`/library/story/${params.story}/read/${chap?.number}`}>

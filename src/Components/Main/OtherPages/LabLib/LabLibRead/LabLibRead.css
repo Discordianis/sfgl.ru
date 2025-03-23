@@ -25,7 +25,7 @@
     display: flex;
     position: sticky;
     top: 65px;
-    background: #121212d4;
+    background: #181818d6;
     backdrop-filter: blur(5px);
     padding-top: 10px;
     transition: transform 0.5s ease-in-out;
@@ -333,8 +333,8 @@
 
 .read_reactions {
     display: flex;
-    margin: 0 10px 16px 10px;
-    gap: 10px 0;
+    gap: 10px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
     justify-content: center;
 }

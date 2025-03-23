@@ -263,6 +263,7 @@ const Profile: React.FC = () => {
                                         <form onSubmit={updateAbout}>
                                             <TextField
                                                 multiline
+                                                className={'multiText'}
                                                 inputProps={{ maxLength: 600 }}
                                                 variant={'outlined'}
                                                 label={'Обо мне'}

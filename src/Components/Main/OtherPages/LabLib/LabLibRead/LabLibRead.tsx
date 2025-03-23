@@ -7,7 +7,7 @@ import { useNotification } from "../../../../../hooks/useSuccess.tsx";
 import Loading from "../../../../Loading/Loading.tsx";
 import TextOverflow from "../../../../TextOverflow/TextOverflow.tsx";
 import parse from "html-react-parser";
-import {Button, Stack} from "@mui/material";
+import {Button} from "@mui/material";
 
 interface IStoriesInfo {
     id: string,
@@ -289,7 +289,7 @@ const LabLibRead: React.FC = () => {
                     </div>
                 </div>
                 <div className={'lablib_read_header_root'}
-                     style={{transform: `translateY(${isVisible ? '0px' : '-120px'})`}}>
+                     style={{transform: `translateY(${isVisible ? '0px' : '-130px'})`}}>
                     <div className={'lablib_read_header'}>
                         <NavLink to={`/library/story/${params.story}`} className={'lablib_read_title'}>
                             {story?.name_eng && <span>{story.name_eng}</span>}
@@ -336,7 +336,7 @@ const LabLibRead: React.FC = () => {
                             <h1>Глава {chapter?.number} – {chapter?.name}</h1>
                             <div className={'lablib_read_text_map'}>
                                 {chapter?.no_format === '0' ?
-                                    <TextOverflow maxHeight={99999} text={chapter?.text}/>
+                                    <TextOverflow maxHeight={999999} text={chapter?.text}/>
                                     :
                                     <span>{parse(chapter?.text)}</span>
                                 }
@@ -363,7 +363,7 @@ const LabLibRead: React.FC = () => {
                         </div>
                     }
                 </div>
-                <Stack spacing={1.5} direction={'row'} className={'read_reactions'}>
+                <div className={'read_reactions'}>
                     <Button
                         variant={'contained'} style={{pointerEvents: disableReactions ? "none" : "unset"}}
                         onClick={() => sendReaction('heart')}
@@ -437,7 +437,7 @@ const LabLibRead: React.FC = () => {
                             )}
                         </div>
                     </Button>
-                </Stack>
+                </div>
                 <div className={'lablib_read_end'}>
                     <span>Конец главы</span>
                     <div className={'chapters_controls'}>

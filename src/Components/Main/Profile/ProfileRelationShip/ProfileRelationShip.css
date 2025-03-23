@@ -54,9 +54,8 @@
 }
 
 .profile_utabs > .utabs {
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: fill-available;
+    overflow: visible;
+    width: 100%;
 }
 
 .profile_rs_report > div {
@@ -191,7 +190,7 @@
     display: grid;
     gap: 0 15px;
     grid-template-columns: repeat(2, 2fr);
-    justify-items: center;
+    justify-items: start;
 }
 
 .prs_bio_status_common > div {

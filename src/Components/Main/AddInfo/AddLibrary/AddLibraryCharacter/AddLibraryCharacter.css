@@ -54,6 +54,7 @@
 .add_character_top_list_prop > div {
     display: flex;
     justify-content: center;
+    max-width: 130px;
 }
 
 .add_character_top_list_prop.active {
